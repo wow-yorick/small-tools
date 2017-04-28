@@ -1,0 +1,71 @@
+ <script>
+ /*
+ *    ----- DIV弹出层的JS代码 ---------------------------------------------------------------------
+ */
+
+/*
+ *  Dialog returnValue
+ */
+function ProductDialogReturnValue(obj)
+{
+	if ($('#data_tblList').find('.row_selected').length) {
+
+		//获取字符串
+		var returnfield = $(obj).find('[name=returnfield]').val();
+		var domcontrol = $(obj).find('[name=domcontrol]').val();
+		var domtype = $(obj).find('[name=domtype]').val();
+		
+		
+		//转换成数组
+		var returnfieldArr = returnfield.split(",");
+		var domcontrolArr = domcontrol.split(",");
+		var domtypeArr = domtype.split(",");
+
+		//获取选中行中得某一列的值
+		var productId = $('#data_tblList').find('.row_selected').find('td').eq(2).text();
+		var productName = $('#data_tblList').find('.row_selected').find('td').eq(3).text();
+		var categories = $('#data_tblList').find('.row_selected').find('td').eq(4).text();
+		var productmodel = $('#data_tblList').find('.row_selected').find('td').eq(5).text();
+		var typeid = $('#data_tblList').find('.row_selected').find('td').eq(6).text();
+		var price = $('#data_tblList').find('.row_selected').find('td').eq(7).text();
+		var unit = $('#data_tblList').find('.row_selected').find('td').eq(8).text();
+
+		var size = domcontrolArr.length;
+		for(var i=0;i<size;i++)
+		{
+			if(domtypeArr[i] == 'text')
+			{
+				if(returnfieldArr[i] == 'productName')
+				{
+					$(window.parent.document).find('[name='+domcontrolArr[i]+']').val(productName);
+				}
+				else if(returnfieldArr[i] == 'price')
+				{
+					$(window.parent.document).find('[name='+domcontrolArr[i]+']').val(price);
+				}
+			}
+			else if(domtypeArr[i] == 'select')
+			{
+				if(returnfieldArr[i] == 'productName')
+				{
+					$(window.parent.document).find('[name='+domcontrolArr[i]+']').find('option[value=' + productName + ' ]').attr('selected', 'selected');
+				}
+				else if(returnfieldArr[i] == 'price')
+				{
+					$(window.parent.document).find('[name='+domcontrolArr[i]+']').find('option[value=' + price + ' ]').attr('selected', 'selected');
+				}
+			}
+			else if(domtypeArr[i] == 'hidden')
+			{
+				if(returnfieldArr[i] == 'id')
+				{
+					$(window.parent.document).find('[name='+domcontrolArr[i]+']').val(productId);
+				}
+			}
+		}
+		window.parent.$('#divTempDialog').dialog("close");
+	} else {
+		alert("请至少选中一个产品");
+	}
+}
+</script>

@@ -1,0 +1,83 @@
+<script>
+/*
+ * 清空表单内容
+ */
+function resetModifyCompanyPwdDialog() {
+	$('#dialogModifyCompanyPwd').html($(document).data('cache_modifyCompanyPwd'));
+}
+
+$(document).ready(function() {
+	$(document).data('cache_modifyCompanyPwd', $('#dialogModifyCompanyPwd').html());
+
+	//初始化弹窗
+	$('#dialogModifyCompanyPwd').dialog({
+		title: '修改登录密码'
+		,width: 300
+		,height: 200
+		,modal: true
+		,resizable: false
+		,close: function(event, ui) {
+			$(this).remove();
+		}
+	});
+
+	//submit表单提交ajax实现
+	$('#formModifyCompanyPwd').submit(function(){
+		$(this).find('.wiliz-auth').blur();
+		if($(this).find('.ui-state-error').length == 0){
+			var oldCompanyPwd = $(this).find('#pwdOldCompanyPwd').val();
+			var newCompanyPwd = $(this).find('#pwdNewCompanyPwd').val();
+			$(this).find('[name=oldCompanyPwd]').val(oldCompanyPwd);
+			$(this).find('[name=newCompanyPwd]').val(newCompanyPwd);
+			var options = {
+				target: '#divTempContainer'
+				,url: $(this).attr('action')
+				,type: $(this).attr('method')
+			};
+			$(this).ajaxSubmit(options);
+			$('#dialogModifyCompanyPwd').dialog('close');
+		}
+		return false; //禁止表单自动提交
+	});
+});
+</script>
+
+<style>
+#dialogModifyCompanyPwd {
+	font-size: 13px;
+	color: #505050;
+	font-family: Arial,Helvetica,sans-serif;
+	font-weight: bold;
+	background-color: #F5DEB3;
+	text-align: center;
+	padding-top: 20px;
+	overflow: hidden;
+}
+</style>
+
+<div id="dialogModifyCompanyPwd">
+	<form id="formModifyCompanyPwd" action="<?php echo $this->baseUrl();?>/usermanage/modifypwd/modifycompanypwd" method="post">
+		<input type="hidden" name="oldCompanyPwd" />
+		<input type="hidden" name="newCompanyPwd" />
+		<table style="width:100%;white-space:nowrap;">
+			<tr>
+				<td>原密码：</td>
+				<td><input type="password" id="pwdOldCompanyPwd" class="wiliz-txt wiliz-auth" onblur="wiliz_checkEmptyByVal(this);" /></td>
+			</tr>
+			<tr>
+				<td>新密码：</td>
+				<td><input type="password" id="pwdNewCompanyPwd" class="wiliz-txt wiliz-auth" onblur="wiliz_checkPwdSame1(this, 'pwdConfirmCompanyPwd');" /></td>
+			</tr>
+			<tr>
+				<td>确认密码：</td>
+				<td><input type="password" id="pwdConfirmCompanyPwd" class="wiliz-txt wiliz-auth" onblur="wiliz_checkPwdSame2('pwdNewCompanyPwd');" /></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="text-align:center;line-height:50px;">
+					<input type="submit" class="ui-state-default wiliz-cursor-pointer wiliz-btn companyInfoInput" value="确定"  />&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" class="ui-state-default wiliz-cursor-pointer wiliz-btn companyInfoInput"  value="清空" onclick="resetModifyCompanyPwdDialog(this);" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>

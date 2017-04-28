@@ -1,0 +1,46 @@
+
+<script>
+/*
+ * 显示用户详细信息
+ */
+function showUserDetail(obj) {
+	var atId = $('#formSearchUser').find('[name=atId]').find('option:selected').val();
+	var userId = $(obj).attr('userId');
+	var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName  . '/' . $this->controllerName . '/showuserdetail';?>";
+	$('#divUserDetail').load(url, {
+		'atId': atId
+		,'userId': userId
+	});
+}
+
+$(document).ready(function() {
+	//初始化dataTable
+	$('#tblUserList').OusuTable(2, null, null, {
+		'sScrollY': '420px'
+	});
+	$('.dataTables_filter').find(':text').css({'width': '140px'});
+
+	$('#tblUserList tbody tr:first').click();
+});
+</script>
+
+<div style="margin-top:-15px;">
+<table id="tblUserList">
+	<thead>
+		<tr>
+			<th style="display:none;">解决点击行改变背景颜色时不会变第一列颜色问题</th>
+			<th>姓&nbsp;名</th>
+		</tr>
+	</thead>
+	<tbody>
+	<?php if (isset($this->userList)): ?>
+		<?php foreach ($this->userList as $arrSub): ?>
+		<tr userId="<?php echo $arrSub['userId'];?>" username="<?php echo $arrSub['username'];?>" onclick="showUserDetail(this);">
+			<td style="display:none;"></td>
+			<td><label><?php echo $arrSub['fullname'];?></label></td>
+		</tr>
+		<?php endforeach; ?>
+	<?php endif; ?>
+	</tbody>
+</table>
+</div>

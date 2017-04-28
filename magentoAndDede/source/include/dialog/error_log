@@ -1,0 +1,6 @@
+[03-Jan-2015 17:13:25 Etc/GMT-8] PHP Fatal error:  Call to a member function read() on a non-object in /home/yyd/public_html/dedecms/include/dialog/select_images.php on line 149
+[04-Jan-2015 13:01:08 Etc/GMT-8] PHP Fatal error:  Call to a member function read() on a non-object in /home/yyd/public_html/cms/include/dialog/select_images.php on line 149
+[04-Jan-2015 13:01:21 Etc/GMT-8] PHP Fatal error:  Call to a member function read() on a non-object in /home/yyd/public_html/cms/include/dialog/select_images.php on line 149
+[04-Jan-2015 13:05:14 Etc/GMT-8] PHP Fatal error:  Call to a member function read() on a non-object in /home/yyd/public_html/cms/include/dialog/select_images.php on line 149
+[04-Jan-2015 13:06:30 Etc/GMT-8] PHP Fatal error:  Call to a member function read() on a non-object in /home/yyd/public_html/cms/include/dialog/select_images.php on line 149
+[04-Jan-2015 15:02:05 Etc/GMT-8] PHP Fatal error:  Call to a member function read() on a non-object in /home/yyd/public_html/cms/include/dialog/select_images.php on line 149

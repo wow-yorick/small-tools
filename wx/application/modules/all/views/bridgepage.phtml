@@ -1,0 +1,15 @@
+<script>
+$('#divTempDialog').dialog({
+	title: '<?php echo $this->dlogtitle;?>' //dialog标题,自定义
+	,width: '<?php echo $this->dlogwidth;?>'
+	,height: '<?php echo $this->dlogheight;?>'
+	,modal: 'true'
+	,resizable: false
+	,close: function(event, ui) {
+		$('#divTempDialog').empty();
+	}
+});
+var controllerurl = "<?php echo  $this->baseUrl().'/'.$this->moduleName .'/'. $this->controllerName .'/contentshow';?>";
+var iframeHtml = '<iframe src="'+controllerurl+'"  frameborder="0" marginwidth="0" marginheight="0" width="100%" height="100%"></iframe>';
+$('#divTempDialog').append(iframeHtml);
+</script>

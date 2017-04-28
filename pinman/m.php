@@ -1,0 +1,5 @@
+<?php
+//svn²âÊÔÌá½»
+define("ADMIN_ROOT",1);
+require "admin.php";
+?>

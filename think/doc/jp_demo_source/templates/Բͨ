@@ -1,0 +1,25 @@
+.jp-page{position:relative}
+.jp-text,.jp-label,.jp-image,.jp-barcode{position:absolute;overflow:hidden}
+.jp-auto-stretch,.jp-barcode object,.jp-barcode embed{width: 100%; height: 100%;}
+.jp-paper-background{position:absolute;width:100%;height:100%;}
+.jp-comp-0{filter: ;}
+.jp-comp-3{left: 23px; top: 297px; width: 84px; height: 17px; font-weight: 700; position: absolute; z-index: 101;}
+.jp-comp-6{left: 120px; top: 297px; font-weight: 700; z-index: 102;}
+.jp-comp-9{left: 61px; top: 151px; width: 97px; height: 25px; font-weight: 700; position: absolute; z-index: 103;}
+.jp-comp-12{left: 181px; top: 151px; width: 88px; height: 25px; font-weight: 700; position: absolute; z-index: 104;}
+.jp-comp-15{left: 286px; top: 151px; width: 106px; height: 25px; font-weight: 700; position: absolute; z-index: 105;}
+.jp-comp-18{left: 71px; top: 110px; width: 332px; height: 20px; font-weight: 700; position: absolute; z-index: 106;}
+.jp-comp-21{left: 61px; top: 188px; width: 328px; height: 27px; font-weight: 700; position: absolute; z-index: 107;}
+.jp-comp-24{left: 277px; top: 226px; font-weight: 700; z-index: 108;}
+.jp-comp-25{left: 113px; top: 226px; font-weight: 700; z-index: 109;}
+.jp-comp-30{left: 488px; top: 97px; width: 132px; height: 20px; font-weight: 700; position: absolute; z-index: 110;}
+.jp-comp-33{left: 496px; top: 129px; width: 315px; height: 25px; font-weight: 700; position: absolute; z-index: 111;}
+.jp-comp-36{left: 485px; top: 161px; width: 60px; height: 21px; font-weight: 700; position: absolute; z-index: 112;}
+.jp-comp-39{left: 482px; top: 196px; width: 329px; height: 24px; font-weight: 700; position: absolute; z-index: 113;}
+.jp-comp-42{left: 718px; top: 161px; width: 71px; height: 23px; font-weight: 700; position: absolute; z-index: 114;}
+.jp-comp-45{left: 618px; top: 162px; width: 85px; height: 21px; font-weight: 700; position: absolute; z-index: 115;}
+.jp-comp-48{left: 514px; top: 224px; font-weight: 700; z-index: 116;}
+.jp-comp-49{left: 699px; top: 224px; width: 155px; height: 20px; font-weight: 700; position: absolute; z-index: 117;}
+.jp-comp-54{left: 714px; top: 43px; width: 79px; height: 28px; position: absolute; z-index: 118;}
+.jp-comp-57{left: 609px; top: 200px; z-index: 119;}
+.jp-comp-58{left: 78px; top: 81px; font-weight: 700; z-index: 120;}====<div style="width: 233mm; height: 128mm;" id="page${pageNo}" class="jp-page jp-landscape"><img class="jp-paper-background screen-only" src="../backgroundImages/yt.gif"><div class="jp-text jp-comp-3">${订单号}</div><div class="jp-text jp-comp-6">${物品}</div><div class="jp-text jp-comp-9">${发件人省}</div><div class="jp-text jp-comp-12">${发件人市}</div><div class="jp-text jp-comp-15">${发件人区}</div><div class="jp-text jp-comp-18">${发件人单位}</div><div class="jp-text jp-comp-21">${发件人地址}</div><div class="jp-text jp-comp-24">${发件人电话}</div><div class="jp-text jp-comp-25">${发件人手机}</div><div class="jp-text jp-comp-30">${收件人}</div><div class="jp-text jp-comp-33">${单位}</div><div class="jp-text jp-comp-36">${省}</div><div class="jp-text jp-comp-39">${地址}</div><div class="jp-text jp-comp-42">${区}</div><div class="jp-text jp-comp-45">${市}</div><div class="jp-text jp-comp-48">${手机}</div><div class="jp-text jp-comp-49">${电话}</div><div class="jp-text jp-comp-54">${市}</div><div class="jp-text jp-comp-57">${发件人}</div><div class="jp-text jp-comp-58">${发件人}</div></div>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit 
+    colors="true" 
+    stopOnFailure="false" 
+    bootstrap="bootstrap.php">
+    <php>
+        <server name="SERVER_NAME" value="http://www.test.com" />
+		<server name="SERVER_ADDR" value="127.0.0.1" />
+		<server name="REMOTE_ADDR" value="127.0.0.1" />
+    </php>
+    <testsuites>
+        <testsuite name="BowlTests">
+            <directory>bowl</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

@@ -1,0 +1,58 @@
+
+<script>
+/*
+ * onchange事件，搜索用户列表
+ */
+function searchUser(obj) {
+	$(obj).closest('form').find(':hidden[name=roletypeId]').val($(obj).find('option:selected').attr('roletypeId'));
+	$(obj).closest('form').submit();
+}
+
+$(document).ready(function() {
+	$('#formSearchUser').submit();
+});
+</script>
+
+<div>
+	<table class="wlz-table"><tr>
+		<td style="width:200px;">
+			<div class="ui-widget-content">
+				<form id="formSearchUser" class="wlz_ajaxForm" ajaxContainer="#divUserList" action="<?php echo $this->baseUrl() . '/' . $this->moduleName . '/' . $this->controllerName . '/searchuser';?>" method="post">
+				<input type="hidden" name="roletypeId" />
+					<table style="margin:10px;line-height:25px;">
+						<tr>
+							<td>账号类型：</td>
+							<td>
+								<select name="atId" class="wiliz-slts" onchange="searchUser(this);" >
+								<?php if (isset($this->allAccountType)):?>
+									<?php foreach ($this->allAccountType as $arrSub):?>
+									<option value="<?php echo $arrSub['typeId'];?>"><?php echo $arrSub['typeName'];?></option>
+									<?php endforeach;?>
+								<?php endif;?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>包含角色：</td>
+							<td>
+								<select name="roleId" class="wiliz-slts" onchange="searchUser(this);" >
+									<option value="0">全部</option>
+								<?php if (isset($this->allRole)):?>
+									<?php foreach ($this->allRole as $arrSub):?>
+									<option value="<?php echo $arrSub['roleId'];?>"><?php echo $arrSub['roleName'];?></option>
+									<?php endforeach;?>
+								<?php endif;?>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+			<div id="divUserList" class="ui-widget-content" style="margin-top:5px;padding:5px;"></div>
+		</td>
+
+		<td class="ui-widget-content">
+			<div id="divUserDetail"></div>
+		</td>
+	</tr></table>
+</div>

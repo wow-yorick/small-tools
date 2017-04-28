@@ -1,0 +1,8 @@
+<script>
+var menuId = "<?php echo $this->menuId?>";
+if ($('#' + menuId).length > 0) {
+	$('#' + menuId).click();
+} else {
+	location.reload();
+}
+</script>

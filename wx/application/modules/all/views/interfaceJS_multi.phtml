@@ -1,0 +1,563 @@
+
+<script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery.easyAccordion/jquery.easyAccordion.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl();?>/js/jquery.easyAccordion/css/accordion.css"/>
+
+<script>
+
+// !------------------------------ BEGIN: 主表代码 ------------------------------ //
+
+/*
+ * （主表）checkbox的onclick事件，使能使能相应menu图片
+ */
+function root_toggleBatchCheck(obj) {
+	$(obj).closest('tr').click(); //移除行背景颜色
+	
+	return function() {
+		var size = $(obj).closest('table').find('.wlz_chk_single:visible:checked').length;
+		if (size > 0) {
+			<?php foreach($this->rootMenuInfo["menutoggle"]["gridcheck"] as $item):?>
+			toggleMenuImgBase($('#<?php echo $item;?>'), 1);
+			<?php endforeach;?>
+		} else {
+			<?php foreach($this->rootMenuInfo["menutoggle"]["gridcheck"] as $item):?>
+			toggleMenuImgBase($('#<?php echo $item;?>'), 0);
+			<?php endforeach;?>
+		}
+	}
+}
+
+/*
+ * （主表）table中行的click事件，使能detail图标
+ * 闭包方式：用于setTimeout传'this'参数
+ */
+function root_toggleRelativeImg(obj) {
+	return function() {
+		if ($(obj).closest('table').find('.row_selected').length) {
+			toggleMenuImgBase('<?php foreach($this->rootMenuInfo["menutoggle"]["gridclick"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>', 1);
+		} else {
+			toggleMenuImgBase('<?php foreach($this->rootMenuInfo["menutoggle"]["gridclick"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>', 0);
+		}
+	}
+}
+
+/*
+ * （主表）搜索
+ */
+function root_search(obj) {
+	if ($(obj).attr('disabled') != null) return;
+
+	//submit表单提交ajax实现
+	$(obj).closest('form').submit(function(){
+		$(this).find('[wlzAuth]:enabled:visible').blur();
+		if($(this).find('[wlzAuth]:enabled:visible.ui-state-error').length == 0) {
+			var options = {
+					target: '#root_dataList'
+					,url: $(this).attr('action')
+					,type: $(this).attr('method')
+				};
+			$(this).ajaxSubmit(options);
+		}
+		return false; //禁止表单自动提交
+	});
+	$(obj).closest('form').submit();
+}
+
+/*
+ * （主表）添加tab
+ */
+function root_addTab(obj, tabTxt, containerId, trKeyId) {
+	//添加的tab，并选中
+	var label = '<div ondblclick="$(this).find(\'img\').click();">' +
+					'<label trKeyId="' + trKeyId + '">' + tabTxt + '</label>' +
+					'<img name="imgCloseTab" src="<?php echo $this->baseUrl();?>/img/delete.png" class="wiliz-cursor-pointer" isAlert="1" title="删除" onclick="root_closeTab(this);" style="width:12px;height:12px;position:relative;top:-5px;right:-10px;border:0;"/>' +
+				'</div>';
+	var index = $(obj).closest('.tabsArea').tabs('option', 'selected');
+	$('#root_tabs').tabs('add', '#' + containerId, label, index + 1);
+	if ('<?php echo $this->rootMenuInfo['focusnewtab'];?>' == 1) {
+		$(obj).closest('.tabsArea').tabs('option', 'selected', index + 1);
+	}
+}
+
+/*
+ * （主表）删除tab
+ */
+function root_closeTab(obj) {
+	if ($(obj).attr('isAlert') == '1') {
+		if ($('[id^=root_form_]:visible').find('.data-detail-input:enabled').length > 0) {
+			if (!confirm('含有尚未提交的数据，请确认是否关闭！')) return;
+		}
+	}
+
+	//移除tab
+	var index = $(obj).closest('li').index();
+	$(obj).closest('.tabsArea').tabs('remove', index);
+
+	wlz_stopBubble(event); //阻止JS的事件冒泡机制
+}
+
+/*
+ * （主表）添加图标onclick事件
+ * @param string tabPrefix tab显示文字的前缀
+ */
+function root_showAdd(obj, tabPrefix) {
+	if ($(obj).attr('disabled') != null) return;
+
+	//获取tab参数值
+	var containerId = 'root_tabsContainer_' + ID_POSTFIX;
+	var tabTxt = tabPrefix + '(' + ID_POSTFIX + ')';
+	var strHtml = '<div id="' + containerId + '"></div>';
+	$(obj).closest('.tabsArea').tabs('option', 'panelTemplate', strHtml);
+	root_addTab(obj, tabTxt, containerId, '');
+
+	//显示detail页面
+	var rootFormId = 'root_form_' + ID_POSTFIX;
+	var url = "<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/'.$this->rootMenuInfo['basemenu']['rootBtnAdd']['actionname_show'];?>";
+	$('#' + containerId).load(url, {
+		'rootFormId': rootFormId
+	});
+
+	ID_POSTFIX++;
+}
+
+/*
+ * （主表）修改图标onclick事件
+ * @param string tabPrefix tab显示文字的前缀
+ * @param int iTdIndex 从table中获取第几列中的文字作为tab显示名称的后缀
+ */
+function root_showModify(obj, tabPrefix, iTdIndex) {
+	if ($(obj).attr('disabled') != null) return;
+
+	//添加tab
+	var trKeyId = 'modify:' + $('#root_tblList').find('tr[isSelected]').attr('keyId');
+	if ($(obj).closest('.tabsArea').find('ul:first').find("label[trKeyId='" + trKeyId + "']").length > 0) {
+		$(obj).closest('.tabsArea').find('ul:first').find("label[trKeyId='" + trKeyId + "']").closest('a').click();
+	} else {
+		//获取tab参数值
+		var tabTxt = tabPrefix + '(' + $('#root_tblList').find('tr[isSelected]').find('td:eq(' + (iTdIndex - 1) + ')').text() + ')';
+		var containerId = 'root_tabsContainer_' + ID_POSTFIX;
+		var strHtml = '<div id="' + containerId + '"></div>';
+		$(obj).closest('.tabsArea').tabs('option', 'panelTemplate', strHtml);
+		root_addTab(obj, tabTxt, containerId, trKeyId);
+
+		//显示detail页面
+		var rootFormId = 'root_form_' + ID_POSTFIX;
+		var keyId = $('#root_tblList').find('tr[isSelected]').attr('keyId');
+		//alert(keyId); return;
+		var url = "<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/'.$this->rootMenuInfo['basemenu']['rootBtnModify']['actionname_show'];?>";
+		$('#' + containerId).load(url, {
+			'<?php echo $this->rootGridInfo["keyid"];?>': keyId
+			,'rootFormId': rootFormId
+		});
+
+		ID_POSTFIX++;
+	}
+}
+
+/*
+ * （主表）详细图标onclick事件
+ * @param string tabPrefix tab显示文字的前缀
+ * @param int iTdIndex 从table中获取第几列中的文字作为tab显示名称的后缀
+ */
+function root_showDetail(obj, tabPrefix, iTdIndex) {
+	if ($(obj).attr('disabled') != null) return;
+
+	//添加tab
+	var trKeyId = 'detail:' + $('#root_tblList').find('tr[isSelected]').attr('keyId');
+	if ($(obj).closest('.tabsArea').find('ul:first').find("label[trKeyId='" + trKeyId + "']").length > 0) {
+		$(obj).closest('.tabsArea').find('ul:first').find("label[trKeyId='" + trKeyId + "']").closest('a').click();
+	} else {
+		//获取tab参数值
+		var tabTxt = tabPrefix + '(' + $('#root_tblList').find('tr[isSelected]').find('td:eq(' + (iTdIndex - 1) + ')').text() + ')';
+		var containerId = 'root_tabsContainer_' + ID_POSTFIX;
+		var strHtml = '<div id="' + containerId + '"></div>';
+		$(obj).closest('.tabsArea').tabs('option', 'panelTemplate', strHtml);
+		root_addTab(obj, tabTxt, containerId, trKeyId);
+
+		//显示detail页面
+		var rootFormId = 'root_form_' + ID_POSTFIX;
+		var keyId = $('#root_tblList').find('tr[isSelected]').attr('keyId');
+		//alert(keyId); return;
+		var url = "<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/'.$this->rootMenuInfo['basemenu']['rootBtnDetail']['actionname_show'];?>";
+		$('#' + containerId).load(url, {
+			'<?php echo $this->rootGridInfo["keyid"];?>': keyId
+			,'rootFormId': rootFormId
+		});
+
+		ID_POSTFIX++;
+	}
+}
+
+/*
+ * （主表）删除图标onclick事件
+ */
+function root_delete(obj) {
+	if ($(obj).attr('state') != 'enabled') return;
+
+	var flag = confirm('<?php echo $this->rootMenuInfo["basemenu"]["rootBtnDelete"]["alert"];?>');
+	if (flag) {
+		//使能指定的图片功能
+		toggleMenuImg('root_menu', '<?php foreach($this->rootMenuInfo["menutoggle"]["rootBtnDelete"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>');
+
+		var idString = '';
+		if ($('#root_tblList tbody tr').find('td:first').find(':checkbox').length > 0) {
+			$('#root_tblList').find('.wlz_chk_single:visible:checked').each(function() {
+				idString += ',' + $(this).closest('tr').attr('keyId');
+			});
+		} else {
+			$('#root_tblList').find('[isSelected]:visible').each(function() {
+				idString += ',' + $(this).closest('tr').attr('keyId');
+			});
+		}
+		idString = idString.substr(1);
+		//alert(idString); return;
+		var url = "<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/'.$this->rootMenuInfo['basemenu']['rootBtnDelete']['actionname'];?>";
+		$('#root_dataList').load(url, {
+			'idString': idString
+		});
+	}
+}
+
+/*
+ * （主表）确认图标onclick事件
+ */
+function root_confirmEdit(obj) {
+	if ($(obj).attr('disabled') != null) return;
+
+	$(obj).closest('form').submit();
+}
+
+/*
+ * （主表）取消图标onclick事件
+ */
+function root_cancelEdit(obj) {
+	if ($(obj).attr('disabled') != null) return;
+
+	var index = $(obj).closest('div[id^=root_tabsContainer_]').index() - 1;
+	var jElement = $(obj).closest('.tabsArea').find('li:eq(' + index + ')').find('img[name=imgCloseTab]');
+	jElement.attr('isAlert', 0);
+	jElement.click();
+}
+// !------------------------------ END  : 主表代码 ------------------------------ //
+
+
+
+// !------------------------------ BEGIN: 从表代码 ------------------------------ //
+
+/*
+ * （从表）从表tab点击切换菜单图标显示
+ */
+function sub_toggleDetailMenu(obj, showMenu, hidMenu) {
+	$(obj).closest('form').find('.' + hidMenu).hide();
+	$(obj).closest('form').find('.' + showMenu).show();
+}
+
+/*
+ * （从表）点击tab显示其对应的确认、取消图标
+ */
+function sub_toggleConfirmMenu(obj) {
+	$(obj).closest('form').find('td[containerId]:visible').hide();
+	var index = $(obj).closest('li').index();
+	if (index >= 2) {
+		var containerId = $(obj).closest('.tabsArea').find('div[id^=sub_tabsContainer_]:eq(' + (index - 2) + ')').attr('id');
+		$(obj).closest('form').find('td[containerId=' + containerId + ']').show();
+	}
+}
+
+/*
+ * （从表）checkbox的onclick事件，使能使能相应menu图片
+ */
+function sub_toggleBatchCheck(obj) {
+	$(obj).closest('tr').click(); //移除行背景颜色
+	
+	return function() {
+		var size = $(obj).closest('table').find('.wlz_chk_single:visible:checked').length;
+
+		if (size > 0) {
+			<?php foreach($this->subMenuInfo["menutoggle"]["gridcheck"] as $item):?>
+			toggleMenuImgBase($('#<?php echo $item;?>'), 1);
+			<?php endforeach;?>
+		} else {
+			<?php foreach($this->subMenuInfo["menutoggle"]["gridcheck"] as $item):?>
+			toggleMenuImgBase($('#<?php echo $item;?>'), 0);
+			<?php endforeach;?>
+		}
+	}
+}
+
+/*
+ * （从表）table中行的click事件，使能detail图标
+ * 闭包方式：用于setTimeout传'this'参数
+ */
+function sub_toggleRelativeImg(obj) {
+	return function() {
+		if ($(obj).closest('table').find('.row_selected').length) {
+			toggleMenuImgBase('<?php foreach($this->subMenuInfo["menutoggle"]["gridclick"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>', 1);
+		} else {
+			toggleMenuImgBase('<?php foreach($this->subMenuInfo["menutoggle"]["gridclick"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>', 0);
+		}
+	}
+}
+
+/*
+ * （从表）添加tab
+ */
+function sub_addTab(obj, tabTxt, containerId, trKeyId) {
+	//添加的tab，并选中
+	var label = '<div onclick="sub_toggleDetailMenu(this, \'sub_menu\', \'root_menu_detail\');sub_toggleConfirmMenu(this);" ondblclick="$(this).find(\'img\').click();">' +
+					'<label trKeyId="' + trKeyId + '">' + tabTxt + '</label>' +
+					'<img name="imgCloseTab" src="<?php echo $this->baseUrl();?>/img/delete.png" class="wiliz-cursor-pointer" isAlert="1" title="删除" onclick="sub_closeTab(this);" style="width:12px;height:12px;position:relative;top:-5px;right:-10px;border:0;"/>' +
+				'</div>';
+	var index = $(obj).closest('form').find('.tabsArea').tabs('option', 'selected');
+	$(obj).closest('form').find('.tabsArea').tabs('add', '#' + containerId, label, index + 1);
+	if ('<?php echo $this->subMenuInfo['focusnewtab'];?>' == 1) {
+		$(obj).closest('form').find('.tabsArea').tabs('option', 'selected', index + 1);
+	}
+}
+
+/*
+ * （从表）删除tab
+ */
+function sub_closeTab(obj) {
+	if ($(obj).attr('isAlert') == '1') {
+		if ($(obj).closest('.tabsArea').find('.data-detail-input:enabled').length > 0) {
+			if (!confirm('含有尚未提交的数据，请确认是否关闭！')) return;
+		}
+	}
+
+	//移除确认、取消图标
+	$(obj).closest('form').find('[name=tdConfirmMenu]:visible').remove();
+
+	//移除对应tab标签
+	var index = $(obj).closest('li').index();
+	$(obj).closest('.tabsArea').tabs('remove', index);
+
+	//显示新tab的确认、取消图标
+	var index = $('[id^=sub_tabsContainer_]:visible').index();
+	$('[id^=sub_tabsContainer_]:visible').closest('.tabsArea').find('li:eq(' + (index - 1) + ')').find('div:first').click();
+
+	wlz_stopBubble(event); //阻止JS的事件冒泡机制
+}
+
+/*
+ * （从表）添加图标onclick事件
+ * @param string tabPrefix tab显示文字的前缀
+ */
+function sub_showAdd(obj, tabPrefix) {
+	if ($(obj).attr('disabled') != null) return;
+
+	//获取tab参数值
+	var containerId = 'sub_tabsContainer_' + ID_POSTFIX;
+	var tabTxt = tabPrefix + '(' + ID_POSTFIX + ')';
+	var strHtml = '<div id="' + containerId + '"></div>';
+	$(obj).closest('.tabsArea').tabs('option', 'panelTemplate', strHtml);
+	sub_addTab(obj, tabTxt, containerId, '');
+
+	//显示detail页面
+	var rootFormId = $(obj).closest('form').attr('id');
+	var rootKeyId = $(obj).closest('form').find(':hidden[name=keyId]').val();
+	var subFormId = 'sub_form_' + ID_POSTFIX;
+	var url = "<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/'.$this->subMenuInfo['basemenu']['subBtnAdd']['actionname_show'];?>";
+	$('#' + containerId).load(url, {
+		'rootFormId': rootFormId
+		,'rootKeyId': rootKeyId
+		,'subFormId': subFormId
+	});
+
+	ID_POSTFIX++;
+
+	//动态添加不同的confirm菜单，对应不同的tab
+	$(obj).closest('form').find('.sub_menu').find('[name=tdConfirmMenu]:visible').hide();
+	var jElement = $(obj).closest('form').find('.sub_menu').find('[name=tdConfirmMenu].template').clone(true);
+	jElement.removeClass('template');
+	jElement.attr('containerId', containerId);
+	jElement.show();
+	$(obj).closest('form').find('.sub_menu').find('[name=tdConfirmMenu].template').after(jElement);
+}
+
+/*
+ * （从表）修改图标onclick事件
+ * @param string tabPrefix tab显示文字的前缀
+ * @param int iTdIndex 从table中获取第几列中的文字作为tab显示名称的后缀
+ */
+function sub_showModify(obj, tabPrefix, iTdIndex) {
+	if ($(obj).attr('disabled') != null) return;
+
+	//添加tab
+	var trKeyId = 'modify:' + $(obj).closest('form').find('#sub_tblList').find('tr[isSelected]').attr('keyId');
+	if ($(obj).closest('form').find('#sub_tabs').find('ul:first').find("label[trKeyId='" + trKeyId + "']").length > 0) {
+		$(obj).closest('form').find('#sub_tabs').find('ul:first').find("label[trKeyId='" + trKeyId + "']").closest('a').click();
+	} else {
+		//获取tab参数值
+		var tabTxt = tabPrefix + '(' + $('#sub_tblList').find('tr[isSelected]').find('td:eq(' + (iTdIndex - 1) + ')').text() + ')';
+		var containerId = 'sub_tabsContainer_' + ID_POSTFIX;
+		var strHtml = '<div id="' + containerId + '"></div>';
+		$(obj).closest('form').find('.tabsArea').tabs('option', 'panelTemplate', strHtml);
+		sub_addTab(obj, tabTxt, containerId, trKeyId);
+
+		//显示detail页面
+		var rootFormId = $(obj).closest('form').attr('id');
+		var rootKeyId = $(obj).closest('form').find(':hidden[name=keyId]').val();
+		var subFormId = 'sub_form_' + ID_POSTFIX;
+		var subKeyId = $(obj).closest('form').find('#sub_tblList').find('tr[isSelected]').attr('keyId');
+		//alert(subKeyId); return;
+		var url = "<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/'.$this->subMenuInfo['basemenu']['subBtnModify']['actionname_show'];?>";
+		$('#' + containerId).load(url, {
+			'rootFormId': rootFormId
+			,'rootKeyId': rootKeyId
+			,'subFormId': subFormId
+			,'subKeyId': subKeyId
+		});
+
+		ID_POSTFIX++;
+
+		//动态添加不同的confirm菜单，对应不同的tab
+		$(obj).closest('form').find('.sub_menu').find('[name=tdConfirmMenu]:visible').hide();
+		var jElement = $(obj).closest('form').find('.sub_menu').find('[name=tdConfirmMenu].template').clone(true);
+		jElement.removeClass('template');
+		jElement.attr('containerId', containerId);
+		jElement.show();
+		$(obj).closest('form').find('.sub_menu').find('[name=tdConfirmMenu].template').after(jElement);
+	}
+}
+
+/*
+ * （从表）详细图标onclick事件
+ * @param string tabPrefix tab显示文字的前缀
+ * @param int iTdIndex 从table中获取第几列中的文字作为tab显示名称的后缀
+ */
+function sub_showDetail(obj, tabPrefix, iTdIndex) {
+	if ($(obj).attr('disabled') != null) return;
+
+	//添加tab
+	var trKeyId = 'detail:' + $(obj).closest('form').find('#sub_tblList').find('tr[isSelected]').attr('keyId');
+	if ($(obj).closest('form').find('#sub_tabs').find('ul:first').find("label[trKeyId='" + trKeyId + "']").length > 0) {
+		$(obj).closest('form').find('#sub_tabs').find('ul:first').find("label[trKeyId='" + trKeyId + "']").closest('a').click();
+	} else {
+		//获取tab参数值
+		var tabTxt = tabPrefix + '(' + $('#sub_tblList').find('tr[isSelected]').find('td:eq(' + (iTdIndex - 1) + ')').text() + ')';
+		var containerId = 'sub_tabsContainer_' + ID_POSTFIX;
+		var strHtml = '<div id="' + containerId + '"></div>';
+		$(obj).closest('form').find('.tabsArea').tabs('option', 'panelTemplate', strHtml);
+		sub_addTab(obj, tabTxt, containerId, trKeyId);
+
+		//显示detail页面
+		var rootFormId = $(obj).closest('form').attr('id');
+		var rootKeyId = $(obj).closest('form').find(':hidden[name=keyId]').val();
+		var subFormId = 'sub_form_' + ID_POSTFIX;
+		var subKeyId = $(obj).closest('form').find('#sub_tblList').find('tr[isSelected]').attr('keyId');
+		//alert(subKeyId); return;
+		var url = "<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/'.$this->subMenuInfo['basemenu']['subBtnDetail']['actionname_show'];?>";
+		$('#' + containerId).load(url, {
+			'rootFormId': rootFormId
+			,'rootKeyId': rootKeyId
+			,'subFormId': subFormId
+			,'subKeyId': subKeyId
+		});
+
+		ID_POSTFIX++;
+	}
+}
+
+/*
+ * （从表）删除图标onclick事件
+ */
+function sub_delete(obj) {
+	if ($(obj).attr('state') != 'enabled') return;
+
+	var flag = confirm('<?php echo $this->subMenuInfo["basemenu"]["subBtnDelete"]["alert"];?>');
+	if (flag) {
+		var idString = '';
+		if ($(obj).closest('form').find('#sub_tblList tbody tr').find('td:first').find(':checkbox').length > 0) {
+			$(obj).closest('form').find('#sub_tblList').find('.wlz_chk_single:visible:checked').each(function() {
+				idString += ',' + $(this).closest('tr').attr('keyId');
+			});
+		} else {
+			$(obj).closest('form').find('#sub_tblList').find('[isSelected]:visible').each(function() {
+				idString += ',' + $(this).closest('tr').attr('keyId');
+			});
+		}
+		idString = idString.substr(1);
+		//alert(idString); return;
+
+		var rootFormId = $(obj).closest('form').attr('id');
+		var rootKeyId = $(obj).closest('form').find(':hidden[name=keyId]').val();
+		var url = "<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/'.$this->subMenuInfo['basemenu']['subBtnDelete']['actionname'];?>";
+		$(obj).closest('form').find('#sub_divList').load(url, {
+			'rootFormId': rootFormId
+			,'rootKeyId': rootKeyId
+			,'idString': idString
+		});
+	}
+}
+
+/*
+ * （从表）确认图标onclick事件
+ */
+function sub_confirmEdit(obj) {
+	if ($(obj).attr('disabled') != null) return;
+
+	var containerId = $(obj).closest('[name=tdConfirmMenu]').attr('containerId');
+	$('#' + containerId).find('form').submit();
+}
+
+/*
+ * （从表）取消图标onclick事件
+ */
+function sub_cancelEdit(obj) {
+	if ($(obj).attr('disabled') != null) return;
+
+	var containerId = $(obj).closest('[name=tdConfirmMenu]').attr('containerId');
+	var index = $('#' + containerId).index() - 1;
+	var jElement = $('#' + containerId).closest('.tabsArea').find('li:eq(' + index + ')').find('img[name=imgCloseTab]');
+	jElement.attr('isAlert', 0);
+	jElement.click();
+}
+
+
+/*
+ * （从表）其他操作中的详细图标onclick事件
+ * @param string tabPrefix tab显示文字的前缀
+ * @param int iTdIndex 从table中获取第几列中的文字作为tab显示名称的后缀
+ */
+function sub_showThirdDetail(obj, tabPrefix, iTdIndex) {
+	if ($(obj).attr('disabled') != null) return;
+
+	//alert判断
+	if ("<?php echo $this->subMenuInfo['othermenu']['btnThirdDetail']['isalert'];?>" == 1) {
+		if (!confirm("<?php echo $this->subMenuInfo['othermenu']['btnThirdDetail']['alertval'];?>")) return;
+	}
+
+	//获取tab参数值
+	var containerId = 'sub_tabsContainer_' + ID_POSTFIX;
+	var tabTxt = tabPrefix + '(' + $('#sub_tblList').find('tr[isSelected]').find('td:eq(' + (iTdIndex - 1) + ')').text() + ')';
+	var strHtml = '<div id="' + containerId + '"></div>';
+	$(obj).closest('form').find('.tabsArea').tabs('option', 'panelTemplate', strHtml);
+	sub_addTab(obj, tabTxt, containerId);
+
+	//显示detail页面
+	var subKeyId = $(obj).closest('form').find('#sub_tblList').find('tr[isSelected]').attr('keyId');
+	//alert(subKeyId); return;
+	var url = "<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/'.$this->subMenuInfo['othermenu']['btnThirdDetail']['actionname_show'];?>";
+	$('#' + containerId).load(url, {
+		'subKeyId': subKeyId
+	});
+
+	ID_POSTFIX++;
+}
+// !------------------------------ END  : 从表代码 ------------------------------ //
+
+
+//!------------------------------ BEGIN: CUSTOM ------------------------------ //
+
+/*
+ * 产品类型、产品名称联动
+ */
+function custom_changeProductName(obj) {
+	var productTypeId = $(obj).find('option:selected').val();
+	var url = "<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/changeproductname';?>";
+	$(obj).closest('table').find('[name=productId]').load(url, {
+		'productTypeId': productTypeId
+	});
+}
+//!------------------------------ END  : CUSTOM ------------------------------ //
+</script>

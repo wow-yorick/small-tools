@@ -1,0 +1,98 @@
+<script>
+//--------- START : CUSTOM --------//
+
+//查询块确定按钮自定义
+function data_confirmEdit_custom(obj){
+	// !---------- START  : CUSTOM ---------- //
+	var stateNum = "<?php echo $this->stateNum;?>";
+	var getsHidName = "<?php echo $this->getsHidName;?>";
+	if(obj =='' || obj==null)
+	{
+		keyid = $('#data_tblList tbody tr.row_selected').attr('keyid');
+		
+	}else{
+		keyid = $(obj).attr('keyid');
+	}
+	$(window.parent.$('#data_formDetail')).find('[name='+getsHidName+']').val(keyid);
+	if(stateNum ==1){
+		var getsType = <?php echo json_encode($this->getsType);?>;
+		var getsName = <?php echo json_encode($this->getsName);?>;
+		var readydata = "<?php echo  $this->baseUrl().'/'.$this->moduleName .'/'. $this->controllerName .'/readydata';?>";
+		$('#yudy_tempdata').load(
+				readydata
+				,{'serkeyid':keyid}
+				,function(){
+					var tex = $('#yudy_tempdata').text();
+					tex = tex.split(',');
+					for(var x=0;x<tex.length;x++){
+						if(getsType[x] == 'select'){
+							$(window.parent.$('#data_formDetail')).find('[name='+getsName[x]+']').find('option[value=' + tex[x] + ']').attr('selected', 'selected');
+						}else if(getsType[x] == 'text'){
+							$(window.parent.$('#data_formDetail')).find('[name='+getsName[x]+']').val(tex[x]);
+						}else{
+							if (tex[x] == '1')
+								$(window.parent.$('#data_formDetail')).find('[name='+getsName[x]+']').attr('checked','checked');
+							else
+								$(window.parent.$('#data_formDetail')).find('[name='+getsName[x]+']').removeAttr('checked');
+						}
+					}
+					window.parent.$('#divTempDialog').dialog("close");
+				}
+		);
+	 }else{
+		// !---------- END  : CUSTOM ---------- //
+		window.parent.$('#divTempDialog').dialog("close");
+	 }
+	
+}
+
+//查询块取消按钮自定义
+function data_cancelEdit_custom() {
+	window.parent.$('#divTempDialog').dialog("close");
+}
+
+
+function data_dblclickRow_sub(obj) {
+	data_confirmEdit_custom(obj);
+}
+
+/*
+ * table中行的click事件，使能detail图标
+ * 闭包方式：用于setTimeout传'this'参数
+ */
+function custom_toggleRelativeImg(obj) {
+	return function() {
+		if ($(obj).closest('table').find('.row_selected').length) {
+			toggleMenuImgBase("#btnSubmit", 1);
+		} else {
+			toggleMenuImgBase("#btnSubmit", 0);
+		}
+	}
+}
+
+
+$(document).ready(function(){
+	$('body').append('<div id="yudy_tempdata" style="display:none;"></div>');
+	$('#btnSubmit').attr('onclick','');
+	$('#btnCancel').attr('onclick','');
+	$('#btnSubmit').click(function(){
+		data_confirmEdit_custom();
+	})
+	
+	$('#btnCancel').click(function(){
+		data_cancelEdit_custom();
+	})
+	$('#data_tblList').find('tbody tr').each(function(){
+		$(this).removeAttr('onclick');
+		$(this).bind('click',function(){setTimeout(custom_toggleRelativeImg(this),10)});
+		
+	});
+	
+	if($('.firstChildNode').length > 0) {
+		$('.firstChildNode:eq(0)').remove();
+		$('.firstChildNode:eq(2)').remove();
+	}
+	setTimeout("toggleMenuImg('data_menu','#btnCancel,#btnSearch')",50);
+})
+
+</script>

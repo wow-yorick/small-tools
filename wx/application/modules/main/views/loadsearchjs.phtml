@@ -1,0 +1,816 @@
+<meta http-equiv="x-ua-compatible" content="ie=7" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title><?php echo $_SESSION[$this->sessionPrefix . 'webTitle'];?></title>
+
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl();?>/css/main.css"/>
+
+<!-- <SCRIPT type=text/javascript src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></SCRIPT> -->
+<!-- <script>!window.jQuery && document.write('<SCRIPT src="/js/jquery-1.6.1.js"><\\/SCRIPT>');</script> -->
+
+<script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery-1.6.1.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl();?>/js/wiliz/wiliz.all.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery.form.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl();?>/js/My97DatePicker/WdatePicker.js"></script>
+
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl();?>/js/jquery-UI/themes/base/jquery.ui.all.css"/>
+<script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery-UI/jquery-ui.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl();?>/js/jquery.DataTables/css/jquery.dataTables.css"/>
+<script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery.DataTables/jquery.DataTables.min.js"></script>
+
+
+<!-- live绑定事件 -->
+<script>
+/*
+ * submit表单提交ajax实现
+ */
+$('.wlz_ajaxForm').live('submit', function() {
+	$(this).find('[wlzAuth]:enabled:visible').blur();
+	if($(this).find('[wlzAuth]:enabled:visible.ui-state-error').length == 0) {
+		var options = {
+				target: $(this).attr('ajaxContainer')
+				,url: $(this).attr('action')
+				,type: $(this).attr('method')
+			};
+		$(this).ajaxSubmit(options);
+	}
+	return false; //禁止表单自动提交
+});
+
+/*
+ * multiple select，禁止其选中行
+ */
+$('.wlz_mslt_forbidSlt').live('click', function(){
+	$(this).each(function() {
+		var size = $(this).find('option:selected').length;
+		if (size > 0) {
+			$(this).find('option:selected').removeAttr('selected');
+		}
+	});
+});
+
+/*
+ * multiple select，使其只能选中单行，点击自身行可取消选择
+ */
+$('.wlz_mslt_sltSingle').live('click', function(){
+	$(this).each(function() {
+		var size = $(this).find('option:selected').length;
+		if (size == 0) {
+			$(this).find('option:selected').attr('isSelected', 'isSelected');
+		} else if (size == 1) {
+			if ($(this).find('option:selected').index() == $(this).find('option[isSelected]').index()) {
+				$(this).find('option:selected').removeAttr('selected');
+				$(this).find('option[isSelected]').removeAttr('isSelected');
+			} else {
+				$(this).find('option[isSelected]').removeAttr('isSelected');
+				$(this).find('option:selected').attr('isSelected', 'isSelected');
+			}
+		} else if(size > 1) {
+			$(this).find('option:selected').not(':first').removeAttr('selected');
+			$(this).find('option[isSelected]').removeAttr('isSelected');
+			$(this).find('option:selected').attr('isSelected', 'isSelected');
+		}
+	});
+});
+
+/*
+ *table的checkbox，全选功能实现
+ */
+$('.wlz_chk_all').live('click', function(){ //给全选checkbox绑定click事件
+	if($(this).is(':checked')) {
+		$(this).closest('table').find('.wlz_chk_single').not(':checked').attr('checked', 'checked');
+	} else {
+		$(this).closest('table').find('.wlz_chk_single').removeAttr('checked');
+	}
+});
+$('.wlz_chk_single').live('click', function(){ //给单选checkbox绑定click事件
+	if($(this).is(':checked')) {
+		if($(this).closest('table').find('.wlz_chk_single').length == $(this).closest('table').find('.wlz_chk_single:checked').length) {
+			$(this).closest('table').find('.wlz_chk_all').attr('checked', 'checked');
+		}
+	} else {
+		if($(this).closest('table').find('.wlz_chk_single').length > $(this).closest('table').find('.wlz_chk_single:checked').length) {
+			$(this).closest('table').find('.wlz_chk_all').removeAttr('checked');
+		}
+	}
+});
+</script>
+
+
+<script>
+$.extend({
+     includePath: '',
+     include: function(file) {
+        var files = typeof file == "string" ? [file]:file;
+        for (var i = 0; i < files.length; i++) {
+            var name = files[i].replace(/^\s|\s$/g, "");
+            var att = name.split('.');
+            var ext = att[att.length - 1].toLowerCase();
+            var isCSS = ext == "css";
+            var tag = isCSS ? "link" : "script";
+            var attr = isCSS ? " type='text/css' rel='stylesheet' " : " language='javascript' type='text/javascript' ";
+            var link = (isCSS ? "href" : "src") + "='" + $.includePath + name + "'";
+            if ($(tag + "[" + link + "]").length == 0) document.write("<" + tag + attr + link + "></" + tag + ">");
+        }
+   }
+});
+
+/*
+ * 阻止JS的事件冒泡机制
+ */
+function wlz_stopBubble(event) {
+	if (event && event.stopPropagation) { //非IE
+		event.stopPropagation();
+	} else { //IE
+		window.event.cancelBubble = true;
+	}
+}
+
+/*
+ * 添加waiting图标
+ */
+function wlz_showLoadingPic(obj) {
+	var strHtml = '<img src="<?php echo $this->baseUrl();?>/img/loading.gif" style="position:absolute;top:45%;left:45%;width:30px;height:30px;"/>';
+	$(obj).each(function() {
+		$(this).append(strHtml);
+	});
+}
+
+/*
+ * 激活checkbox控制的标签
+ * controledClass 该checkbox控制的控件class匹配
+ */
+function wlz_toggleCheckboxSon(obj, controledClass)
+{
+	if (obj.checked == true) {
+		$('.' + controledClass).each(function() {
+			$(this).removeAttr('disabled');
+		});
+	} else {
+		$('.' + controledClass).each(function() {
+			$(this).attr('disabled', 'disabled');
+		});
+	}
+}
+
+/*
+ * checkbox，绑定全选事件
+ */
+function wlz_toggleCheckAll(chkAllId, chkSingleClass) {
+	//给全选checkbox绑定click事件
+	$('#' + chkAllId + ':visible').bind('click', function() {
+		if($(this).is(':checked')) {
+			$('.' + chkSingleClass).not(':checked').attr('checked', 'checked');
+			//$('.' + chkSingleClass + ':visible').not(':checked').attr('checked', 'checked');
+		} else {
+			$('.' + chkSingleClass + ':checked').removeAttr('checked');
+			//$('.' + chkSingleClass + ':visible:checked').removeAttr('checked');
+		}
+	});
+	//给单选checkbox绑定click事件
+	$('.' + chkSingleClass + ':visible').each(function() {
+		$(this).bind('click', function() {
+			//alert($('.' + chkSingleClass + ':hidden').length);
+			if($(this).is(':checked')) {
+				if($('.' + chkSingleClass).length == $('.' + chkSingleClass + ':checked').length) {
+				//if($('.' + chkSingleClass + ':visible').length == $('.' + chkSingleClass + ':visible:checked').length) {
+					$('#' + chkAllId).attr('checked', 'checked');
+				}
+			} else {
+				if($('.' + chkSingleClass).length > $('.' + chkSingleClass + ':checked').length) {
+				//if($('.' + chkSingleClass + ':visible').length > $('.' + chkSingleClass + ':visible:checked').length) {
+					$('#' + chkAllId + ':checked').removeAttr('checked');
+				}
+			}
+		});
+	});
+}
+
+/*
+ * 给指定div添加遮罩层
+ */
+function wlz_addMaskLayer(obj, showText , style) {
+	if (obj == null) obj = $(top.document).find('body');
+	if (showText == null) showText = '';
+	if (style == null) style = '';
+
+	$(obj).each(function() {
+		$(this).find('.wlz_masklayer').remove();
+		$(this).css('position', 'relative');
+		var strHtml = '<div id="divMaskLayer" class="wlz_masklayer" style="position:absolute;top:0;left:0;z-index:999999;width:100%;height:100%;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=60);opacity:0.6;font-family:楷体;background-color:#D0D0D0;' + style + '">';
+		if (showText != '') {
+			strHtml += '<input type="button" value="' + showText + '" style="position:relative;top:45%;left:40%;color:#606060;font-size:20px;font-weight:bold;"/>';
+		}
+		strHtml += '</div>';
+		$(this).append(strHtml);
+	});
+}
+
+/*
+ * 移除遮罩层
+ */
+function wlz_removeMaskLayer(obj) {
+	if (obj == null) obj = $(top.document).find('body');
+	$(obj).find('.wlz_masklayer').remove();
+}
+
+/*
+ * 初始化日期插件的默认值
+ */
+function wlz_iniDateTagDefaultVal(obj, value) {
+	var nowDate = "<?php echo date('Y-m-d');?>";
+	$(obj).each(function() {
+		if (value === undefined) {
+			$(this).val(nowDate);
+		} else {
+			$(this).val(value);
+		}
+	});
+}
+
+/*
+ * 打开接口模块后，返回值赋值
+ * 注：给要赋值的标签页加个 'wlz_valFeedback' class就行
+ */
+function wlz_valFeedback(val, text) {
+	$('[wlz_feedback=val]').val(val);
+	$('[wlz_feedback=text]').val(text);
+
+	$('[wlz_feedback=val]').change();
+}
+</script>
+
+<script>
+/*
+ * 切换图片(彩色/黑白)
+ */
+function toggleMenuImgBase(obj, isEnabled) {
+	$(obj).each(function() {
+		if (isEnabled == 1) {
+			if ($(this).attr('state') == 'disabled') {
+				$(this).removeAttr('disabled');
+				$(this).attr('state', 'enabled');
+				$(this).find('img').attr('src', "<?php echo $this->baseUrl();?>/img/" + $(this).attr('imgname') + '.png');
+				$(this).addClass('wiliz-cursor-pointer');
+			}
+		} else {
+			if ($(this).attr('state') == 'enabled') {
+				$(this).attr('disabled', 'disabled');
+				$(this).attr('state', 'disabled');
+				$(this).find('img').attr('src', "<?php echo $this->baseUrl();?>/img/" + $(this).attr('imgname') + '-disabled.png');
+				$(this).removeClass('wiliz-cursor-pointer');
+			}
+		}
+	});
+}
+
+/*
+ * 切换图片(彩色/黑白),先disabled掉所有，再开启指定的功能
+ */
+function toggleMenuImg(menuClass, objStr) {
+	$('.' + menuClass).each(function() {
+		$(this).find('[state=enabled]:visible').each(function() {
+			toggleMenuImgBase(this, 0);
+		});
+		$(this).find(objStr).each(function() {
+			toggleMenuImgBase(this, 1);
+		});
+	});
+}
+
+/*
+ * 切换图片(彩色/黑白),enabled的disabled，disabled的enabled
+ */
+function toggleMenuImgToggle(obj) {
+	$(obj).each(function() {
+		if ($(this).attr('state') == 'enabled') {
+			toggleMenuImgBase(this, 0);
+		} else {
+			toggleMenuImgBase(this, 1);
+		}
+	});
+}
+
+/*
+ * checkbox的onclick事件，使能使能相应menu图片
+ */
+function toggleMenuImg_chk(containerId, chkClass, menuImgObj) {
+	var size = $('#' + containerId).find('.' + chkClass + ':visible:checked').length;
+	if (size > 0) {
+		toggleMenuImgBase(menuImgObj, 1);
+	} else {
+		toggleMenuImgBase(menuImgObj, 0);
+	}
+}
+
+/*
+ * 实现点击改变背景颜色的效果
+ */
+function toggleTreeClickCss(elementId, itemClass) {
+	$(document).data('oldTreeClickCss' + elementId, $('#' + elementId).find('.' + itemClass + ':first').css('background-color'));
+	$('#' + elementId).find('li').each(function() {
+		$(this).find('.' + itemClass).live('click', function() {
+			$('#' + elementId).find('.' + itemClass + '[isSelected]').css('background-color', $(document).data('oldTreeClickCss' + elementId));
+			$('#' + elementId).find('.' + itemClass + '[isSelected]').removeAttr('isSelected');
+			$(this).css('background-color', '#E0E0E0');
+			$(this).attr('isSelected', 'isSelected');
+		});
+	});
+}
+</script>
+
+<script>
+/*
+ * 封装jquery的dataTable插件
+ * @param tableType 模板类型：1-纯净版 2-只有搜索栏版 3-服务器端分页版
+ * @param clickTrBgCol 行点击改变背景颜色：默认为是，否的话传入'0'
+ * @param rowIndex 添加序号列：默认不添加，添加是传入列号(int)
+ * @param settings 自定义选项
+ * API: http://datatables.net/api
+ */
+(function($) {
+	$.extend($.fn, {
+		//求屏幕空间 687,928, 
+		OusuTable: function(tableType, clickTrBgCol, rowIndex, settings) {
+			//添加鼠标hover变色效果
+			$(this).wrap('<div class="dataTable_highlight_row dataTable_WrapDiv"></div>');
+
+			//绑定click事件，改变背景颜色
+			if (clickTrBgCol == null || clickTrBgCol == 1) {
+				$(this).addClass('display');
+				$(this).find('tbody tr').click(function () {
+					if ($(this).hasClass('row_selected')) {
+						$(this).removeClass('row_selected');
+					} else {
+						$(this).closest('table').find('tr.row_selected').removeClass('row_selected');
+						$(this).addClass('row_selected');
+					}
+				});
+			}
+
+			//设置默认值
+			var defaults = {
+				//'sScrollX': '100%'
+				//,'sScrollXInner': '98%'
+				//,'sScrollY': '410px'
+				//'bAutoWidth': false //自动宽度
+				//,'bPaginate': false //分页功能
+				//,'bFilter': false //搜索栏
+				//,'bSort': false //排序栏
+				//,'bInfo': false //总数信息
+				//,'bLengthChange': false //是否允许用户通过一个下拉列表来选择分页后每页的行数
+				'iDisplayLength': 15 //每页的行数，每页默认数量:10，-1表示全部
+				,'aLengthMenu': [[5, 10, 15, 20, 50, 100, -1], [5, 10, 15, 20, 50, 100, '全部']] //定义每页显示数据数量
+				,'sPaginationType': 'full_numbers' //分页，一共两种样式。另一种为two_button(是datatables默认)
+				//,'bInfo': false //页脚功能
+				//,'bStateSave': true //保存状态到cookie
+				//,'aoColumnDefs': [
+					//{ "bSortable": false, "aTargets": [ 0 ] } //第一列禁止排序
+				//]
+				,'oLanguage': { //国际化
+					'sLengthMenu': '每页显示 _MENU_ 条记录'
+					,'sZeroRecords': '抱歉， 没有数据'
+					,'sInfo': '从 _START_ 到 _END_ /共 _TOTAL_ 条数据'
+					//,'sInfo': '共 _TOTAL_ 条数据'
+					,'sInfoEmpty': '没有数据'
+					,'sInfoFiltered': '(从 _MAX_ 条数据中检索)'
+					,'sSearch': '筛选:'
+					,'sProcessing': '<img src="<?php echo $this->baseUrl();?>/img/loading.gif" />'
+					,'oPaginate': {
+						'sFirst': '首页'
+						,'sPrevious': '前一页'
+						,'sNext': '后一页'
+						,'sLast': '尾页'
+					}
+				}
+			};
+
+			//添加table序号列，rowIndex值表示td索引，不添加可以传入null
+			if (rowIndex > 0) {
+				var indexOptions = {
+					'fnDrawCallback': function (oSettings) {
+						if (oSettings.bSorted || oSettings.bFiltered)  {
+							for (var i=0, iLen=oSettings.aiDisplay.length ; i<iLen ; i++)  {
+								$('td:eq(' + (rowIndex -1) + ')', oSettings.aoData[ oSettings.aiDisplay[i] ].nTr).html(i+1);
+							}
+						}
+					}
+					,'aoColumnDefs': [
+						{'bSortable': true, 'aTargets': [0]}
+					]
+					,'aaSorting': [[0, 'asc']]
+				}
+				defaults = $.extend(defaults, indexOptions);
+			}
+
+			//切换样式
+			switch (tableType) {
+				case 1: //纯净版
+					var options = {
+						'bPaginate': false
+						,'bFilter': false
+						,'bInfo': false
+					}
+					break;
+				case 2: //只有搜索栏，search框放下面
+					var options = {
+						'bPaginate': false
+						,'bFilter': true
+						,'bInfo': false
+						,"sDom": 't<f>'
+					}
+					break;
+				case 3: //服务器端分页
+					var options = {
+						'bProcessing': true
+						,'bServerSide': true
+						,'fnDrawCallback': function() {
+							$(this).addClass('display');
+							$(this).find('tbody tr').click(function () {
+								if ($(this).hasClass('row_selected')) {
+									$(this).removeClass('row_selected');
+								} else {
+									$(this).closest('table').find('tr.row_selected').removeClass('row_selected');
+									$(this).addClass('row_selected');
+								}
+								$(this).closest('table').find('tr[isSelected]:visible').removeAttr('isSelected');
+								$(this).attr('isSelected', 'isSelected');
+							});
+							$(this).find('tbody tr').each(function(){
+									$(this).attr('keyId',$(this).find('td:first').text());
+									$(this).css('white-space','nowrap');
+									$(this).bind('click',function(){setTimeout(data_toggleRelativeImg(this), 10)});
+								});
+						}
+					}
+					break;
+			}
+
+			var settings = $.extend(defaults, options, settings);
+			var oTable = $(this).dataTable(settings);
+
+			//修改样式，要在初始化dataTable之后执行
+			var jElementThead = $(this).parent().parent().find('table.dataTable:first');
+			var jElementTbody = $(this).parent().parent().find('table.dataTable:last');
+			jElementThead.css({
+				'margin-top': '10px'
+			});
+
+			return oTable;
+		}
+	});
+})(jQuery);
+</script>
+
+<script>
+/*
+ * 封装ztree插件
+ * @param json zNodes json格式数据源
+ * @param bool isSimpleData 是否为simpleData类型数据，默认为'否'
+ * @param bool isExpandAll 是否展开全部，默认为'是'
+ * @param array settings
+ * API: http://www.ztree.me/v3/api.php
+ */
+(function($) {
+	$.extend($.fn, {
+		OusuTree: function(zNodes, isSimpleData, isExpandAll, settings) {
+			//定义默认值
+			var defaults = {
+			}
+
+			//设置是否为simpleData类型数据
+			if (isSimpleData) {
+				var options = {
+					data: {
+						simpleData: {
+							enable: true,
+							idKey: 'id',
+							pIdKey: 'pId',
+							rootPId: 0
+						}
+					}
+				}
+				defaults = $.extend(defaults, options);
+			}
+
+			var settings = $.extend(defaults, settings);
+			var zTreeObj = $.fn.zTree.init($(this), settings, zNodes);
+
+			if (isExpandAll !== false) zTreeObj.expandAll(true);
+			return zTreeObj;
+		}
+	});
+})(jQuery);
+</script>
+
+<script>
+/*
+ * 封装ckEditor插件
+ * @param int plugType 自定义类型
+ * @param array settings
+ * 注意: textarea必须有name属性
+ */
+(function($) {
+	$.extend($.fn, {
+		OusuEditor: function(plugType, settings) {
+			//如果存在，先destory
+			var editor = CKEDITOR.instances[$(this).attr('name')];
+			if (editor) editor.destroy(true);
+
+			//定义默认值
+			var defaults = {
+				height : 300
+			}
+
+			//设置插件初始化状态
+			switch (plugType) {
+				 case 1: case '1': //Base类型
+					var options = {
+						toolbar : 'Basic'
+					}
+					defaults = $.extend(defaults, options);
+					break;
+				 case 2: case '2': //图片类型
+					var options = {
+						//width : 300,
+						//height : 200,
+						toolbar :
+						[ ['ImageButton'] ]
+					}
+					defaults = $.extend(defaults, options);
+					break;
+			}
+
+			//默认集成ckFinder插件（文件上传）
+			var options = {
+				filebrowserBrowseUrl : '<?php echo $this->baseUrl();?>/js/ckfinder_2.3/ckfinder.html',
+				filebrowserImageBrowseUrl : '<?php echo $this->baseUrl();?>/js/ckfinder_2.3/ckfinder.html?Type=Images',
+				filebrowserFlashBrowseUrl : '<?php echo $this->baseUrl();?>/js/ckfinder_2.3/ckfinder.html?Type=Flash',
+				filebrowserUploadUrl : '<?php echo $this->baseUrl();?>/js/ckfinder_2.3/core/connector/php/connector.php?command=QuickUpload&type=Files',
+				filebrowserImageUploadUrl : '<?php echo $this->baseUrl();?>/js/ckfinder_2.3/core/connector/php/connector.php?command=QuickUpload&type=Images',
+				filebrowserFlashUploadUrl : '<?php echo $this->baseUrl();?>/js/ckfinder_2.3/core/connector/php/connector.php?command=QuickUpload&type=Flash'
+			}
+			defaults = $.extend(defaults, options);
+
+			var settings = $.extend(defaults, settings);
+			var objCkeditor = CKEDITOR.replace($(this).attr('name'), settings);
+			return objCkeditor;
+		}
+	});
+})(jQuery);
+</script>
+
+<script>
+/*
+ * jquery-ui的combobox实现
+ */
+(function($) {
+	$.widget( "ui.combobox", {
+		_create: function() {
+			var self = this,
+				select = this.element.hide(),
+				selected = select.children( ":selected" ),
+				value = selected.val() ? selected.text() : "";
+			$(select).parent().css('text-align', 'left'); //使标签居左显示（自定义）
+			var input = this.input = $( "<input name='sltContainer'>" )
+				.insertAfter( select )
+				.val( value )
+				.autocomplete({
+					delay: 0,
+					minLength: 0,
+					source: function( request, response ) {
+						var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+						response( select.children( "option" ).map(function() {
+							var text = $( this ).text();
+							if ( this.value && ( !request.term || matcher.test(text) ) )
+								return {
+									label: text.replace(
+										new RegExp(
+											"(?![^&;]+;)(?!<[^<>]*)(" +
+											$.ui.autocomplete.escapeRegex(request.term) +
+											")(?![^<>]*>)(?![^&;]+;)", "gi"
+										), "<strong>$1</strong>" ),
+									value: text,
+									option: this
+								};
+						}) );
+					},
+					select: function( event, ui ) {
+						ui.item.option.selected = true;
+						self._trigger( "selected", event, {
+							item: ui.item.option
+						});
+					},
+					change: function( event, ui ) {
+						if ( !ui.item ) {
+							var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( $(this).val() ) + "$", "i" ),
+								valid = false;
+							select.children( "option" ).each(function() {
+								if ( $( this ).text().match( matcher ) ) {
+									this.selected = valid = true;
+									return false;
+								}
+							});
+							if ( !valid ) {
+								// remove invalid value, as it didn't match anything
+								$( this ).val( "" );
+								select.val( "" );
+								input.data( "autocomplete" ).term = "";
+								return false;
+							}
+						}
+					}
+				})
+				.addClass( "ui-widget ui-widget-content ui-corner-left" );
+
+			input.data( "autocomplete" )._renderItem = function( ul, item ) {
+				return $( "<li></li>" )
+					.data( "item.autocomplete", item )
+					.append( "<a>" + item.label + "</a>" )
+					.appendTo( ul );
+			};
+
+			this.button = $( "<button type='button' name='btnShowItems'>&nbsp;</button>" )
+				.attr( "tabIndex", -1 )
+				.attr( "title", "Show All Items" )
+				.insertAfter( input )
+				.button({
+					icons: {
+						primary: "ui-icon-triangle-1-s"
+					},
+					text: false
+				})
+				.removeClass( "ui-corner-all" )
+				.addClass( "ui-corner-right ui-button-icon" )
+				.click(function() {
+					// close if already visible
+					if ( input.autocomplete( "widget" ).is( ":visible" ) ) {
+						input.autocomplete( "close" );
+						return;
+					}
+
+					// work around a bug (likely same cause as #5265)
+					$( this ).blur();
+
+					// pass empty string as value to search for, displaying all results
+					input.autocomplete( "search", "" );
+					input.focus();
+				});
+
+			//设置combobox内标签的初始值（自定义）
+			$(select).parent().find('[name=sltContainer]').val($(select).find('option:selected').text());
+			//设置combobox内标签的CSS（自定义）
+			$(select).parent().find('[name=sltContainer]').css({
+				'width': parseInt($(select).css('width'))
+				//'width': parseInt($(select).css('width')) - 25 //未隐藏button时使用
+				,'height': $(select).css('height')
+				,'vertical-align': 'top'
+			});
+			$(select).parent().find('[name=btnShowItems]').css({
+				'width': '25px'
+				,'height': parseInt($(select).css('height')) + 4
+				,'vertical-align': 'top'
+				,'display': 'none' //隐藏button，有 position:fixed 的bug
+			});
+		},
+
+		destroy: function() {
+			this.input.remove();
+			this.button.remove();
+			this.element.show();
+			$.Widget.prototype.destroy.call( this );
+		}
+	});
+})(jQuery);
+</script>
+
+<script>
+/*
+ * 数字金额转换为中文,Create By HJ 2009-9-4
+ */
+var wlz_changeCNAMoney = function(money) {
+	money = money.toString(); //自定义
+
+	//debugger;
+	var IntNum,PointNum,IntValue,PointValue,unit,moneyCNY;
+	//var Number  = "零一二三四五六七八九";
+	//var NUMUnit = { LING : "零",SHI : "十",BAI : "百",QIAN : "千",WAN : "万",YI : "亿" }
+	//var CNYUnit = { YUAN : "元",JIAO : "角",FEN : "分",ZHENG : "整" };
+
+	var Number  = "零壹贰叁肆伍陆柒捌玖";
+	var NUMUnit = { LING : "零",SHI : "拾",BAI : "佰",QIAN : "仟",WAN : "万",YI : "亿" }
+	var CNYUnit = { YUAN : "圆",JIAO : "角",FEN : "分",ZHENG : "整" };
+
+	var beforeReplace = {
+		Values : [
+			{Name: NUMUnit.LING + NUMUnit.YI},               // 零亿
+			{Name: NUMUnit.LING + NUMUnit.WAN},              // 零万
+			{Name: NUMUnit.LING + NUMUnit.QIAN},             // 零千
+			{Name: NUMUnit.LING + NUMUnit.BAI},              // 零百
+			{Name: NUMUnit.LING + NUMUnit.SHI},              // 零十
+			{Name: NUMUnit.LING + NUMUnit.LING},             // 零零
+			{Name: NUMUnit.YI + NUMUnit.LING + NUMUnit.WAN}, // 亿零万
+			{Name: NUMUnit.LING + NUMUnit.YI},               // 零亿
+			{Name: NUMUnit.LING + NUMUnit.WAN},              // 零万
+			{Name: NUMUnit.LING + NUMUnit.LING}              // 零零
+		]
+	};
+	var afterReplace = {
+		Values : [
+			{Name: NUMUnit.YI + NUMUnit.LING}, //亿零
+			{Name: NUMUnit.WAN + NUMUnit.LING},//万零
+			{Name: NUMUnit.LING},              //零
+			{Name: NUMUnit.LING},              //零
+			{Name: NUMUnit.LING},              //零
+			{Name: NUMUnit.LING},              //零
+			{Name: NUMUnit.YI + NUMUnit.LING}, //亿零
+			{Name: NUMUnit.YI},                //亿
+			{Name: NUMUnit.WAN},               //万
+			{Name: NUMUnit.LING}               //零
+		]
+	};
+	var pointBefore = {
+		Values : [
+			{Name: NUMUnit.LING + CNYUnit.JIAO}, //零角
+			{Name: NUMUnit.LING + CNYUnit.FEN},  //零分
+			{Name: NUMUnit.LING + NUMUnit.LING}, //零零
+			{Name: CNYUnit.JIAO + NUMUnit.LING}  //角零
+		]
+	};
+	var pointAfter = {
+		Values : [
+			{Name: NUMUnit.LING}, //零
+			{Name: NUMUnit.LING}, //零
+			{Name: ""},
+			{Name: CNYUnit.JIAO}  //角
+		]
+	};
+
+	/// 递归替换
+	var replaceAll = function(inputValue,beforeValue,afterValue) {
+		while(inputValue.indexOf(beforeValue) > -1) {
+			inputValue = inputValue.replace(beforeValue,afterValue);
+		}
+		return inputValue;
+	}
+	/// 获取输入金额的整数部分
+	IntNum = money.indexOf(".") > -1 ? money.substring(0,money.indexOf(".")) : money;
+	/// 获取输入金额的小数部分
+	PointNum = money.indexOf(".") > -1 ? money.substring(money.indexOf(".")+1) : "";
+	IntValue = PointValue = "";
+	/// 计算整数部分
+	for(var i=0;i<IntNum.length;i++) {
+		/// 获取数字单位
+		switch((IntNum.length-i) % 8) {
+			case 5:
+				unit = NUMUnit.WAN; //万
+				break;
+			case 0:
+			case 4:
+				unit = NUMUnit.QIAN; //千
+				break;
+			case 7:
+			case 3:
+				unit = NUMUnit.BAI; //百
+				break;
+			case 6:
+			case 2:
+				unit = NUMUnit.SHI; //十
+				break;
+			case 1:
+				if((IntNum.length-i) > 8)
+				{
+					unit = NUMUnit.YI; //亿
+				}
+				else { unit = ""; }
+				break;
+			default:
+				unit = "";
+				break;
+		}
+		/// 组成整数部分
+		IntValue += Number.substr(parseInt(IntNum.substr(i,1)),1) + unit;
+	}
+
+	/// 替换零
+	for(var i=0;i<beforeReplace.Values.length;i++) {
+		IntValue = replaceAll(IntValue,beforeReplace.Values[i].Name,afterReplace.Values[i].Name);
+	}
+	// 末尾是零则去除
+	if(IntValue.substr(IntValue.length-1,1) == NUMUnit.LING) IntValue = IntValue.substring(0,IntValue.length-1);
+	// 一十开头的替换为十开头
+	if(IntValue.substr(0,2) == Number.substr(1,1) + NUMUnit.SHI) IntValue = IntValue.substr(1,IntValue.length-1);
+
+	/// 计算小数部分
+	if(PointNum != "") {
+		PointValue = Number.substr(PointNum.substr(0,1),1) + CNYUnit.JIAO;
+		PointValue += Number.substr(PointNum.substr(1,1),1) + CNYUnit.FEN;
+		for(var i=0;i<pointBefore.Values.length;i++) {
+			PointValue = replaceAll(PointValue,pointBefore.Values[i].Name, pointAfter.Values[i].Name);
+		}
+	}
+	moneyCNY = PointValue == "" ? IntValue + CNYUnit.YUAN + CNYUnit.ZHENG : IntValue + CNYUnit.YUAN + PointValue;
+	return moneyCNY;
+}
+</script>

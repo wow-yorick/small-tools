@@ -1,0 +1,56 @@
+<script>
+$(document).ready(function() {
+	$('#divMainMenu ul').find('li').each(function() {
+		$(this).bind('click', function() {
+			//选中li添加isSelected属性
+			//$('#divMainMenu ul').find('li').removeClass('wlz_selected');
+			$(this).closest('#divMainMenu ul').find('li[class=wlz_selected]').removeClass('wlz_selected');
+			$(this).addClass('wlz_selected');
+
+			$('#divMainContent').find('.multiTab:hidden').show();
+			var moduleName = $(this).attr('moduleName');
+			var controllerName = $(this).attr('controllerName');
+			var url = "<?php echo $this->baseUrl();?>/" + moduleName + '/' + controllerName + '/index' + '/avoidCache/' + Math.random();
+			if ($(this).attr('isDialog') == 1) {
+				$('#divTempContainer').load(url);
+			} else {
+				var lblText = $(this).find('a').text().padLeft(12, '&nbsp;');
+				$('#lblMenuName').html(lblText);
+				$('#divContent').load(url);
+			}
+		});
+	});
+
+	$('#divMainMenu').find('li:visible:first').click(); return;
+});
+</script>
+<style type="text/css">
+<!--
+#fathernavtitle {
+	background:url(<?php echo $this->baseUrl();?>/img/main/btngo.png) no-repeat right center;
+	width:183px;
+	height:46px;
+	line-height:46px;
+	text-align:center;
+	color:#ffffff;
+	margin:0 auto;
+}
+
+.wlz_selected{
+background:url(<?php echo $this->baseUrl();?>/img/main/btngo.png) no-repeat center center;
+}
+-->
+</style>
+
+<?php if (isset($this->subarr)): ?>
+<div id="fathernavtitle" style="display:none"><?php echo $this->temp;?></div>
+<ul class="main-menu-son">
+<?php foreach($this->subarr as $arrThird): ?>
+<li id="li<?php echo $arrThird['moduleName'] . $arrThird['controllerName'];?>"
+	moduleName="<?php echo $arrThird['moduleName'];?>" controllerName="<?php echo $arrThird['controllerName'];?>"
+	<?php if ($arrThird['isDialog']==1):?>isDialog="1"<?php endif;?> <?php if ($arrThird['isMenu']==0):?>style="display:none;"<?php endif;?> >
+	<a href="javascript:void(0);"><?php echo $arrThird['itemName'];?></a>
+</li>
+<?php endforeach; ?>
+</ul>
+<?php endif; ?>

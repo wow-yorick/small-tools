@@ -1,0 +1,187 @@
+<!--<nav class="breadcrumb">-->
+    <!--<i class="Hui-iconfont">&#xe67f;</i>-->
+    <!--首页 <span class="c-gray en">&gt;</span>-->
+    <!--产品作业-->
+    <!--<span class="c-gray en">&gt;</span>-->
+    <!--发货作业-->
+    <!--<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"-->
+       <!--href="javascript:location.replace(location.href);" title="刷新">-->
+        <!--<i class="Hui-iconfont">&#xe68f;</i>-->
+    <!--</a>-->
+<!--</nav>-->
+{{:W('Menu/Breadcrumb')}}
+<div class="page-container">
+    <form class="form form-horizontal" id="formActionTable" method="post" action="__ACTION__">
+        <input type="hidden" name="id" value="{{$detail['id']}}">
+        <input type="hidden" name="product_name" value="">
+        <input type="hidden" name="customer_name" value="">
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">
+                <span class="c-red">*</span>选择产品：
+            </label>
+
+            <div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+				<select class="select" name="product_num" id="changeProduct">
+					<option value="">—请选择—</option>
+					<foreach name="productList" key="key" item="product">
+						<eq name="product.product_code" value="$detail['product_num']">
+							<option value="{{$product.product_code}}" selected>{{$product.product_name}}</option>
+							<else/>
+							<option value="{{$product.product_code}}">{{$product.product_name}}</option>
+						</eq>
+
+					</foreach>
+				</select>
+				</span>
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">
+                <span class="c-red">*</span>选择客户：
+            </label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input name="customer_name" value="{{$customer_name}}" class="input-text"/>
+            </div>
+            <!--<div class="formControls col-xs-8 col-sm-9">-->
+            <!--<span class="select-box">-->
+            <!--<select class="select" name="customer_id" id="changeCustomer">-->
+            <!--<option value="">—请选择—</option>-->
+            <!--<foreach name="customerList" key="key" item="customer">-->
+            <!--<eq name="customer.id" value="$detail['customer_id']">-->
+            <!--<option value="{{$customer.id}}" selected>{{$customer.name}}</option>-->
+            <!--<else/>-->
+            <!--<option value="{{$customer.id}}">{{$customer.name}}</option>-->
+            <!--</eq>-->
+
+            <!--</foreach>-->
+            <!--</select>-->
+            <!--</span>-->
+            <!--</div>-->
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">
+                <span class="c-red">*</span>箱数：
+            </label>
+
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" name="number" placeholder="箱数" value="{{$detail['number']}}" class="input-text">
+            </div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" class="btn btn-primary radius">
+                <input type="button" value="&nbsp;&nbsp;查询进行批次&nbsp;&nbsp;" class="btn btn-primary radius"
+                       onclick="getBatchList()" id="getActBatchList">
+            </div>
+        </div>
+    </form>
+    <input type="hidden" id="currentPatchNum"/>
+    <!-- 操作 end -->
+    <div class="dataTables_wrapper no-footer">
+        <table class="table table-border table-bordered table-hover table-bg">
+            <thead>
+            <tr>
+                <th scope="col" colspan="9">进行中批次</th>
+            </tr>
+            <tr class="text-c">
+                <th width="40">ID</th>
+                <th width="200">批次号</th>
+                <th width="200">产品编号</th>
+                <th width="200">产品名称</th>
+                <th width="200">箱数</th>
+                <th width="200">已出库数</th>
+                <th width="200">批次状态</th>
+                <th width="200">批次生成时间</th>
+                <th width="70">操作</th>
+            </tr>
+            </thead>
+            <tbody id="batchList">
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="__JS__/jquery/jquery.bigautocomplete.js"></script>
+<link rel="stylesheet" type="text/css" href="__CSS__/jquery.bigautocomplete.css"/>
+<script type="text/javascript">
+    getBatchList();
+    $("input[name=customer_name]").bigAutocomplete({
+        url: "{{:U('public/getCustomer')}}",
+        width: 300,
+    });
+    $("#formActionTable").validate({
+        rules: {},
+        onkeyup: false,
+        focusCleanup: true,
+        success: "valid",
+        submitHandler: function (form) {
+            var layerIndex = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+            $(form).ajaxSubmit({
+                success: function (data) {
+                    if (data.status == 1) {
+                        getBatchList();
+                        layer.close(layerIndex);
+                        layer.msg(data.info, {
+                            time: 500,
+                        }, function () {
+                            //layer_close();
+                            //location.replace(location.href);
+                            getBatchList();
+                        });
+                    } else {
+                        layer.close(layerIndex);
+                        layer.msg(data.info, {
+                            time: 1000,
+                        });
+
+                    }
+                }
+            });
+        }
+    })
+
+    function packAct(title, url, w, h, obj) {
+        var thisTr = $(obj);
+        var thisBathId = thisTr.attr('data-id');
+        var url = "__APP__/shipment/ajaxSetCurrentPatch";
+        $.ajax({
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            data: {id: thisBathId},
+            success: function (data) {
+                //if(200 != data.code) {
+                //return false;
+                //}
+                $('#currentPatchNum').val(thisBathId);
+                var url = "__APP__/shipment/ajaxDatCollect/id/" + data.id;
+                layer_show('发货数据采集', url, 800, 450);
+            },
+            complete: function (XHR, TS) {
+                getBatchList();
+            }
+        });
+    }
+
+    function getBatchList() {
+        $('#batchList').load('__APP__/shipment/ajaxInActBatch', {}, function () {
+            layer.msg('获取成功', {time: 500,});
+        });
+    }
+
+    $('#changeProduct').change(function () {
+        var selectText = $(this).find('option:selected').text();
+        $('input[type=hidden][name=product_name]').val(selectText);
+    })
+
+    $('#changeCustomer').change(function () {
+        var selectText = $(this).find('option:selected').text();
+        $('input[type=hidden][name=customer_name]').val(selectText);
+    })
+</script>

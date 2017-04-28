@@ -1,0 +1,171 @@
+<script>
+/*
+ * 注销
+ */
+function logout(obj) {
+	$(obj).closest('form').submit();
+}
+
+function menuNavSup(){
+	$('.supnavparent').find('li').bind('click',function(){
+		//选中li添加isSelected属性
+		$('.supnavparent').find('li a').attr('style','');
+		$('.supnavparent').find('li').attr('style','');
+		$(this).css({background: "url(<?php echo $this->baseUrl(); ?>/img/main/btnbg2.png) no-repeat left top"});
+		$(this).find('a').css({ color: "#fff",background: "url(<?php echo $this->baseUrl(); ?>/img/main/btnbg2.png) no-repeat right top" });
+		var supnav = $(this).find('a').text();
+		var url = "<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/submenuser';?>"
+		$('#divMainMenu').load(url,{'supnav':supnav});
+	})
+	$('.supnavparent li:first').click();
+}
+
+function domodifypwd(){
+	var url="<?php echo $this->baseUrl();?>/usermanage/modifypwd";
+	$('#divTempContainer').load(url);
+}
+
+/*
+ * 显示"重要提醒"弹窗
+ */
+function showImportantRemind() {
+	//var params = null;
+	var url = "<?php echo $this->baseUrl() . '/remind/remind/index';?>";
+	//window.showModalDialog(url, params, 'dialogWidth=1000px;dialogHeight=440px;status=no;scroll=no;');
+	$('#divTempContainer').load(url);
+}
+
+$(document).ready(function(){
+	menuNavSup();
+	setTimeout("$('#lblImportantRemind').click()", 1500);
+});
+</script>
+<style type="text/css">
+<!--
+#head-yudy {
+	background:url(<?php echo $this->baseUrl();?>/img/login/headbg2.png) repeat-x left top;
+	width:100%;
+	height:41px;
+	line-height:41px;
+	position:relative;
+	z-index:90;
+}
+
+.systitle {
+	background:url(<?php echo $this->baseUrl();?>/img/login/bgtt.png);
+	width:193px;
+	height:21px;
+	position:absolute;
+	top:7px;
+	left:360px;
+	color:#ffffff;
+	line-height:21px;
+	text-align:center;
+}
+.systitle b {
+	font-weight:normal;
+	color:#9dc225;
+}
+
+.logoimg {
+	position:absolute;
+	left:58px;
+	top:5px;
+	z-index:9999;
+}
+
+.logininfo {
+	font-size:14px;
+	color:#ccc;
+	position:absolute;
+	right:0;
+	top:0;
+}
+.logininfo span{
+	width:112px;
+	text-align:center;
+	display:inline-block;
+	background-image:url(<?php echo $this->baseUrl(); ?>/img/main/btnlianzt.png);
+	background-repeat:no-repeat;
+}
+
+.headnav{
+	position:relative;
+	height:31px;
+	width:100%;
+	background:#C9CACA;
+	z-index:40;
+	line-height:31px;
+}
+
+.imgpz {
+	position:absolute;
+	z-index:10;
+	top:0;
+	left:0;
+}
+
+.supnavparent {
+	float:left;
+	margin-left:225px;
+}
+
+.supnavparent li {
+	display:block;
+	float:left;
+	margin-right:30px;
+	margin-top:3px;
+	height:30px;
+	padding-left:10px;
+	overflow:hidden;
+}
+
+.supnavparent li a {
+	text-decoration:none;
+	color:#231815;
+	font-size:12px;
+	out-line:none;
+	height:30px;
+	line-height:25px;
+	padding-right:10px;
+	display:block;
+	background-attachment:fixed;
+	overflow:hidden;
+}
+.xiugaimima a {
+color:#ccc;
+display:block;
+margin-top:3px;
+text-decoration:none;
+}
+.xiugaimima a:hover {
+color:#fff;
+text-decoration:none;
+}
+
+-->
+</style>
+<div id="head-yudy">
+	<img src="<?php echo $this->baseUrl();?>/img/login/headbg1.png" />
+    <div class="systitle"><b>推广</b>平台</div>
+    <div class="logoimg"><img src="<?php echo $this->baseUrl();?>/img/login/icologo.png" /></div>
+    <span class="logininfo">
+        <?php if(!empty($_SESSION[$this->sessionPrefix . 'username'])) echo "<span>" . $_SESSION[$this->sessionPrefix . 'username']."</span>"; ?>
+        <span class="xiugaimima" onclick="domodifypwd();"><a href="javascript:void(0)">修改密码</a></span>
+        <form action="<?php echo $this->baseUrl();?>/login/index/logout" style="display:inline;">
+        <span style="width:90px;height:28px; margin-right:30px;text-align:center; line-height:28px;cursor:pointer; background:url(<?php echo $this->baseUrl();?>/img/main/btnlianzt.png) right;display:inline-block;color:#F3BC1F;" onclick="logout(this);">&nbsp;</span>
+        </form>
+    </span>
+</div>
+<div class="headnav"><div class="imgpz"><img src="<?php echo $this->baseUrl();?>/img/main/bglinetu.png" /></div>
+<?php if (isset($this->menuList)): ?>
+	<ul class="supnavparent">
+	<?php foreach($this->menuList as $key=>$arrSub): ?>
+		<?php if($key != '首页'):?>
+		<li><a href="javascript:void(0)"><?php echo $key; ?></a></li>
+		<?php endif;?>
+	<?php endforeach; ?>
+		<li><a href="https://mp.weixin.qq.com/cgi-bin/loginpage?t=wxm2-login&lang=zh_CN" target="_blank">微信平台主动推送信息</a></li>
+	</ul>
+<?php endif; ?>
+</div>

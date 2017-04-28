@@ -1,0 +1,95 @@
+<div class="header"></div>
+<div class="loginWraper">
+	<div class="loginBox">
+		<form id="loginform" class="form form-horizontal" action="{{:U('Public/login')}}" method="post">
+			<div class="row cl">
+				<label class="form-label col-xs-3"> <i class="Hui-iconfont">&#xe60d;</i> </label>
+
+				<div class="formControls col-xs-8">
+					<input name="email" type="text" placeholder="账户" class="input-text size-L">
+				</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60e;</i></label>
+
+				<div class="formControls col-xs-8">
+					<input name="password" type="password" placeholder="密码" class="input-text size-L">
+
+				</div>
+			</div>
+			<div class="row cl code">
+				<div class="formControls col-xs-8 col-xs-offset-3">
+					<input name="code" class="input-text size-L" type="text" placeholder="验证码" style="width:150px;">
+					<img src="{{:U('Public/verify',array('id'=>'login','t'=>microtime(true)))}}">
+					<a id="changeCode" href="javascript:void(0)">看不清，换一张</a></div>
+			</div>
+			<div class="row cl">
+				<div class="formControls col-xs-8 col-xs-offset-3">
+					<!--<label for="online">-->
+					<!--<input type="checkbox" name="online" id="online" value="">-->
+					<!--使我保持登录状态-->
+					<!--</label>-->
+				</div>
+			</div>
+			<div class="row cl">
+				<div class="formControls col-xs-8 col-xs-offset-3">
+					<input type="submit" data-target="ajax" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
+					<input type="reset" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="footer">产品追溯系统管理后台&copy;Copyright 2016</div>
+
+<script type="text/javascript">
+	$(function () {
+		$("#changeCode").click(function () {
+			var timestamp = new Date().getTime(),
+				_url      = "{{:U('Public/verify',array('id'=>'login','t'=>'TIME'))}}";
+			_url          = _url.replace('TIME', timestamp);
+			$(this).prev("img").attr('src', _url);
+		});
+		$("#loginform").validate({
+			rules: {
+				email: {
+					required: true,
+					email: true,
+				},
+				password: {
+					required: true,
+					minlength: 6
+				},
+				code: {
+					required: true,
+				}
+			},
+			onkeyup: false,
+			focusCleanup: false,
+			success: "valid",
+			submitHandler: function (form) {
+				var layerIndex = layer.load(1, {
+					shade: [0.1, '#fff'] //0.1透明度的白色背景
+				});
+				$(form).ajaxSubmit({
+					success: function (data) {
+						if (data.status == 1) {
+							layer.close(layerIndex);
+							layer.msg(data.info, {
+								time: 500,
+							}, function () {
+								location.href = data.url;
+							});
+						} else {
+							$("#changeCode").click();
+							layer.close(layerIndex);
+							layer.msg(data.info, {
+								time: 1000,
+							});
+						}
+					}
+				});
+			}
+		})
+	})
+</script>

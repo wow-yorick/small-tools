@@ -1,0 +1,722 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+  
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="demo.js"></script>
+   
+    <style>
+      html *{font-size:12px;}
+         .jp-classic-table {border: 1px solid #CFCFCF;}
+         .jp-classic-table td{padding:2px;background: none repeat scroll 0 0 #FFFFFF;color: #333333;border-right: 1px solid #D0D0D0;border-bottom: 1px solid #EDEDED;vertical-align:middle;}
+         .jp-classic-table .jp-header-row td{color: #666666;font-weight: bold;
+         text-shadow: 0 1px 0 #FFFFFF;border-bottom:solid 1px #CFCFCF;text-align:center;border-right:1px solid #D0D0D0;}
+         .jp-classic-table .jp-header-row{background:#aecff8;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#e6e6e6');border-bottom:1px solid #EDEDED; 
+         background: -moz-linear-gradient(center top , #FEFEFE, #E6E6E6) repeat scroll 0 0 transparent;height:30px;}
+         .jp-classic-table .jp-header-row td{background:transparent}
+         td.jp-last-col{border-right:none!important;}
+         .jp-last-row td{border-bottom:none!important;}
+         .jp-classic-table tr {height:24px;}
+         tr.jp-odd-row td {
+         background: none repeat scroll 0 0 #FAFAFA;
+         }
+         td.jp-align-center{text-align:center}
+         .jp-classic-table td.jp-align-bottom {vertical-align:bottom;}
+    </style>
+  </head>
+  
+  <body>
+  <table cellspacing="0" cellpadding="0" class="jp-classic-table">
+  <tbody class="jp-header-row">
+  <tr class="jp-header-row2" style='height:24px;'>
+<td rowspan='2' style="width:20px" class="jp-align-center jp-align-bottom">全能版</td>
+<td colspan='3' class="jp-align-center jp-align-bottom">高级版</td>
+
+<td rowspan='2' style="width:20px" class="jp-align-center jp-align-bottom">基本版</td>
+<td rowspan='2' style="width:20px" class="jp-align-center jp-align-bottom">免费版</td>
+<td rowspan='2' style="width:460px" class="jp-align-center jp-last-col">功能项</td>
+</tr>
+<tr style="background-image:none;background-color:transparent;" >
+
+<td style="width:20px;background-image:none;background-color:transparent;" class="jp-align-center jp-align-bottom">套打版</td>
+<td style="width:20px;background-image:none;background-color:transparent;" class="jp-align-center jp-align-bottom">批量打印</td>
+<td style="width:20px;background-image:none;background-color:transparent;" class="jp-align-center jp-align-bottom">表格分页</td>
+
+</tr>
+</tbody>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-last-col">设置纸张类型、方向（横、竖）</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-last-col">设置页边距</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-last-col">设置输出打印机</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-last-col">支持预览时指定页、指定份数打印</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-last-col">支持直接打印（不显示打印机选择对话框）</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-last-col">支持打印预览</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持打印参数自动保留，待下一次打印同一票据时自动设置</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">可用api方式读入，修改，清除在注册表中的打印参数</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持自动分页,类似IE分页方式</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">预览时提示生成</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持自定义的web打印界面</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持设置或取得默认打印机</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持显示页面设置对话框</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持设置或取得某文档的打印设置</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-last-col">支持打印份数控制</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-last-col">支持手动分页(按div分页)</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持指定页面元素打印</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持对双面打印机设置自动双面打印</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持回调，可以帮助您在打印后自动处理有关事务</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持监视打印任务状态</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持自动关闭窗口</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持多个文档共存在同一web页面中，区别打印</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持监听打印页数事件</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持自动递交表单数据等</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-last-col">支持指定document,也可以是iframe中的document进行打印</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持直接打印指定票据的URL</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持打印指定的html文本</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持指定若干dom, 如div对象作为打印页,不必保持page1,page2,...命名规则</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持以数组形式指定若干打印文档，且可以预览</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持打印隐藏对象</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">大单元格分页,单个单元格中,多个多层html元素的自然分页</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">页内多表自动分页</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">表格自动分页，表头每页可见</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持自动缩放打印</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持office 2003文档打印(*.doc,*.xls,*.ppt）</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持office 2007文档打印(*.docx,*.xlsx,*.pptx）</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持pdf文件打印</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持tiff图片多页打印</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">纵横打印(有些页纵向打印，有些横打)</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持HTML与非HTML文档的混合打印</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持票据及其附件的批量打印</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">精细控制打印对象在预览时和打印时的不同样式</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持图文混排的页脚、页眉</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持个性化的页眉页脚,即每页的页脚页眉可分别定义</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">页眉页脚可自定义起始页号</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">一次打印中的页号分组</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持票据套打，底图仅在打印预览时显示，不输出到打印机</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持无边距打印</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持是否显示IE底图</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持自定义纸张自动生成</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持开发人员,在可视化环境中设计套打模板</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持运行时，允许用户调整打印项位置</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持运行时，允许用户调整打印项位置，并保存到服务端</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持开发人员,在可视化环境中设计套打模板，加强版2.0</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持运行时，允许用户调整打印项位置，加强版2.0</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持运行时，允许用户新增套打模板</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持运行时，允许用户连续打印的套打偏移校正</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">将html table导出成Excel，并保留样式</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">取服务器mac地址</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">取服务器cupid</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">取本地字体集</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持打开、保存对话框</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持将文本复制到系统剪贴板，也可以从系统剪贴板读入文本</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">以文件方式导入css,适合大型框架,如racle的ADF</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持非简体中文操作系统（繁体、英文、日文等）</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">支持不同语言的界面信息（简体、繁体、英文、日文）</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">控件自动强制更新（方便软件升级）</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-last-col">经过微软数字签名（即不会在IE中提示：不安全的控件）</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-last-col">支持ie5-ie10,及以ie为内核的浏览器,如腾讯,360等</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">可配合npapi插件(另收费),支持除ie浏览器外的主流浏览器，如firefox,chrome,safari</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-last-col">支持php、.net、j2ee等开发并台</td>
+</tr>
+<tr>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-last-col">服务器端支持 windows,linux,unix等</td>
+</tr>
+<tr class="jp-odd-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">提供离线安装包</td>
+</tr>
+<tr class="jp-last-row">
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center">√</td>
+<td class="jp-align-center"></td>
+<td class="jp-align-center"></td>
+<td class="jp-last-col">可配合jatoolsCoder,用于一维、二维条形码web显示及打印</td>
+</tr>
+</table>
+    <br>
+     <button onclick='doPrint("打印")'>打印</button><button onclick='doPrint("打印预览")'>打印预览</button><button onclick='doPosition()'>打印位置调整</button>
+    
+    <object id="ojatoolsPrinter" codebase="jatoolsPrinter.cab#version=5,4,0,0" classid="clsid:B43D3361-D075-4BE2-87FE-057188254255" width="0" height="0">
+      <embed id="ejatoolsPrinter" type="application/x-vnd.jatoolsPrinter" width="0" height="0" />
+    </object>
+  </body>
+
+</html>

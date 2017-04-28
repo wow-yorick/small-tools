@@ -1,0 +1,66 @@
+{{:W('Menu/Breadcrumb')}}
+<div class="page-container">
+	<div class="text-l">
+		<form target="_self" action="" method="get" class="Huiform">
+			属性名称：<input type="text" name="title" value="{{$attribute_name}}" class="input-text" placeholder="属性名称"/>
+			<button type="submit" class="btn btn-success">
+				<i class="Hui-iconfont">&#xe665;</i> 搜索
+			</button>
+		</form>
+	</div>
+	<if condition="checkAuth('product/attributeAdd')">
+		<div class="cl pd-5 bg-1 bk-gray">
+	<span class="l">
+
+	<a class="btn btn-primary radius" href="javascript:void(0);" onclick="attribute_add('属性添加','{{:U(\'attributeAdd\')}}',800,460)">
+		<i class="Hui-iconfont">&#xe600;</i> 属性添加</a>
+	</span>
+		</div>
+	</if>
+	<div class="dataTables_wrapper no-footer">
+		<table class="table table-border table-bordered table-hover table-bg">
+			<thead>
+			<tr>
+				<th scope="col" colspan="6">角色管理</th>
+			</tr>
+			<tr class="text-c">
+				<th width="40">ID</th>
+				<th width="200">属性名称</th>
+				<th width="200">属性类型</th>
+				<th width="200">待选值</th>
+				<th width="400">描述</th>
+				<th width="70">操作</th>
+			</tr>
+			</thead>
+			<tbody>
+			<foreach name="list" item="attribute">
+				<tr class="text-c">
+					<td>{{$attribute['id']}}</td>
+					<td>{{$attribute['attribute_name']}}</td>
+					<td>{{$attributeType[$attribute['type']]}}</td>
+					<td>{{$attribute['default_value']}}</td>
+					<td>{{$attribute['remark']}}</td>
+					<td class="td-manage">
+						<if condition="checkAuth('admin/attributeEdit')">
+							<a class="ml-5" style="text-decoration:none" onclick="attribute_edit('编辑权限','{{:U(\'attributeEdit\',array(\'id\'=>$attribute[\'id\']))}}',800,460)" href="javascript:void(0);" title="编辑">
+								<i class="Hui-iconfont">&#xe6df;</i> </a>
+						</if>
+					</td>
+				</tr>
+			</foreach>
+
+			</tbody>
+		</table>
+		{{$page}}
+	</div>
+</div>
+<script type="text/javascript">
+	/*属性-增加*/
+	function attribute_add(title, url, w, h) {
+		layer_show(title, url, w, h);
+	}
+	/*属性-编辑*/
+	function attribute_edit(title, url, w, h) {
+		layer_show(title, url, w, h);
+	}
+</script>

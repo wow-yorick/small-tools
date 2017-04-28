@@ -1,0 +1,95 @@
+<article class="page-container">
+	<form class="form form-horizontal" id="role-edit" method="post" action="{{:U('sap/sapEdit')}}">
+		<input type="hidden" name="id" value="{{$sap['id']}}">
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>接口名称：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="sys_sap_name" placeholder="接口名称" value="{{$sap['sys_sap_name']}}" class="input-text">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>接口地址：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="sys_sap_url" placeholder="接口地址" value="{{$sap['sys_sap_url']}}" class="input-text">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>接口账号：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="sys_sap_account" placeholder="接口账号" value="{{$sap['sys_sap_account']}}" class="input-text">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>接口密码：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="sys_sap_password" placeholder="接口密码" value="{{$sap['sys_sap_password']}}" class="input-text">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" class="btn btn-primary radius">
+			</div>
+		</div>
+	</form>
+</article>
+<script type="text/javascript">
+	$("#role-edit").validate({
+		rules: {
+			id: {
+				required: true,
+			},
+			sys_sap_name: {
+				required: true,
+			},
+			sys_sap_url: {
+				required: true,
+			},
+			sys_sap_account: {
+				required: true,
+			},
+		},
+		onkeyup: false,
+		focusCleanup: true,
+		success: "valid",
+		submitHandler: function (form) {
+			var layerIndex = layer.load(1, {
+				shade: [0.1, '#fff'] //0.1透明度的白色背景
+			});
+			$(form).ajaxSubmit({
+				success: function (data) {
+					if (data.status == 1) {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 500,
+						}, function () {
+							layer_close();
+						});
+					} else {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 1000,
+						});
+
+					}
+				}
+			});
+		}
+	})
+</script>

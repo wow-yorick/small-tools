@@ -1,0 +1,86 @@
+<article class="page-container">
+	<form class="form form-horizontal" id="role-edit" method="post" action="{{:U('admin/roleEdit')}}">
+		<input type="hidden" name="id" value="{{$role['id']}}">
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"> <span class="c-red">*</span>角色名称： </label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="title" placeholder="角色名称" value="{{$role['title']}}" class="input-text">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">网站角色：</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<foreach name="ruleList" key="group_id" item="list">
+					<dl class="permission-list">
+						<dt>
+							<label> <input type="checkbox" value=""> {{$groups[$group_id]}} </label>
+						</dt>
+						<dd>
+							<dl class="cl">
+						<dd>
+							<foreach name="list" item="rule" key="key">
+								<label class="">
+									<in name="key" value="$role['rules']">
+										<input type="checkbox" value="{{$key}}" name="rule_ids[]" checked>
+										<else/>
+										<input type="checkbox" value="{{$key}}" name="rule_ids[]">
+									</in>
+
+									{{$rule}} </label>
+							</foreach>
+						</dd>
+					</dl>
+					</dd>                    </dl>
+				</foreach>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" class="btn btn-primary radius">
+			</div>
+		</div>
+	</form>
+</article>
+<script type="text/javascript">
+	$(".permission-list dt input:checkbox").click(function () {
+		$(this).closest("dl").find("dd input:checkbox").prop("checked", $(this).prop("checked"));
+	});
+	$("#role-edit").validate({
+		rules: {
+			id: {
+				required: true,
+			},
+			title: {
+				required: true,
+			},
+		},
+		onkeyup: false,
+		focusCleanup: true,
+		success: "valid",
+		submitHandler: function (form) {
+			var layerIndex = layer.load(1, {
+				shade: [0.1, '#fff'] //0.1透明度的白色背景
+			});
+			$(form).ajaxSubmit({
+				success: function (data) {
+					if (data.status == 1) {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 500,
+						}, function () {
+							layer_close();
+						});
+					} else {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 1000,
+						});
+					}
+				}
+			});
+		}
+	})
+</script>

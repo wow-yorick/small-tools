@@ -1,0 +1,265 @@
+<script>
+/*
+ *    ----- 基本操作的JS代码 ---------------------------------------------------------------------
+ */
+<?php if($this->menuinfo["menuvisiable"]["basemenu"] == "1" ): ?>
+/*
+ * 添加或修改图标onclick事件
+ */
+function data_showEdit(obj, editType) {
+	if ($(obj).attr('disabled') == null) {
+		if (editType == 'add') { //添加
+			$(document).data('cache_data_menu', $('.data_menu').html()); //缓存原html，用于取消按钮
+			$(document).data('cache_data_menu_editType', 'add'); //缓存editType，用于取消按钮
+			$('#data_divDetail').html($(document).data('cache_data_detail')); //还原data_detail
+			// !---------- BEGIN: CUSTOM ---------- //
+			// !---------- END: CUSTOM ---------- //
+		} else if (editType == 'modify') { //修改
+			$(document).data('cache_data_menu_editType', 'modify'); //缓存editType，用于取消按钮
+			$(document).data('cache_data_menu', $('.data_menu').html()); //缓存原html，用于取消按钮
+		}
+		toggleMenuImg('data_menu', $('<?php foreach($this->menuinfo["menuactive"]["buttonModify"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>')); //使能指定的图片功能
+		$('.data-detail-input').removeAttr('disabled');
+		$('#data_aDetail').removeAttr('disabled');
+		$('#data_aDetail').click();
+
+		//submit表单提交ajax实现
+		$('#data_formDetail').submit(function(){
+			$(this).find('[wlzAuth]:enabled:visible').blur();
+			if($(this).find('[wlzAuth]:enabled:visible.ui-state-error').length == 0) {
+				var options = {
+						target: '#divTempContainer'
+						,url: $(this).attr('action')
+						,type: $(this).attr('method')
+					};
+				$(this).ajaxSubmit(options);
+			}
+			return false; //禁止表单自动提交
+		});
+	}
+}
+/*
+ * 确认图标onclick事件（确认添加或修改）
+ */
+function data_confirmAddOrModify(obj, formId) {
+	if ($(obj).attr('disabled') == null) {
+		var editType = $(document).data('cache_data_menu_editType');
+		$('#' + formId).find('[name=editType]').val(editType);
+		$('#' + formId).submit();
+	}
+}
+/*
+ * 取消图标onclick事件
+ */
+function data_cancelAddOrModify(obj) {
+	if ($(obj).attr('disabled') == null) {
+		$('.data_menu').html($(document).data('cache_data_menu')); //还原html
+		$('.data-detail-input').attr('disabled', 'disabled');
+
+		$(document).data('cache_data_menu_editType', ''); //清空editType缓存
+		$('#data_aList').click();
+	}
+}
+/*
+ * 删除图标onclick事件
+ */
+function data_delete(obj) {
+	if ($(obj).attr('state') == 'enabled') {
+		var flag = confirm('此操作删除所有选中的记录，请确认！');
+		if (flag) {
+			var idString = '';
+			if ($('#data_tblList tbody tr').find('td:first').find(':checkbox').length > 0) {
+				$('#data_tblList').find('.data_chkSingle:visible:checked').each(function() {
+					idString += ',' + $(this).closest('tr').attr('keyId');
+				});
+			} else {
+				$('#data_tblList').find('[isChecked]:visible').each(function() {
+					idString += ',' + $(this).closest('tr').attr('keyId');
+				});
+			}
+			idString = idString.substr(1);
+			//alert(idString); return;
+			var url = "<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/'.$this->menuinfo['menuvisiable']['deleteactionname'];?>";
+			$('#divTempContainer').load(url, {
+				'idString': idString
+			});
+		}
+	}
+}
+
+/*
+ * 详细信息图标onclick事件
+ */
+function data_detail(obj) {
+	if ($(obj).attr('state') == 'enabled') {
+		$('#data_tblList').find('.row_selected').dblclick();
+	}
+}
+
+/*
+ * tab2标签onclick事件
+ */
+function data_showDetail(obj) {
+	if ($(obj).attr('disabled') == null) {
+	}
+}
+
+/*
+ * table中行的click事件，选中行，用于delete
+ */
+function data_checkedRow(obj) {
+	if ($(obj).closest('table').find('#data_chkAll:visible').length == 0) {
+		$(obj).closest('table').find('tr[isChecked]:visible').removeAttr('isChecked');
+		$(obj).attr('isChecked', 'isChecked');
+	}
+}
+
+/*
+ * table中行的click事件，使能detail图标
+ */
+function data_toggleDetailImg() {
+	if ($('#data_tblList').find('.row_selected').length) {
+		toggleMenuImgBase('#<?php echo $this->menuinfo["basemenu"]["buttonDetail"]["itemname"];?>', 1);
+	} else {
+		toggleMenuImgBase('#<?php echo $this->menuinfo["basemenu"]["buttonDetail"]["itemname"];?>', 0);
+	}
+}
+
+/*
+ * table中行的click事件，使能delete图标
+ */
+function data_toggleDeleteImg() {
+	if ($('#data_tblList').find('.row_selected').length) {
+		toggleMenuImgBase('#<?php echo $this->menuinfo["basemenu"]["buttonDelete"]["itemname"];?>', 1);
+	} else {
+		toggleMenuImgBase('#<?php echo $this->menuinfo["basemenu"]["buttonDelete"]["itemname"];?>', 0);
+	}
+}
+
+/*
+ * table中行的ondbclick事件，获取详细信息
+ */
+function data_getDetail(obj) {
+	$(obj).attr('isSelected', 'isSelected');
+	$('#data_aDetail').removeAttr('disabled');
+	$('#data_aDetail').click();
+
+	toggleMenuImg('data_menu', $('<?php foreach($this->menuinfo["menuactive"]["gridclick"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>')); //使能指定的图片功能
+
+	var keyId = $(obj).attr('keyId');
+	var url = "<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/'.$this->menuinfo['menuvisiable']['detailactionname'];?>";
+	$('#data_divDetail').load(url, {
+		'<?php echo $this->gridinfo["keyid"]; ?>': keyId
+	});
+}
+<?php endif;?>
+/*
+ *    ----- 基本操作的JS代码结束 ---------------------------------------------------------------------
+ */
+
+/*
+ *    ----- 搜索操作的JS代码 ---------------------------------------------------------------------
+ */
+
+<?php if($this->menuinfo["menuvisiable"]["searchmenu"] == "1" ): ?>
+/*
+ * 搜索图标onclick事件
+ */
+function data_search(obj) {
+	wlz_showLoadingPic($('#data_divList')); //添加waiting图标
+	<?php foreach($this->gridinfo["searchfield"] as $fields):?>
+		<?php if($fields["type"] == "input") :?>
+			var <?php echo $fields["name"];?> = $(obj).closest('table').find('[name=<?php echo $fields["name"];?>]').val();
+		<?php endif;?>
+		<?php if ($fields["type"] == "select") :?>
+			var <?php echo $fields["name"];?> = $(obj).closest('table').find('[name=<?php echo $fields["name"];?>]').find('option:selected').val();
+		<?php endif;?>
+	<?php endforeach;?>
+	var url = "<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/'.$this->menuinfo['menuvisiable']['searchactionname'];?>";
+	$('#data_divList').load(url, {
+		<?php $i = 1; ?>
+		<?php foreach ($this->gridinfo["searchfield"] as $arrSub): ?>
+			'<?php echo $arrSub["name"] ;?>': <?php echo $arrSub["name"] ; ?>
+			<?php if($i < sizeof($this->gridinfo["searchfield"])): ?>, <?php endif; ?>
+			<?php $i++; ?>
+		<?php endforeach; ?>
+	});
+}
+<?php endif;?>
+/*
+ *    ----- 搜索操作的JS代码结束 ---------------------------------------------------------------------
+ */
+
+/*
+ *    ----- 其他操作的JS代码 ---------------------------------------------------------------------
+ */
+<?php if($this->menuinfo["menuvisiable"]["othermenu"] == "1" ): ?>
+
+<?php foreach($this->menuinfo["othermenu"] as $menu): ?>
+/*
+ * 其他图标onclick事件
+ */
+function <?php $clickname = explode("(",$menu["onclick"]); echo $clickname[0];?>(obj) {
+	if ($(obj).attr('state') == 'enabled') {
+		var flag = confirm('<?php echo $menu["actalert"];?>');
+		if (flag) {
+			var idString = '';
+			$('#data_tblList').find('.data_chkSingle:visible:checked').each(function() {
+				idString += ',' + $(this).closest('tr').attr('keyId');
+			});
+			idString = idString.substr(1);
+
+			var url = "<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/'.$menu['actionname'];?>";
+			$('#divTempContainer').load(url, {
+				'idString': idString
+			});
+		}
+	}
+}
+<?php endforeach;?>
+<?php endif;?>
+/*
+ *    ----- 其他操作的JS代码结束 ---------------------------------------------------------------------
+ */
+
+ /*
+ * tab1标签onclick事件
+ */
+function data_showList(obj) {
+	toggleMenuImg('data_menu', $('<?php foreach($this->menuinfo["menuactive"]["init"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>')); //使能指定的图片功能
+	//toggleMenuImgBase($('#data_divSearch'), 1);
+	data_toggleDetailImg(); //使能detail图标
+	$('#data_divDetail').empty();
+	$('#data_aDetail').attr('disabled', 'disabled');
+}
+
+/*
+ * checkbox的onclick事件，使能使能相应menu图片
+ */
+function data_toggleBatchCheck() {
+	var size = $('#data_tblList').find('.data_chkSingle:visible:checked').length;
+	if (size > 0) {
+		<?php foreach($this->menuinfo["menuactive"]["gridcheck"] as $item):?>
+		toggleMenuImgBase($('#<?php echo $item;?>'), 1);
+		<?php endforeach;?>
+	} else {
+		<?php foreach($this->menuinfo["menuactive"]["gridcheck"] as $item):?>
+		toggleMenuImgBase($('#<?php echo $item;?>'), 0);
+		<?php endforeach;?>
+	}
+}
+$(document).ready(function() {
+	toggleMenuImg('data_menu', $('<?php foreach($this->menuinfo["menuactive"]["init"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>')); //使能指定的图片功能
+
+	$(document).data('cache_data_detail', $('#data_divDetail').html()); //缓存data_detail
+
+	$('#data_tabs').tabs(); //初始化标签页
+});
+
+</script>
+
+<!--  ---------------------------------------- BEGIN : CUSTOM ----------------------------------------  -->
+<script>
+
+</script>
+<!--  ---------------------------------------- END : CUSTOM ----------------------------------------  -->

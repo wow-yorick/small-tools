@@ -1,0 +1,55 @@
+<script>
+/*
+ * 获取controller下的action
+ */
+function getControllerAction(obj) {
+	var moduleId = $(obj).find('option:selected').attr('moduleId');
+	var controllerId = $(obj).find('option:selected').attr('controllerId');
+	var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName  . '/' . $this->controllerName . '/getcontrolleraction';?>";
+	$('#divAction').load(url, {
+		'moduleId': moduleId
+		,'controllerId': controllerId
+	});
+}
+
+/*
+ * 确认排序controller
+ */
+function confirmSortcontroller(obj) {
+	var moduleId = $('[name=msltModule]').find('option:selected').attr('moduleId');
+	var arrSortInfo = new Array();
+	var i = 1;
+	$(obj).closest('td').find('.msltList').find('option').each(function() {
+		var arrTemp = new Array($(this).val(), i++);
+		arrSortInfo.push(arrTemp);
+	});
+	var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName  . '/' . $this->controllerName . '/confirmsortcontroller';?>";
+	$('#divController').load(url, {
+		'arrSortInfo': arrSortInfo
+		,'moduleId': moduleId
+	});
+}
+
+$(document).ready(function() {
+	$('[name=msltController]').find('option:first').attr('selected', 'selected');
+	//$('[name=msltController]').change();
+});
+</script>
+
+<div class="ui-state-default itemdefine-item" style="font-weight:bold;">
+	<div>
+		<input type="button" class="ui-state-default wiliz-cursor-pointer wiliz-btn" value="上移" onclick="moveUpDown(this, 'up');" />
+		<input type="button" class="ui-state-default wiliz-cursor-pointer wiliz-btn" value="下移" onclick="moveUpDown(this, 'down');" />
+	</div>
+	<div><input type="button" class="ui-state-default wiliz-cursor-pointer itemdefine-btn" value="确认提交" onclick="confirmSortcontroller(this);" /></div>
+</div>
+
+<div class="ui-state-default itemdefine-item">
+	<select name="msltController" class="wlz_mslt_sltSingle wiliz-sltl msltList" multiple="multiple" onchange="//getControllerAction(this);" style="height:300px;">
+	<?php if (isset($this->allModuleController)): ?>
+		<?php foreach ($this->allModuleController as $arrSub): ?>
+		<option value="<?php echo $arrSub['itemId'];?>" moduleId="<?php echo $arrSub['moduleId'];?>" controllerId="<?php echo $arrSub['controllerId'];?>" ><?php echo $arrSub['displayName'];?></option>
+		<?php endforeach; ?>
+	<?php endif; ?>
+	</select>
+</div>

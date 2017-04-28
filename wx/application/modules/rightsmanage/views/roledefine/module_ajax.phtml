@@ -1,0 +1,94 @@
+
+<script>
+/*
+ * 获取模块的权限
+ */
+function getModuleRights(obj){
+	if ($(obj).find('option:selected').length > 0) {
+		var roleId = $('#divRole').find('[name=msltRolename]').find('option:selected').val();
+		var moduleId = $(obj).find('option:selected').attr('moduleId');
+		var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/'. $this->controllerName;?>/getmodulerights";
+		$('#divRights').load(url, {
+			'roleId': roleId
+			,'moduleId': moduleId
+		});
+	} else {
+		$('#divRights').empty();
+	}
+}
+
+/*
+ * 添加角色的module
+ */
+function addRoleModule() {
+	if ($('#divModule').find('[name=sltAllModule]').find('option:selected').length > 0) {
+		var roleId = $('#divRole').find('[name=msltRolename]').find('option:selected').val();
+		var itemId = $('#divModule').find('[name=sltAllModule]').find('option:selected').val();
+		var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/'. $this->controllerName;?>/addrolemodule";
+		$('#divModule').load(url, {
+			'roleId': roleId
+			,'itemId': itemId
+		});
+	}
+}
+
+/*
+ * 删除角色的module
+ */
+function deleteRoleModule() {
+	if ($('#divModule').find('[name=msltRoleModule]').find('option:selected').length > 0) {
+		var flag = confirm('删除模块"' + $('#divModule').find('[name=msltRoleModule]').find('option:selected').text() + '"，请确认！\n警告：此操作会同时删除该模块下所有子项对应的权限关系！');
+		if(flag) {
+			var roleId =  $('#divRole').find('[name=msltRolename]').find('option:selected').val();
+			var moduleId = $('#divModule').find('[name=msltRoleModule]').find('option:selected').attr('moduleId');
+			var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/'. $this->controllerName;?>/deleterolemodule";
+			$('#divModule').load(url, {
+				'roleId': roleId
+				,'moduleId': moduleId
+			});
+		}
+	}
+}
+
+$(document).ready(function() {
+	//初始化sltAllModule列表
+	$('#divModule').find('[name=msltRoleModule]').find('option').each(function() {
+		$('#divModule').find('[name=sltAllModule]').find('option[value=' + $(this).val() + ']').remove();
+	});
+	
+	//初始化msltRoleModule列表
+	if ("<?php echo isset($this->afterAddRoleModule); ?>") {
+		$('#divModule').find('[name=msltRoleModule]').find('option[value=' + "<?php echo $this->afterAddRoleModule; ?>" + ']').attr('selected', 'selected');
+	} else {
+		$('#divModule').find('[name=msltRoleModule]').find('option:first').attr('selected', 'selected');
+	}
+	$('#divModule').find('[name=msltRoleModule]').change();
+});
+</script>
+
+<div class="ui-state-default roledefine-item">
+	<div>
+		<select name="sltAllModule" class="wlz_mslt_sltSingle wiliz-sltl">
+		<?php if (isset($this->allItemModule)): ?>
+			<?php foreach ($this->allItemModule as $arrSub): ?>
+			<option value="<?php echo $arrSub['itemId'];?>"><?php echo $arrSub['displayName'];?></option>
+			<?php endforeach; ?>
+		<?php endif; ?>
+		</select>
+	</div>
+	<div><input type="button" class="ui-state-default wiliz-cursor-pointer roledefine-btn" value="添加模块" onclick="addRoleModule();" /></div>
+</div>
+
+<div class="ui-state-default roledefine-item">
+	<select name="msltRoleModule" class="wlz_mslt_sltSingle wiliz-sltl" multiple="multiple" onchange="getModuleRights(this);" style="height:450px;">
+	<?php if (isset($this->roleModule)): ?>
+		<?php foreach ($this->roleModule as $arrSub): ?>
+		<option value="<?php echo $arrSub['itemId'];?>" moduleId="<?php echo $arrSub['moduleId'];?>"><?php echo $arrSub['displayName'];?></option>
+		<?php endforeach; ?>
+	<?php endif; ?>
+	</select>
+</div>
+
+<div class="ui-state-default roledefine-item">
+	<input type="button" class="ui-state-default wiliz-cursor-pointer roledefine-btn" value="删除模块" onclick="deleteRoleModule();" />
+</div>

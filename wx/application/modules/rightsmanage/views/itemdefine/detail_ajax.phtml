@@ -1,0 +1,232 @@
+<script>
+//!------------------------------ BEGIN: CUSTOM ------------------------------ //
+/*
+ * radio标签onclick事件
+ */
+function custom_showEditFieldset(obj) {
+	$('#data_formDetail').find('fieldset[group]').hide();
+	var val = $(obj).val();
+	$('#data_formDetail').find('fieldset[group=' + val + ']').show();
+}
+
+/*
+ * module和controller联动
+ */
+function custom_getModuleAction(obj) {
+	var moduleId = $(obj).val();
+	var url = "<?php echo $this->baseUrl() . '/'. $this->moduleName . '/' . $this->controllerName . '/getmodulecontroller';?>";
+	$(obj).closest('table').find('[name=controllerId]').load(url, {
+		'moduleId': moduleId
+	});
+}
+
+/*
+ * 修改、详细时初始化controller下拉框的默认值
+ */
+function iniSelectController() {
+		var jsonDataInfo = <?php echo json_encode($this->dataDetail);?>;
+		$('#data_formDetail').find('select[name=controllerId]:visible').find('option[value=' + jsonDataInfo['controllerId'] + ']').attr('selected', 'selected');
+}
+//!------------------------------ END  : CUSTOM ------------------------------ //
+
+/*
+ * 初始化页面
+ */
+function iniPage_detail() {
+	//控制tab标签的diabled
+	$('#data_tabs').tabs('enable', 1);
+	$('#data_tabs').tabs('select', 1);
+	$('#data_tabs').tabs('disable', 0);
+
+	switch ("<?php echo $this->editType;?>") {
+		case 'add':
+			//使能指定的图片功能
+			toggleMenuImg('data_menu', '<?php foreach($this->dataMenuInfo["menutoggle"]["btnAdd"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>');
+
+			//修改form的action属性
+			$('#data_formDetail').attr('action', "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/' . $this->controllerName . '/' . $this->dataMenuInfo['basemenu']['btnAdd']['actionname'];?>");
+
+			//enable输入框
+			$('#data_formDetail').find('.data-detail-input').removeAttr('disabled');
+			break;
+		case 'modify':
+			//使能指定的图片功能
+			toggleMenuImg('data_menu', '<?php foreach($this->dataMenuInfo["menutoggle"]["btnModify"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>');
+
+			//enable输入框
+			$('#data_formDetail').find('.data-detail-input').removeAttr('disabled');
+
+			//修改form的action属性
+			$('#data_formDetail').attr('action', "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/' . $this->controllerName . '/' . $this->dataMenuInfo['basemenu']['btnModify']['actionname'];?>");
+			break;
+		case 'detail':
+			//使能指定的图片功能
+			toggleMenuImg('data_menu', '<?php foreach($this->dataMenuInfo["menutoggle"]["btnDetail"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>');
+			break;
+	}
+
+	//设置标签默认值
+	if ("<?php echo isset($this->dataDetail);?>") {
+		var jsonDataInfo = <?php echo json_encode($this->dataDetail);?>;
+		// !---------- BEGIN: MODIFY ---------- //
+		$('#data_formDetail').find('[name=itemType][value=' + "<?php echo $this->itemType;?>" + ']').click();
+
+		$('#data_formDetail').find('[name=itemName]:visible').val(jsonDataInfo['itemName']);
+		$('#data_formDetail').find(':text[name=moduleName]:visible').val(jsonDataInfo['moduleName']);
+		$('#data_formDetail').find(':text[name=controllerName]:visible').val(jsonDataInfo['controllerName']);
+		$('#data_formDetail').find(':text[name=actionName]:visible').val(jsonDataInfo['actionName']);
+		$('#data_formDetail').find('[name=remarks]:visible').val(jsonDataInfo['remarks']);
+		$('#data_formDetail').find('[name=isDialog][value=' + jsonDataInfo['isDialog'] + ']:visible').attr('checked', 'checked');
+
+		$('#data_formDetail').find('select[name=moduleId]:visible').find('option[value=' + jsonDataInfo['moduleId'] + ']').attr('selected', 'selected');
+		$('#data_formDetail').find('select[name=moduleId]:visible').change();
+		setTimeout('iniSelectController()', 500);
+
+		$('#data_formDetail').find('[name=itemType]').closest('div').attr('disabled', 'disabled');
+
+		if ("<?php echo $this->itemType;?>" != 'controller') {
+			$('#data_formDetail').find('select:visible').attr('disabled', 'disabled');
+		}
+		// !---------- END  : MODIFY ---------- //
+	} else {
+		// !---------- BEGIN: CUSTOM ---------- //
+		$('#data_formDetail').find('[name=itemType]:first').click();
+		// !---------- END  : CUSTOM ---------- //
+	}
+
+	// !---------- BEGIN: CUSTOM ---------- //
+	//submit表单提交ajax实现
+	$('#data_formDetail').bind('submit', function() {
+		$(this).find('[wlzAuth]:enabled:visible').blur();
+		if($(this).find('[wlzAuth]:enabled:visible.ui-state-error').length == 0) {
+			var options = {
+					target: $(this).attr('ajaxContainer')
+					,url: $(this).attr('action')
+					,type: $(this).attr('method')
+				};
+
+			$(this).find('fieldset:hidden').remove();
+
+			$(this).ajaxSubmit(options);
+		}
+		return false; //禁止表单自动提交
+	});
+	// !---------- END  : CUSTOM ---------- //
+}
+
+$(document).ready(function() {
+	iniPage_detail(); //初始化页面
+});
+</script>
+
+<div style="text-align:center;">
+	<form id="data_formDetail" ajaxContainer="#data_divList" method="post">
+		<input type="hidden" name="keyId" value="<?php echo $this->keyId;?>" />
+
+		<div style="width:90%;">
+			<div class="wiliz-cursor-pointer" style="margin:10px;">
+				<label><input type="radio" name="itemType" value="module" checked="checked" onclick="custom_showEditFieldset(this);" />Module&nbsp;&nbsp;</label>
+				<label><input type="radio" name="itemType" value="controller" onclick="custom_showEditFieldset(this);" />Controller&nbsp;&nbsp;</label>
+				<label><input type="radio" name="itemType" value="action" onclick="custom_showEditFieldset(this);" />Action</label>
+			</div>
+
+			<hr />
+
+			<div style="margin-top:10px;">
+				<fieldset group="module" style="width:280px;text-align:left;">
+					<legend>&nbsp;&nbsp;Module&nbsp;&nbsp;</legend>
+					<table cellspacing="5" cellpadding="5">
+						<tr>
+							<td>ItemName</td>
+							<td><input type="text" name="itemName" class="wiliz-txt data-detail-input" wlzAuth="txtValEmpty" disabled="disabled" /></td>
+						</tr>
+						<tr>
+							<td>ModuleName</td>
+							<td><input type="text" name="moduleName" class="wiliz-txt data-detail-input" wlzAuth="txtValEmpty" disabled="disabled" /></td>
+						</tr>
+						<tr>
+							<td>Remarks</td>
+							<td><input type="text" name="remarks" class="wiliz-txt data-detail-input" disabled="disabled" /></td>
+						</tr>
+					</table>
+				</fieldset>
+
+				<fieldset group="controller" style="width:400px;text-align:left;">
+					<legend>&nbsp;&nbsp;Controller&nbsp;&nbsp;</legend>
+					<table cellspacing="5" cellpadding="5">
+						<tr>
+							<td>ItemName</td>
+							<td><input type="text" name="itemName" class="wiliz-txtl data-detail-input" wlzAuth="txtValEmpty" disabled="disabled" /></td>
+						</tr>
+						<tr>
+							<td>ModuleName</td>
+							<td>
+								<select name="moduleId" class="wiliz-sltl data-detail-input" wlzAuth="sltNotFirst" disabled="disabled">
+									<option>请选择</option>
+									<?php if (isset($this->allModule)):?>
+										<?php foreach ($this->allModule as $arrSub):?>
+										<option value="<?php echo $arrSub['moduleId'];?>"><?php echo $arrSub['displayName'];?></option>
+										<?php endforeach;?>
+									<?php endif;?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>ControllerName</td>
+							<td><input type="text" name="controllerName" class="wiliz-txtl data-detail-input" wlzAuth="txtValEmpty" disabled="disabled" /></td>
+						</tr>
+						<tr>
+							<td>IsDialog</td>
+							<td>
+								<label><input type="radio" name="isDialog" class="data-detail-input" disabled="disabled" value="1" />是&nbsp;&nbsp;</label>
+								<label><input type="radio" name="isDialog" class="data-detail-input" disabled="disabled" value="0" checked="checked" />否</label>
+							</td>
+						</tr>
+						<tr>
+							<td>Remarks</td>
+							<td><input type="text" name="remarks" class="wiliz-txtl data-detail-input" disabled="disabled" /></td>
+						</tr>
+					</table>
+				</fieldset>
+
+				<fieldset group="action" style="width:400px;text-align:left;">
+					<legend>&nbsp;&nbsp;Action&nbsp;&nbsp;</legend>
+					<table cellspacing="5" cellpadding="5">
+						<tr>
+							<td>ItemName</td>
+							<td><input type="text" name="itemName" class="wiliz-txtl data-detail-input" wlzAuth="txtValEmpty" disabled="disabled" /></td>
+						</tr>
+						<tr>
+							<td>ModuleName</td>
+							<td>
+								<select name="moduleId" class="wiliz-sltl data-detail-input" wlzAuth="sltNotFirst" disabled="disabled" onchange="custom_getModuleAction(this);">
+									<option value="0">请选择</option>
+									<?php if (isset($this->allModule)):?>
+										<?php foreach ($this->allModule as $arrSub):?>
+										<option value="<?php echo $arrSub['moduleId'];?>"><?php echo $arrSub['displayName'];?></option>
+										<?php endforeach;?>
+									<?php endif;?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>ControllerName</td>
+							<td>
+								<select name="controllerId" class="wiliz-sltl data-detail-input" disabled="disabled">
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>ActionName</td>
+							<td><input type="text" name="actionName" class="wiliz-txtl data-detail-input" wlzAuth="txtValEmpty" disabled="disabled" /></td>
+						</tr>
+						<tr>
+							<td>Remarks</td>
+							<td><input type="text" name="remarks" class="wiliz-txtl data-detail-input" disabled="disabled" /></td>
+						</tr>
+					</table>
+				</fieldset>
+			</div>
+		</div>
+	</form>
+</div>

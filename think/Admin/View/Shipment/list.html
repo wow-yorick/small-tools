@@ -1,0 +1,89 @@
+{{:W('Menu/Breadcrumb')}}
+<div class="page-container">
+    <div class="text-l">
+        <form target="_self" action="" method="get" class="Huiform">
+            产品名称：
+            <span class="select-box inline">
+				<select class="select" name="product_code">
+					<option value="0">全部产品</option>
+					<foreach name="products" item="product" key="key">
+						<eq name="key" value="$product_code">
+							<option value="{{$key}}" selected>{{$product}}</option>
+							<else/>
+							<option value="{{$key}}">{{$product}}</option>
+						</eq>
+					</foreach>
+				</select>
+			</span>
+            客户：
+            <span class="select-box inline">
+				<select class="select" name="customer_id">
+					<option value="0">请选择</option>
+					<foreach name="customers" item="customer" key="key">
+						<eq name="key" value="$customer_id">
+							<option value="{{$key}}" selected>{{$customer}}</option>
+							<else/>
+							<option value="{{$key}}">{{$customer}}</option>
+						</eq>
+					</foreach>
+				</select>
+			</span>
+            <button type="submit" class="btn btn-success">
+                <i class="Hui-iconfont">&#xe665;</i> 搜索
+            </button>
+        </form>
+    </div>
+    <div class="dataTables_wrapper no-footer">
+        <table class="table table-border table-bordered table-hover table-bg">
+            <thead>
+            <tr class="text-c">
+                <th width="40">ID</th>
+                <th width="200">发货流水号</th>
+                <th width="200">产品名称</th>
+                <th width="200">产品编号</th>
+                <th width="200">客户名称</th>
+                <th width="200">发货时间</th>
+                <th width="100">状态</th>
+                <th width="100">数量</th>
+                <th width="100">已打包数量</th>
+                <th width="200">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="obj">
+                <tr class="text-c">
+                    <td>{{$obj['id']}}</td>
+                    <td>{{$obj['shipment_code']}}</td>
+                    <td>{{$obj['product_name']}}</td>
+                    <td>{{$obj['product_num']}}</td>
+                    <td>{{$obj['customer_name']}}</td>
+                    <td>{{$obj['createdatetime']}}</td>
+                    <td>{{$obj['status']}}</td>
+                    <td>{{$obj['number']}}</td>
+                    <td>{{$obj['has_packed']}}</td>
+                    <td>
+                        <if condition="checkAuth('shipment/detail')">
+
+                            <a class="ml-5" style="text-decoration:none"
+                               onclick="shipmentList('详情列表','{{:U(\'detail\',array(\'id\'=>$obj[\'id\']))}}')"
+                               href="javascript:void(0);" title="详情列表">
+                                详情列表
+                            </a>
+                        </if>
+                    </td>
+                </tr>
+            </foreach>
+
+            </tbody>
+        </table>
+        {{$page}}
+    </div>
+</div>
+
+<script type="text/javascript">
+    /*-详情列表*/
+    function shipmentList(title, url, w, h) {
+        layer_show(title, url, w, h);
+    }
+</script>
+

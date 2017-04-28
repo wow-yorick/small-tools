@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>IP衍生品-开发,制作,生产,授权,销售供应链-{$page_title}</title>
+	<meta name="keywords" content="IP衍生品,动漫电影衍生品,旅游纪念品,礼赠品开发设计,衍生品开发设计,衍生品制作生产,衍生品授权销售," />
+	<meta name="description" content="专注于商业动漫设计及衍生产品研发的创意机构，发展至今已成为集产品创意设计、加工定制服务、创意品牌孵化的创新型公司。品漫创意工厂-汇聚全球创意产品及设计师品牌,支持个性化定制及全新设计服务。" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+
+<div >
+<!-- #BeginLibraryItem "/library/yansheng.lbi" --><!-- #EndLibraryItem -->
+</div>
+<div class="blank"></div>
+<div class="footer">
+<div class="footerBody">
+<Div class="block">
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</Div>
+</div>
+</div>
+</body>
+</html>

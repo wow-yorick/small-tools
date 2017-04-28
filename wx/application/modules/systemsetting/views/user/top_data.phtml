@@ -1,0 +1,67 @@
+
+<?php 
+require_once APPLICATION_PATH . '/modules/all/views/interfaceJS_single.phtml';
+if(isset($this->searchlabel) && $this->searchlabel == 'search')
+{
+	require_once APPLICATION_PATH . '/modules/all/views/bridgepage_dialog.phtml';
+}
+?>
+<script>
+/*
+ * 初始化页面
+ */
+function iniPage_topdata() {
+	$('#data_tabs').tabs(); //初始化标签页
+	$('#data_tabs').tabs('disable', 1);
+
+	//使能指定的图片功能
+	toggleMenuImg('data_menu', '<?php foreach($this->dataMenuInfo["menutoggle"]["init"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>');
+	//初始化手风琴
+	<?php if($this->dataMenuInfo["menuvisible"]["menuaccordion"] == "1"):?>
+	var jElement = $('<div id="data_accordion" class="data_accordion"><dl><dt>基本菜单</dt><dd><table><tr></tr></table></dd><dt>其他菜单</dt><dd><table><tr></tr></table></dd></dl></div>');
+	jElement.find('dd:first').find('tr').html($('.data_menu table tr').children('td.firstChildNode').not(':last'));
+	jElement.find('dd:last').find('tr').html($('.data_menu table tr').children('td.firstChildNode:last'));
+	$('.data_menu').empty();
+	$('.data_menu').append(jElement);
+	$('#data_accordion').easyAccordion({
+		slideNum: false
+	});
+	<?php endif;?>
+}
+
+$(document).ready(function() {
+	iniPage_topdata(); //初始化页面
+});
+</script>
+
+<div class="rootArea">
+	<table class="wlz-table">
+		<tr class="content-menu"><td>
+			<div class="data_menu">
+				<table><tr>
+					<!-- 基本操作 -->
+					<td class="firstChildNode"><?php echo $this->dataHTMLhelper["basemenu"];?></td>
+
+					<!-- 提交操作 -->
+					<td class="firstChildNode"><?php echo $this->dataHTMLhelper["confirmmenu"];?></td>
+
+					<!-- 搜索操作 -->
+					<td class="firstChildNode"><?php echo $this->dataHTMLhelper["searchmenu"];?></td>
+
+					<!-- 其它操作 -->
+					<td class="firstChildNode"><?php echo $this->dataHTMLhelper["othermenu"];?></td>
+				</tr></table>
+			</div>
+		</td></tr>
+		<tr class="content-body"><td>
+			<div id="data_tabs">
+				<ul>
+					<li><a id="data_aList" href="#data_divList"><span>数据列表</span></a></li>
+					<li><a id="data_aDetail" href="#data_divDetail"><span>数据详细信息</span></a></li>
+				</ul>
+				<div id="data_divList" class="content-body-item"><?php require_once 'list_ajax.phtml';?></div>
+				<div id="data_divDetail" class="content-body-item"></div>
+			</div>
+		</td></tr>
+	</table>
+</div>

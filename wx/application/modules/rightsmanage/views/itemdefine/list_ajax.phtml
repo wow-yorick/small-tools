@@ -1,0 +1,50 @@
+
+<script>
+/*
+ * 初始化页面
+ */
+function iniPage_list() {
+	//设置点击行使能对应图标效果
+	$('#data_tblList tbody tr').each(function() {
+		$(this).bind('click', function() {
+			$(this).closest('table').find('tr[isSelected]:visible').removeAttr('isSelected');
+			$(this).attr('isSelected', 'isSelected');
+		});
+	});
+	var screenline = Math.round(($(window).height() -370)/25);
+	//初始化dataTable
+	var No_colNum = "<?php echo $this->dataMenuInfo['No_colNum'];?>";
+	$('#data_tblList').OusuTable(null, null, No_colNum, {
+		 'iDisplayLength' : screenline
+		 ,'bLengthChange':false
+	});
+}
+
+$(document).ready(function() {
+	iniPage_list(); //初始化页面
+});
+</script>
+
+<table id="data_tblList">
+	<thead>
+		<tr>
+		<?php if($this->dataMenuInfo['batchoperation']):?><th><input type="checkbox" class="wlz_chk_all" onclick="setTimeout(data_toggleBatchCheck(this), 100);" /></th><?php endif;?>
+		<?php foreach($this->dataGridInfo["listfield"] as $field):?>
+			<th <?php if(isset($field['headstyle'])) echo 'style="' . $field['headstyle'] . '"';?>>
+			<label style="white-space:nowrap;"><?php echo $field["dispname"];?></label></th>
+		<?php endforeach;?>
+		</tr>
+	</thead>
+	<tbody>
+	<?php if (isset($this->allDataList)):?>
+		<?php foreach ($this->allDataList as $arrSub):?>
+		<tr keyId="<?php echo $arrSub[$this->dataGridInfo['keyid']];?>" onclick="setTimeout(data_toggleRelativeImg(this), 10);" ondblclick="data_dblclickRow(this);">
+		<?php if($this->dataMenuInfo['batchoperation']):?><td style="text-align:center;"><input type="checkbox" class="wlz_chk_single" onclick="setTimeout(data_toggleBatchCheck(this), 100);" /></td><?php endif;?>
+		<?php foreach($this->dataGridInfo["listfield"] as $field):?>
+			<td <?php if(isset($field['bodystyle'])) echo 'style="' . $field['bodystyle'] . '"';?> style="white-space:nowrap;"><?php if(isset($arrSub[$field["fieldname"]])) echo $arrSub[$field["fieldname"]];?></td>
+		<?php endforeach;?>
+		</tr>
+		<?php endforeach;?>
+	<?php endif;?>
+	</tbody>
+</table>

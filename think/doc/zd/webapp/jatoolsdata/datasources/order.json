@@ -1,0 +1,106 @@
+{
+	dataset : {
+		"default" : {
+			id : "151201"
+		},
+		factory : "com.jatools.mireport.JDBCDatasetFactory",
+		jdbc : "demo1",
+		master : {
+			name : "订单记录",
+			sql : "select 订单号,订单日期,客户,运货地址,业务员,订单状态 from orders where 订单号='${id}'"
+		},
+		detail : {
+			name : "订单明细",
+			sql : "select ID,产品,型号,单价,数量,金额  from details where 订单号='${订单号}'"
+		}
+	},
+	ui : {
+		defaults : {
+			"text-editable" : true
+		},
+		fields : [{
+					type : 'label',
+					expr : ' ',
+					display : '+'
+				}, {
+					type : 'text',
+					display : "页码",
+					expr : '${$当前页}/${$总页数}',
+					editable : true
+				}, 
+				
+				
+				{
+					type : 'text',
+					display : "页码",
+					field : '订单号',
+					editable : true
+				}, {
+					type : 'text',
+					field : '$当前页',
+					editable : true
+				}, {
+					type : 'text',
+					field : '$总页数',
+					editable : true
+				}, {
+					type : 'text',
+					field : '订单号',
+					editable2 : true
+				}, 
+				{ type:'barcode', field : '订单号', codetype:'qr' },
+				
+				{
+					type : 'text',
+					field : '订单日期'
+				}, {
+					type : 'text',
+					field : '客户',
+					format: '#0.00'
+				}, {
+					type : 'text',
+					field : '运货地址'
+				}, {
+					type : 'text',
+					field : '业务员'
+				}, {
+					type : 'text',
+					field : '订单状态'
+				},  {
+					type : 'table',
+					options : {
+						"no-border" : false,
+						"header-rows" : 1,
+						"body-rows" : 6,
+						"footer-rows" : 1
+					},
+					dataset : "订单明细",
+					fields : [{
+								type : 'text',
+								field : 'ID',
+								display : "序号"
+							}, {
+								type : 'text',
+								field : '产品',
+								editable : false
+							}, {
+								type : 'text',
+								field : '型号'
+							}, {
+								type : 'text',
+								field : '单价',
+								format:'#0.00',
+								editable : false,
+								"total-menu" : true
+							}, {
+								type : 'text',
+								field : '数量',
+								format:'#0.00'
+							}, {
+								type : 'text',
+								field : '金额',
+								format:'#0.00'
+							}]
+				}]
+	}
+}

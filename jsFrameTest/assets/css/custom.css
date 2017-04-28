@@ -1,0 +1,17 @@
+/* here you can put your own css to customize and override the theme */
+.tableForm {}
+.tableForm .table caption{background:rgb(170,170,170);line-height:2.5em;}
+.tableForm .table caption span.left{float:left;padding-left:10px;}
+.tableForm .table caption span.right{float:right;padding-right:10px;}
+.tableForm .table thead > tr > th, .tableForm .table tbody > tr > th, .tableForm .table tfoot > tr > th,.tableForm .table thead > tr > td,.tableForm .table tbody > tr > td, .tableForm .table tfoot > tr > td {
+    padding: 0;
+    text-align:center;
+}
+.tableForm .table tbody > tr >td input,.tableForm .table tbody > tr >td select,.tableForm .table tbody > tr >td textarea{
+	border:none;
+	background:#FFFFF0;
+}
+
+.lightgrey{background:#DBDBDB;}
+
+.has-error{border:1px solid red;}

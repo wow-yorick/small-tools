@@ -1,0 +1,59 @@
+{
+	"ui" : {
+		"fields" : [{
+					"text" : "订单号",
+					"type" : "text"
+				}, {
+					"text" : "订单日期",
+					"type" : "text"
+				}, {
+					"text" : "客户",
+					"type" : "text"
+				}, {
+					"text" : "运货地址",
+					"type" : "text"
+				}, {
+					"text" : "业务员",
+					"type" : "text"
+				}, {
+					"text" : "订单状态",
+					"type" : "text"
+				}, {
+					"dataset" : "订单明细",
+					"type" : "table",
+					"fields" : [{
+								"text" : "ID",
+								"type" : "text"
+							}, {
+								"text" : "产品",
+								"type" : "text"
+							}, {
+								"text" : "型号",
+								"type" : "text"
+							}, {
+								"text" : "单价",
+								"type" : "text"
+							}, {
+								"text" : "数量",
+								"type" : "text"
+							}, {
+								"text" : "金额",
+								"type" : "text"
+							}],
+					"options" : {
+						"footerRows" : 1,
+						"noBorder" : true,
+						"headerRows" : 1
+					}
+				}]
+	},
+	"dataset" : {
+		"detail" : {
+			"name" : "订单明细"
+		},
+		"factory" : "com.jatools.mireport.SimpleDatasetFactory",
+		"master" : {
+			"name" : "订单记录"
+		}
+	}
+}

@@ -1,0 +1,84 @@
+<article class="page-container">
+	<form class="form form-horizontal" id="role-edit" method="post" action="__ACTION__">
+		<input type="hidden" name="id" value="{{$detail['id']}}">
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>客户姓名：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="name" placeholder="客户姓名" value="{{$detail['name']}}" class="input-text">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>客户手机号码：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="mobile" maxlength=11 placeholder="客户手机号码" value="{{$detail['mobile']}}" class="input-text">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>客户公司：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="company" placeholder="客户公司" value="{{$detail['company']}}" class="input-text">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>客户地址：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="address" placeholder="客户地址" value="{{$detail['address']}}" class="input-text">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" class="btn btn-primary radius">
+			</div>
+		</div>
+
+	</form>
+</article>
+<script type="text/javascript">
+	$("#role-edit").validate({
+		rules: {
+		},
+		onkeyup: false,
+		focusCleanup: true,
+		success: "valid",
+		submitHandler: function (form) {
+			var layerIndex = layer.load(1, {
+				shade: [0.1, '#fff'] //0.1透明度的白色背景
+			});
+			$(form).ajaxSubmit({
+				success: function (data) {
+					if (data.status == 1) {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 500,
+						}, function () {
+                            parent.location.reload();
+						});
+					} else {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 1000,
+						});
+
+					}
+				}
+			});
+		}
+	})
+</script>

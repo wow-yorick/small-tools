@@ -1,0 +1,43 @@
+@charset "utf-8";
+/* CSS Document */
+.vjs-big-play-button{margin-top:200px;}
+
+.playercont{
+	width:865px;
+	height:549px;
+}
+.playercont .video-js{float:left;}
+.playercont .playright{
+	width:264px;
+	height:549px;
+	float:right;
+	z-index:15;
+	position:relative;
+	background:url(videobg.jpg) no-repeat;
+}
+#swfcont{float:left;}
+.listcont {height:500px;margin:23px 0 0 20px;overflow:hidden;position:relative;}
+.playercont .playright .playlist ul { overflow: hidden; *zoom: 1;height:1000000; position:absolute;}
+.playercont .playright .playlist li{float:left;width:225px; height:83px;cursor:pointer;}
+.playercont .playright .playlist .novideo { cursor: default; }
+.playercont .playright .playlist li .pic{float:left;position:relative;display:inline;margin:15px 5px 0 0;width:70px;height:52px;cursor:pointer;}
+.playercont .playright .playlist li .pic .maskbg{display:none; position:absolute;top:0;left:0;width:70px;height:52px;background:url(vfocus11.png) no-repeat;_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='vfocus11.png',sizingMethod='scale');_background-image: none;}
+.playercont .playright .playlist li .pic .masktxt{display:none;position:absolute;top:37px;left:0;width:70px; text-align:center;line-height:15px;color:#fff;}
+.playercont .playright .playlist li .pic a{display:block;width:70px;height:52px;overflow:hidden;}
+.playercont .playright .playlist li a img{width:74px;height:56px;margin:-2px;}
+.playercont .playright .playlist li.current .maskbg{display:block;}
+.playercont .playright .playlist li.current .masktxt{display:block;}
+.playercont .playright .playlist li .picml{padding-left:14px;}
+.playercont .playright .playlist li .picml .maskbg{left:14px;}
+.playercont .playright .playlist li .picml .masktxt{left:14px;}
+/*li h4 标题设置标题样式*/
+.playercont .playright .playlist li h4{float:left;width:97px;height:54px;padding-top:17px; overflow:hidden; font-size:12px; font-weight:normal; line-height:1.3em; text-decoration:none;}
+.playercont .playright .playlist li.current h4 a{color:#901d22; text-decoration:none;}
+.playercont .playright .playlist li:hover h4 a{color:#901d22;text-decoration:underline;}
+.playercont .playright .playlist .listbar{position:absolute;right:0;top:202px;}
+.playercont .playright .playlist .listbar .uparrow{width:28px; height:28px; cursor: pointer;}
+.playercont .playright .playlist .listbar .uparrow a{display:block;width:28px;height:28px;text-indent:-9999px; cursor: pointer; background:url(vfocus03.png) no-repeat;_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='vfocus03.png',sizingMethod='scale');_background-image: none;}
+.playercont .playright .playlist .listbar .uparrow a:hover{background:url(vfocus04.png) no-repeat;_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='vfocus04.png',sizingMethod='scale');_background-image: none;}
+.playercont .playright .playlist .listbar .downarrow{width:28px; height:28px;margin-top:55px; cursor: pointer;}
+.playercont .playright .playlist .listbar .downarrow a{display:block;width:28px; cursor: pointer; height:28px;text-indent:-9999px;  background:url(vfocus06.png) no-repeat;_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='vfocus06.png',sizingMethod='scale');_background-image: none;}
+.playercont .playright .playlist .listbar .downarrow a:hover{background:url(vfocus07.png) no-repeat;_filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='vfocus07.png',sizingMethod='scale');_background-image: none;}

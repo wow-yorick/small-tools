@@ -1,0 +1,36 @@
+{
+	"datasource" : "order",
+	"styles" : ".jp-page{position:relative}\n.jp-text,.jp-label{font-size:12px;white-space:nowrap;text-justify:distribute-all-lines;text-align-last:justify;-moz-text-align-last:justify;-webkit-text-align-last:justify;}\n.jp-text,.jp-label,.jp-image,.jp-barcode{position:absolute;overflow:hidden}\n.jp-line-horz,.jp-line-vert,.jp-table{position:absolute;}\n.jp-table{min-width:1px;min-height:1px;}\n.jp-table table{border-collapse:collapse}\n.jp-auto-stretch,.jp-barcode object,.jp-barcode embed{width: 100%; height: 100%;}\n.jp-paper-background{position:absolute;}\n.jp-stretch {width: 100%;height:100%;}\n.jp-keep-width {width: 100%;}\n.jp-keep-height {height: 100%;\t}\n.jp-comp-4{white-space: normal; font-family: 'Times New Roman'; font-weight: 400; font-style: normal; text-decoration: none; font-size: 12px; color: #000000; text-align: left; z-index: 102; left: 210px; top: 58px; width: 54px; height: 14px; background-color: rgba(0, 0, 0, 0);}\n.jp-comp-5{white-space: normal; font-family: 'Times New Roman'; font-weight: 400; font-style: normal; text-decoration: none; font-size: 12px; color: #000000; text-align: left; z-index: 103; left: 259px; top: 492px; width: 214px; height: 35px; background-color: rgba(0, 0, 0, 0);}\n.jp-comp-7{white-space: normal; font-family: 'Times New Roman'; font-weight: 400; font-style: normal; text-decoration: none; font-size: 12px; color: #000000; text-align: left; z-index: 106; left: 369px; top: 92px; width: 180px; height: 23px; background-color: rgba(0, 0, 0, 0);}\n.jp-comp-6{white-space: normal; font-family: sans-serif; font-weight: 400; font-style: normal; text-decoration: none; font-size: 12px; color: #000000; text-align: start; z-index: 107; left: 339px; top: 18px; width: 121px; height: 17px; background-color: rgba(0, 0, 0, 0);}\n.jp-comp-22{white-space: normal; font-family: sans-serif; font-weight: 400; font-style: normal; text-decoration: none; font-size: 12px; color: #000000; text-align: start; z-index: 108; left: 567px; top: 18px; width: 196px; height: 56px; background-color: rgba(0, 0, 0, 0);}\n.jp-comp-8{overflow: visible; border: none; padding: 0px; min-width: 1px; min-height: 1px; z-index: 110; left: 315px; top: 190px;}",
+	"children" : [{
+				"html" : "<div class=\"jp-text jp-comp-4\">${订单号}</div>",
+				"type" : "text"
+			}, {
+				"html" : "<div class=\"jp-label jp-comp-5\">司机：${订单号}</div>",
+				"type" : "label"
+			}, {
+				"html" : "<div class=\"jp-text jp-comp-7\">${$当前页+\"/\"+$总页数}</div>",
+				"type" : "text"
+			}, {
+				"html" : "<div class=\"jp-text jp-comp-6\">${$当前页}/${$总页数}</div>",
+				"type" : "text"
+			}, {
+				"html" : "<div class=\"jp-text jp-comp-22\">${$当前页}/${$总页数}</div>",
+				"type" : "text"
+			}, {
+				"dataset" : "订单明细",
+				"options" : {
+					"header-rows" : 1,
+					"body-rows" : 6,
+					"footer-rows" : 1,
+					"columns" : 0,
+					"no-border" : false
+				},
+				"headerHTML" : "<tr><td style=\"height: 30px; top: 190px; left: 315px;\" class=\"ui-selected\"><span class=\"expr\">序号</span></td><td style=\"height: 30px;\" class=\"\"><span class=\"expr mutable\">产品</span></td><td style=\"height: 30px;\" class=\"\"><span class=\"expr\">型号</span></td><td style=\"height: 30px;\"><span class=\"expr mutable\">单价</span></td><td style=\"height: 30px;\"><span class=\"expr\">数量</span></td><td style=\"height: 30px;\"><span class=\"expr\">金额</span></td></tr>",
+				"bodyHTML" : "<tr><td style=\"height: 30px;\"><span class=\"expr\">${序号}</span></td><td style=\"height: 30px;\"><span class=\"expr mutable\">${产品}</span></td><td style=\"height: 30px;\"><span class=\"expr\">${型号}</span></td><td style=\"height: 30px;\"><span class=\"expr mutable\">${单价}</span></td><td class=\"\" style=\"height: 30px;\"><span class=\"expr\">${数量}</span></td><td style=\"height: 30px;\"><span class=\"expr\">${金额}</span></td></tr>",
+				"footerHTML" : "<tr><td style=\"height: 30px;\"><span class=\"expr\"></span></td><td style=\"height: 30px;\"><span class=\"expr mutable\"></span></td><td style=\"height: 30px;\"><span class=\"expr\"></span></td><td style=\"height: 30px;\"><span class=\"expr mutable\"></span></td><td style=\"height: 30px;\"><span class=\"expr\"></span></td><td style=\"height: 30px;\"><span class=\"expr\"></span></td></tr>",
+				"tableHTML" : "<div class=\"jp-table jp-black-border jp-comp-8\"><table cellspacing=\"0\" style=\"width: 381px; cursor: default;\"><colgroup><col width=\"60\"><col width=\"81\"><col width=\"60\"><col width=\"60\"><col width=\"60\"><col width=\"60\"></colgroup><tbody></tbody></table></div>",
+				"type" : "table"
+			}],
+	"pageHTML" : "<div id=\"page${pageNo}\" class=\"jp-page\" style=\"width: 210mm; height: 297mm;\"></div>",
+	"settingsID" : "123"
+}

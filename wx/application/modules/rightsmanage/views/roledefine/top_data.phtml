@@ -1,0 +1,24 @@
+
+<style>
+.roledefine-item {
+	padding: 10px;
+	margin: 5px;
+	text-align: center;
+}
+
+.roledefine-btn {
+	width: 100%;
+	height: 25px;
+	margin-top: 10px;
+}
+</style>
+
+<div id="divRoleDefine">
+	<table>
+		<tr>
+			<td><div id="divRole" class="ui-widget-content"><?php require_once 'role_ajax.phtml'; ?></div></td>
+			<td><div id="divModule" class="ui-widget-content" style="margin-left:15px;"><?php require_once 'module_ajax.phtml'; ?></div></td>
+			<td><div id="divRights" class="ui-widget-content" style="margin-left:15px;"></div></td>
+		</tr>
+	</table>
+</div>

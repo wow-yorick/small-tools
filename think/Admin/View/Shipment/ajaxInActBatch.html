@@ -1,0 +1,19 @@
+{__NOLAYOUT__}
+<notempty name="list">
+			<foreach name="list" item="obj">
+				<tr class="text-c" id="tr_{{$obj['id']}}">
+					<td>{{$obj['id']}}</td>
+					<td>{{$obj['shipment_code']}}</td>
+					<td>{{$obj['product_num']}}</td>
+					<td>{{$obj['product_name']}}</td>
+					<td>{{$obj['number']}}</td>
+					<td>{{$obj['has_packed']}}</td>
+					<td>{{$obj['status']}}</td>
+					<td>{{$obj['createdatetime']}}</td>
+                    <td class="td-manage">
+                        <!--{{:W('FormUnit/BtnSmall', array('删除','package','del',array('id'=>$obj['id'])))}}-->
+                        {{:W('FormUnit/BtnSmall', array('出库数据采集','shipment','packAct',array('id'=>$obj['id'])))}}
+					</td>
+				</tr>
+                </foreach>
+</notempty>

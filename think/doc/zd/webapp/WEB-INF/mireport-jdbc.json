@@ -1,0 +1,14 @@
+{
+	"demo1" : {
+		driver : "org.hsqldb.jdbcDriver",
+		url : "jdbc:hsqldb:demo-db",
+		user : "sa",
+		password : ""
+	},
+	"pg" : {
+		driver : "org.postgresql.Driver",
+		url : "jdbc:postgresql://localhost:5432/flexflow",
+		user : "a1flexflow",
+		password : "a1flexflowpw"
+	}
+}

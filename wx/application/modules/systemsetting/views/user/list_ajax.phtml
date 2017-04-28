@@ -1,0 +1,77 @@
+<script>
+/*
+ * 初始化页面
+ */
+function iniPage_list() {
+	<?php if(isset($this->searchlabel) && $this->searchlabel == 'search'):?>
+	var screenline = Math.round(($(window).height() -270)/25);
+	<?php else: ?>
+	var screenline = Math.round(($(window).height() -370)/25);
+	<?php endif; ?>
+
+	//初始化dataTable
+	var No_colNum = "<?php echo $this->dataMenuInfo['No_colNum'];?>";
+	$('#data_tblList').OusuTable(null, null, No_colNum, {
+		'bProcessing': true
+		,'bServerSide': true
+		, 'iDisplayLength' : screenline
+		,'bLengthChange':false
+		,'fnDrawCallback': function() {
+			$(this).addClass('display');
+			$(this).find('tbody tr').click(function () {
+				if ($(this).hasClass('row_selected')) {
+					$(this).removeClass('row_selected');
+				} else {
+					$(this).closest('table').find('tr.row_selected').removeClass('row_selected');
+					$(this).addClass('row_selected');
+				}	
+				$(this).closest('table').find('tr[isSelected]:visible').removeAttr('isSelected');
+				$(this).attr('isSelected', 'isSelected');
+			});
+			$(this).find('tbody tr').each(function(){
+					$(this).attr('keyId',$(this).find('td:first').text());
+					$(this).css('white-space','nowrap');
+					$(this).bind('click',function(){setTimeout(data_toggleRelativeImg(this), 10);});
+					$(this).bind('dblclick',function(){data_dblclickRow(this);});
+					<?php for($i=0;$i<sizeof($this->dataGridInfo["listfield"]);$i++):?>
+					<?php if (isset($this->dataGridInfo["listfield"][$i]["bodystyle"])):?>
+					var tdstyle<?php echo $i;?>="<?php echo $this->dataGridInfo['listfield'][$i]['bodystyle'];?>";
+					var list = tdstyle<?php echo $i;?>.split(':');
+					$(this).find('td:eq(<?php echo $i;?>)').css(list[0],list[1]);
+					<?php endif; ?>
+					<?php endfor; ?>	
+				});
+		}
+		,'bSort': true
+	 	,'sAjaxSource': "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/' . $this->controllerName . '/pagingrecordinfo';?>"
+	});
+}
+
+$(document).ready(function() {
+	iniPage_list(); //初始化页面
+});
+</script>
+
+<table id="data_tblList">
+	<thead>
+		<tr>
+			<?php if($this->dataMenuInfo['batchoperation']):?><th><input type="checkbox" class="wlz_chk_all" onclick="setTimeout(data_toggleBatchCheck(this), 100);" /></th><?php endif;?>
+			<?php foreach($this->dataGridInfo["listfield"] as $field):?>
+			<th <?php if(isset($field['headstyle'])) echo 'style="' . $field['headstyle'] . '"';?>>
+				<label style="white-space:nowrap;"><?php echo $field["dispname"];?></label></th>
+			<?php endforeach;?>
+		</tr>
+	</thead>
+	<tbody>
+	<?php if (isset($this->allDataList)):?>
+		<?php foreach ($this->allDataList as $arrSub):?>
+		<tr keyId="<?php echo $arrSub[$this->dataGridInfo['keyid']];?>" onclick="setTimeout(data_toggleRelativeImg(this), 10);" ondblclick="data_dblclickRow(this);">
+		<?php if($this->dataMenuInfo['batchoperation']):?><td style="text-align:center;"><input type="checkbox" class="wlz_chk_single" onclick="setTimeout(data_toggleBatchCheck(this), 100);" /></td><?php endif;?>
+			<?php foreach($this->dataGridInfo["listfield"] as $field):?>
+			<td <?php if(isset($field['bodystyle'])) echo 'style="' . $field['bodystyle'] . '"';?> style="white-space:nowrap;"><?php if(isset($arrSub[$field["fieldname"]])) echo $arrSub[$field["fieldname"]];?></td>
+			<?php endforeach;?>
+		</tr>
+		<?php endforeach;?>
+	<?php endif;?>
+	</tbody>
+</table>

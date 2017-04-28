@@ -1,0 +1,7 @@
+{
+	"reportManager" : "com.jatools.mireport.DefaultReportManager",
+	"datasourceManager" : "com.jatools.mireport.DefaultDatasourceManager",
+	"imageManager" : "com.jatools.mireport.DefaultImageManager",
+	"upload-max-size": "1024*1024*2", 
+	"upload-max-size-error":"上传文件太大，文件最大不超过 2M" 
+}

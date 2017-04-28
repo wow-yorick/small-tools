@@ -1,0 +1,270 @@
+
+<script>
+//!------------------------------ BEGIN: table中相关操作的JS代码 ------------------------------ //
+/*
+ * 行点击设置form的hidden标签keyId值
+ */
+function data_setFormKeyId(obj) {
+	$(obj).closest('form').find('[name=keyId]').val($(obj).attr('keyId'));
+}
+
+/*
+ * checkbox的onclick事件，使能使能相应menu图片
+ */
+function data_toggleBatchCheck(obj) {
+	$(obj).closest('tr').click(); //移除行背景颜色
+
+	return function() {
+		if ($(obj).closest('table').find('tr[name=wlz_editing]').length > 0) return;
+
+		var size = $(obj).closest('table').find('.wlz_chk_single:visible:checked').length;
+		if (size > 0) {
+			<?php foreach($this->dataMenuInfo['menutoggle']['gridcheck'] as $item):?>
+			toggleMenuImgBase($("#<?php echo $item;?>"), 1);
+			<?php endforeach;?>
+		} else {
+			<?php foreach($this->dataMenuInfo['menutoggle']['gridcheck'] as $item):?>
+			toggleMenuImgBase($("#<?php echo $item;?>"), 0);
+			<?php endforeach;?>
+		}
+	}
+}
+
+/*
+ * table中行的click事件，使能detail图标
+ * 闭包方式：用于setTimeout传'this'参数
+ */
+function data_toggleRelativeImg(obj) {
+	return function() {
+		if ($(obj).closest('table').find('tr[name=wlz_editing]').length > 0) return;
+
+		if ($(obj).closest('table').find('.row_selected').length) {
+			toggleMenuImgBase("<?php foreach($this->dataMenuInfo['menutoggle']['gridclick'] as $item):?>#<?php echo $item;?>,<?php endforeach;?>", 1);
+		} else {
+			toggleMenuImgBase("<?php foreach($this->dataMenuInfo['menutoggle']['gridclick'] as $item):?>#<?php echo $item;?>,<?php endforeach;?>", 0);
+		}
+	}
+}
+
+/*
+ * table中行的dblclick事件，模拟点击修改图标
+ */
+function data_dblclickRow(obj) {
+	<?php if(isset($this->dataMenuInfo['basemenu']['btnModify'])): ?>
+		$(obj).closest('.rootArea').find("#<?php echo $this->dataMenuInfo['basemenu']['btnModify']['itemname'];?>").click();
+	<?php endif; ?>
+}
+//!------------------------------ END  : table中相关操作的JS代码 ------------------------------ //
+
+
+//!------------------------------ BEGIN: 基本操作的JS代码 ------------------------------ //
+<?php if($this->dataMenuInfo['menuvisible']['basemenu'] == '1'): ?>
+
+<?php if(isset($this->dataMenuInfo['basemenu']['btnAdd'])): ?>
+/*
+ * 添加按钮onclick事件
+ */
+function data_showAdd(obj) {
+	if ($(obj).attr('state') == 'disabled') return;
+
+	//使能指定的图片功能
+	toggleMenuImg('data_menu', "<?php foreach($this->dataMenuInfo['menutoggle']['btnAdd'] as $item):?>#<?php echo $item;?>,<?php endforeach;?>");
+
+	//显示编辑行
+	var jElement = $('#data_tblRowTemplate').find('tr:first').clone(true);
+	jElement.attr('name', 'wlz_editing');
+	jElement.show();
+	$('#data_tblList:visible').find('tbody').prepend(jElement);
+
+	//修改form的action属性
+	var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/' . $this->controllerName . '/' . $this->dataMenuInfo['basemenu']['btnAdd']['actionname'];?>";
+	$('#data_form').attr('action', url);
+}
+<?php endif; ?>
+
+<?php if(isset($this->dataMenuInfo['basemenu']['btnModify'])): ?>
+/*
+ * 修改按钮onclick事件
+ */
+function data_showModify(obj) {
+	if ($(obj).attr('state') == 'disabled') return;
+
+	//使能指定的图片功能
+	toggleMenuImg('data_menu', "<?php foreach($this->dataMenuInfo['menutoggle']['btnModify'] as $item):?>#<?php echo $item;?>,<?php endforeach;?>");
+
+	//显示编辑行
+	var keyId = $('#data_tblList:visible').find('tr.row_selected').attr('keyId');
+	var jElement = $('#data_tblRowTemplate').find('tr:first').clone(true);
+	jElement.attr('name', 'wlz_editing');
+	jElement.attr('keyId', keyId);
+	$('#data_tblList:visible').find('tr.row_selected').find('td').each(function() {
+		var index = $(this).index();
+		var jElementTd = jElement.find('td:eq(' + index + ')');
+		if (jElementTd.children(':not(label)').length == 0) {
+			jElementTd.text($(this).text());
+		} else if (jElementTd.find(':radio').length > 0){ //设置radio默认值
+			var text = $(this).text();
+			if (jElementTd.find(':radio[value=' + text + ']').length > 0) {
+				jElementTd.find(':radio[value=' + text + ']').attr('checked', 'checked');
+			} else {
+				jElementTd.find('label').each(function() {
+					if ($(this).text() == text) {
+						jElementTd.find(':radio').removeAttr('checked'); //firefox不加这句有bug
+						$(this).find(':radio').attr('checked', 'checked');
+						return false; //跳出each循环
+					}
+				});
+			}
+			jElementTd.find(':radio:checked').click();
+		} else {
+			if ($(this).attr('fieldval') == null) {
+				jElementTd.children(':first').val($(this).text());
+			} else {
+				jElementTd.children(':first').val($(this).attr('fieldval'));
+			}
+		}
+	});
+	$('#data_tblList:visible').find('tr.row_selected').attr('wlz_tmpHide', 'wlz_tmpHide');
+	$('#data_tblList:visible').find('tr.row_selected').hide();
+	jElement.show();
+	$('#data_tblList:visible').find('tr.row_selected').after(jElement);
+
+	//修改form的action属性
+	var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/' . $this->controllerName . '/' . $this->dataMenuInfo['basemenu']['btnModify']['actionname'];?>";
+	$('#data_form').attr('action', url);
+}
+<?php endif; ?>
+
+<?php if(isset($this->dataMenuInfo['basemenu']['btnDelete'])): ?>
+/*
+ * 删除图标onclick事件
+ */
+function data_delete(obj) {
+	if ($(obj).attr('state') == 'disabled') return;
+
+	var flag = confirm("<?php echo $this->dataMenuInfo['basemenu']['btnDelete']['alert'];?>");
+	if (flag) {
+		var idString = '';
+		if ($('#data_tblList:visible tbody tr').find('td:first').find(':checkbox').length > 0) {
+			$('#data_tblList:visible').find('.data_chkSingle:visible:checked').each(function() {
+				idString += ',' + $(this).closest('tr').attr('keyId');
+			});
+		} else {
+			$('#data_tblList:visible').find('[isSelected]:visible').each(function() {
+				idString += ',' + $(this).closest('tr').attr('keyId');
+			});
+		}
+		idString = idString.substr(1);
+		//alert(idString); return;
+		var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/' . $this->controllerName . '/' . $this->dataMenuInfo['basemenu']['btnDelete']['actionname'];?>";
+		$('#data_divList').load(url, {
+			'idString': idString
+		});
+	}
+}
+<?php endif; ?>
+
+/*
+ * 确认图标onclick事件
+ */
+function data_confirmEdit(obj) {
+	if ($(obj).attr('state') == 'disabled') return;
+
+	//ztree插件获取树选中节点的id
+	if ($('#data_ztree').length > 0) {
+		var treeId = $.fn.zTree.getZTreeObj('data_ztree').getSelectedNodes()[0]['id'];
+		var strHtml = '<input type="hidden" name="treeId" value="' + treeId + '" />';
+		$('#data_form').prepend(strHtml);
+	}
+
+	//设置keyId隐藏域
+	var keyId = $('#data_form').find('tr.row_selected').attr('keyId');
+	var strHtml = '<input type="hidden" name="keyId" value="' + keyId + '" />';
+	$('#data_form').prepend(strHtml);
+
+	$('#data_form').submit();
+}
+
+/*
+ * 取消按钮onclick事件
+ */
+function data_cancelEdit(obj) {
+	if ($(obj).attr('state') == 'disabled') return;
+
+	var menuId = "<?php echo 'li' . $this->moduleName . $this->controllerName;?>";
+	if ($('#' + menuId).length > 0) {
+		$('#' + menuId).click();
+	} else {
+		location.reload();
+	}
+}
+<?php endif;?>
+//!------------------------------ END  : 基本操作的JS代码 ------------------------------ //
+
+
+//!------------------------------ BEGIN: 搜索操作的JS代码 ------------------------------ //
+<?php if($this->dataMenuInfo['menuvisible']['searchmenu'] == '1'): ?>
+/*
+ * 搜索按钮onclick事件
+ */
+function data_search(obj) {
+	if ($(obj).attr('state') == 'disabled') return;
+
+	//submit表单提交ajax实现
+	$(obj).closest('form').unbind('submit');
+	$(obj).closest('form').submit(function(){
+		$(this).find('[wlzAuth]:enabled:visible').blur();
+		if($(this).find('[wlzAuth]:enabled:visible.ui-state-error').length == 0) {
+			var options = {
+				target: '#data_divList'
+				,url: $(this).attr('action')
+				,type: $(this).attr('method')
+			};
+			$(this).ajaxSubmit(options);
+		}
+		return false; //禁止表单自动提交
+	});
+	$(obj).closest('form').submit();
+}
+<?php endif;?>
+//!------------------------------ END  : 搜索操作的JS代码 ------------------------------ //
+
+
+//!------------------------------ BEGIN: 其他操作的JS代码 ------------------------------ //
+<?php if($this->dataMenuInfo['menuvisible']['othermenu'] == '1'): ?>
+	<?php foreach($this->dataMenuInfo['othermenu'] as $menu): ?>
+		<?php if ($menu['iscustomclick'] != '1'): ?>
+		/*
+		 * 其他图标onclick事件
+		 */
+		function <?php $clickname = explode('(',$menu['onclick']); echo $clickname[0];?>(obj) {
+			if ($(obj).attr('state') == 'disabled') return;
+
+			//alert判断
+			if ("<?php echo !isset($menu['isalert']);?>" || "<?php echo $menu['isalert'];?>" == 1) {
+				if (!confirm('<?php echo $menu['alertval'];?>')) return;
+			}
+
+			var idString = '';
+			if ($('#data_tblList tbody tr').find('td:first').find(':checkbox').length > 0) {
+				$('#data_tblList').find('.wlz_chk_single:visible:checked').each(function() {
+					idString += ',' + $(this).closest('tr').attr('keyId');
+				});
+			}
+			if (idString == '') {
+				$('#data_tblList').find('[isSelected]:visible').each(function() {
+					idString += ',' + $(this).closest('tr').attr('keyId');
+				});
+			}
+
+			idString = idString.substr(1);
+			var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/' . $this->controllerName . '/' . $menu['actionname'];?>";
+			$('#divTempContainer').load(url, {
+				'idString': idString
+			});
+		}
+		<?php endif;?>
+	<?php endforeach;?>
+<?php endif;?>
+//!------------------------------ END  : 其他操作的JS代码 ------------------------------ //
+</script>

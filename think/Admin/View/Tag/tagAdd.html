@@ -1,0 +1,165 @@
+<article class="page-container">
+	<form class="form form-horizontal" id="tag-add" method="post" action="{{:U('tag/tagAdd')}}">
+		<input type="hidden" name="product_name" value="">
+		<input type="hidden" name="product_id" value="">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">标签名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" placeholder="标签名称" name="tag_name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">
+				<span class="c-red">*</span>选择公司：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" name="depot_code" id="depot_code">
+                        <option value="">—请选择—</option>
+                        <foreach name="depotList" key="key" item="depot">
+                            <eq name="depot.depot_code" value="$depot_code">
+                            <option address="{{$depot.depot_address}}" value="{{$depot.depot_code}}" selected>{{$depot.depot_name}}</option>
+                            <else/>
+                            <option address="{{$depot.depot_address}}" value="{{$depot.depot_code}}">{{$depot.depot_name}}</option>
+                            </eq>
+
+                        </foreach>
+                    </select>
+                </span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">
+				<span class="c-red">*</span>选择产品：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" name="product_num" id="changeProduct">
+                        <option value="">—请选择—</option>
+                        <foreach name="productList" key="key" item="product">
+                            <eq name="product.product_code" value="$tag['product_num']">
+                            <option product_id="{{$product.id}}" product_name="{{$product.product_name}}" value="{{$product.product_code}}" selected>{{$product.product_name}}</option>
+                            <else/>
+                            <option product_id="{{$product.id}}" product_name="{{$product.product_name}}" value="{{$product.product_code}}">{{$product.product_name}}</option>
+                            </eq>
+
+                        </foreach>
+                    </select>
+                </span>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">
+				<span class="c-red">*</span>选择基础模板(被复用的模板)：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" name="template_copy_from">
+                        <option value="">—请选择—</option>
+                        <foreach name="copyTemplateList" key="key" item="tpl">
+                            <eq name="tpl.tag_num" value="$tag['tag_num']">
+                            <option value="{{$tpl.tag_num}}" selected>{{$tpl.product_name}}-{{$tpl.tag_name}}</option>
+                            <else/>
+                            <option value="{{$tpl.tag_num}}">{{$tpl.product_name}}-{{$tpl.tag_name}}</option>
+                            </eq>
+
+                        </foreach>
+                    </select>
+                </span>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">产地：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" placeholder="产地" name="product_place" value="">
+			</div>
+		</div>
+		<!--<div class="row cl">-->
+		<!--<label class="form-label col-xs-4 col-sm-2">标签详情：</label>-->
+		<!--<div class="formControls col-xs-8 col-sm-9">-->
+		<!--<input type="text" class="input-text" placeholder="标签描述" name="product_place">-->
+		<!--</div>-->
+		<!--</div>-->
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+
+<script type="text/javascript" src="__JS__/webuploader/webuploader.min.js"></script>
+<script type="text/javascript" src="__JS__/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__JS__/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" src="__JS__/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">
+
+
+	$("#tag-add").validate({
+		rules: {
+			product_name: {
+				"required": true,
+			},
+			product_num: {
+				"required": true,
+			},
+			product_place: {
+				"required": true,
+			},
+			tag_detail: {
+				"required": true
+			}
+		},
+		onkeyup: false,
+		focusCleanup: false,
+		success: "valid",
+		submitHandler: function (form) {
+			var layerIndex = layer.load(1, {
+				shade: [0.1, '#fff'] //0.1透明度的白色背景
+			});
+			$(form).ajaxSubmit({
+				success: function (data) {
+					if (data.status == 1) {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 500,
+						}, function () {
+							/*var index = parent.layer.open({
+							 type: 2,
+							 title: '模板选择',
+							 content: data.url
+							 });*/
+							window.open(data.url);
+							//parent.layer.full(index);
+							var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+							parent.layer.close(index); //再执行关闭
+						});
+					} else {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 1000,
+						});
+					}
+				}
+			});
+		}
+	});
+	$('input[name=product_place]').val(
+			$('#depot_code>option:selected').attr('address')
+	);
+
+	$('#depot_code').change(function () {
+		var selectObj = $(this).find('option:selected');
+		$('input[name=product_place]').val(selectObj.attr('address'))
+	})
+	$('#changeProduct').change(function () {
+		var selectObj = $(this).find('option:selected');
+		$('input[type=hidden][name=product_name]').val(selectObj.attr('product_name'));
+		$('input[type=hidden][name=product_id]').val(selectObj.attr('product_id'));
+	})
+</script>

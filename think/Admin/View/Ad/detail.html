@@ -1,0 +1,124 @@
+<article class="page-container">
+<form class="form form-horizontal"  enctype="multipart/form-data" id="role-edit" method="post" action="__ACTION__">
+    <input type="hidden" name="id" value="{{$detail['id']}}">
+
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-3">
+            <span class="c-red">*</span>广告名称：
+        </label>
+
+        <div class="formControls col-xs-8 col-sm-9">
+            <input type="text" name="name" placeholder="广告名称" value="{{$detail['name']}}" class="input-text">
+        </div>
+    </div>
+
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-3">
+            <span class="c-red">*</span>广告A：
+        </label>
+
+        <notempty name="detail.ad_1">
+        <img src='__ROOT__/{{$detail['ad_1']}}' width="50%" height="50%"/>
+        <else />
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="btn-upload form-group">
+                    <input class="input-text upload-url radius" type="text" name="ad_1_filename" value="{{$detail['ad_1_filename']}}" id="uploadfile-1" readonly><a href="javascript:void();" class="btn btn-primary radius"><i class="iconfont">&#xf0020;</i> 浏览文件</a>
+                    <input type="file" multiple name="ad_1" class="input-file">
+                </span>
+            </div>
+        </notempty>
+    </div>
+
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-3">
+            <span class="c-red">*</span>广告A链接：
+        </label>
+
+        <div class="formControls col-xs-8 col-sm-9">
+            <input type="text" name="ad_1_url" placeholder="广告A链接" value="{{$detail['ad_1_url']}}" class="input-text">
+        </div>
+    </div>
+
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-3">
+            <span class="c-red">*</span>广告B：
+        </label>
+
+        <notempty name="detail.ad_2">
+            <img src='__ROOT__/{{$detail['ad_2']}}' width="50%" height="50%"/>
+        <else />
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="btn-upload form-group">
+                    <input class="input-text upload-url radius" type="text" name="ad_2_filename" value="{{$detail['ad_2_filename']}}" id="uploadfile-1" readonly><a href="javascript:void();" class="btn btn-primary radius"><i class="iconfont">&#xf0020;</i> 浏览文件</a>
+                    <input type="file" multiple name="ad_2" class="input-file">
+                </span>
+            </div>
+        </notempty>
+    </div>
+
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-3">
+            <span class="c-red"></span>广告B链接：
+        </label>
+
+        <div class="formControls col-xs-8 col-sm-9">
+            <input type="text" name="ad_2_url" placeholder="广告B链接" value="{{$detail['ad_2_url']}}" class="input-text">
+        </div>
+    </div>
+
+    <div class="row cl">
+        <label class="form-label col-xs-4 col-sm-3">
+            <span class="c-red">*</span>是否展示：
+        </label>
+        <div class="formControls col-xs-8 col-sm-9">
+            <div class="radio-box">
+                <input type="radio" id="radio-1" value="是" name="is_show" <if condition="$detail['is_show'] == '是'"> checked="checked"</if> >
+                <label for="radio-1">是</label>
+            </div>
+            <div class="radio-box">
+                <input type="radio" id="radio-2" value="否" name="is_show"  <if condition="$detail['is_show'] == '否'"> checked="checked"</if>>
+                <label for="radio-2">否</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row cl">
+        <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+            <input type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" class="btn btn-primary radius">
+        </div>
+    </div>
+</form>
+</article>
+<script type="text/javascript">
+    $("#role-edit").validate({
+        rules: {
+        },
+        onkeyup: false,
+        focusCleanup: true,
+        success: "valid",
+        submitHandler: function (form) {
+            var layerIndex = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+            $(form).ajaxSubmit({
+                success: function (data) {
+                    if (data.status == 1) {
+                        layer.close(layerIndex);
+                        layer.msg(data.info, {
+                            time: 500,
+                        }, function () {
+                            layer_close();
+                            location.replace(location.href);
+                        });
+                    } else {
+                        layer.close(layerIndex);
+                        layer.msg(data.info, {
+                            time: 1000,
+                        });
+
+                    }
+                }
+            });
+        }
+    })
+</script>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> 
+	<!-- 新 Bootstrap 核心 CSS 文件 -->
+	<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<!-- 可选的Bootstrap主题文件（一般不用引入） -->
+	<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+	
+	<link rel="stylesheet" href="__PUBLIC__/css/message.css">
+	<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+	<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+	<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+	<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<title>安佑</title>
+</head>
+<body >
+	<div id="content">
+
+
+	<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+  		<!-- Indicators -->
+		  <ol class="carousel-indicators">
+		    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+		    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+		  </ol>
+
+  <!-- Wrapper for slides -->
+		  <div class="carousel-inner" role="listbox">
+		    <div class="item active">
+		     	<a href="{{$ad.ad_1_url}}" target="_blank">
+		     	<img src="__ROOT__/{{$ad.ad_1}}" /></a>
+		      <div class="carousel-caption">
+		       
+		      </div>
+		    </div>
+		    <div class="item">
+		      <a href="{{$ad.ad_2_url}}" target="_blank">
+		      <img src="__ROOT__/{{$ad.ad_2}}" /></a>
+		       <div class="carousel-caption">
+		     
+		      </div>
+		    </div>
+		    <span style="color:#ccc;font-family:'微软雅黑'">安佑饲料</span>
+		  </div>
+
+		  <!-- Controls -->
+		  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+		    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+		    <span class="sr-only">Previous</span>
+		  </a>
+		  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+		    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+		    <span class="sr-only">Next</span>
+		  </a>
+		</div>
+ 
+		<div style="width:60px;height:40px;margin:20px;">
+		  	<a href="__URL__/index">
+			  <span class="glyphicon glyphicon-chevron-left">返回</span>
+			</a>
+		</div>
+
+		<div class="row" style="width:90%;margin:10px 5px;">
+  			<div class="col-md-9 col-md-push-3">
+  				<div style="width:20%;height:60px;float:left;">
+  					<img style="width:100%;height:60px;" src="__PUBLIC__/image/1.jpg">
+				</div>
+				<div style="width:80%;height:100%;float:right;">
+  					 <p style="font-size:18px;padding-top:38px;font-weight:bloder;font-family:'微软雅黑';"><b> 标签编号：</b><b> {{$code}}</b></p>
+					<!--  <p style="font-size:20px;line-height:30px;font-weight:bloder;font-family:'微软雅黑';"><b> {{$code}}</b></p> -->
+				</div>
+  			 </div>
+		</div>
+		<div style="float:clear;"></div>
+		
+		<div style="width:90%;margin:20px 5%;">
+			<table class="table table-hover">
+ 				<tr>
+ 					<td>
+						<span style="font-family:'微软雅黑';width: 25%;height: 30px;float: left;
+    font-size: 16px;">产品编码</span>
+						<span style="    font-family: '微软雅黑';
+    font-size: 16px;
+    padding-top: 1px;
+    display: block;"><b>{{$data['product_code']}}</b></span>
+ 					</td>
+ 				</tr>
+ 				 <tr>
+ 					<td>
+						<span style="font-family:'微软雅黑';width: 25%;height: 30px;float: left;
+   font-size: 16px;">产品名称</span>
+						<span style="    font-family: '微软雅黑';
+    font-size: 16px;
+    padding-top: 1px;
+    display: block;"><b>{{$data['product_name']}}</b></span>
+ 					</td>
+ 				</tr>
+ 				 <tr>
+ 					<td>
+						<span style="font-family:'微软雅黑';width: 25%;height: 30px;float: left;
+font-size: 16px;">批次号</span>
+						<span style="f    font-family: '微软雅黑';font-size: 16px;padding-top: 1px;display: block;"><b>{{$data['batch_num']}}</b></span>
+ 					</td>
+ 				</tr>
+ 				 <tr>
+ 					<td>
+						<span style="font-family:'微软雅黑';width: 25%;height: 30px;float: left;
+   font-size: 16px;">产地</span>
+						<span style="f    font-family: '微软雅黑';font-size: 16px; padding-top: 1px; display: block;"><b>taicang</b></span>
+ 					</td>
+ 				</tr>
+ 				 <tr>
+ 					<td>
+						<span style="font-family:'微软雅黑';width: 25%;height: 30px;float: left;
+ font-size: 16px;">生产日期</span>
+						<span style="    font-family: '微软雅黑';font-size: 16px;padding-top: 1px;display: block;"><b>{{$data['product_date']}}</b></span>
+ 					</td>
+ 				</tr>
+ 				<!--  <tr>
+ 					<td>
+						<span style="font-family:'微软雅黑';">出厂日期</span><br/>
+						<span style="font-family:'微软雅黑';">
+							<empty name="batch['shipment_date']">
+									--------
+								<else/>
+									{{$data['shipment_date']}}
+							</empty>
+						</span>
+ 					</td>
+ 				</tr> -->
+			</table>
+		</div>
+
+	<div id="carousel-example-generic" class="carousel slide" data-ride="carousel" style="width:100%;height:60px;">
+  		<!-- Indicators -->
+		  <ol class="carousel-indicators">
+		    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+		    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+		  </ol>
+
+  <!-- Wrapper for slides -->
+		  <div class="carousel-inner" role="listbox">
+		    <div class="item active">
+		     	<a href="{{$ad.ad_1_url}}" target="_blank">
+		     	<img src="__ROOT__/{{$ad.ad_1}}" /></a>
+		      <div class="carousel-caption">
+		       
+		      </div>
+		    </div>
+		    <div class="item">
+		      <a href="{{$ad.ad_2_url}}" target="_blank">
+		      <img src="__ROOT__/{{$ad.ad_2}}" /></a>
+		       <div class="carousel-caption">
+		     
+		      </div>
+		    </div>
+		    <span style="color:#ccc;font-family:'微软雅黑'">安佑饲料</span>
+		  </div>
+
+		  <!-- Controls -->
+		  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+		    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+		    <span class="sr-only">Previous</span>
+		  </a>
+		  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+		    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+		    <span class="sr-only">Next</span>
+		  </a>
+		</div>
+
+	</div>
+</body>
+</html>

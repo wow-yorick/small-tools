@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>品漫简介-{$page_title}</title>
+<meta name="Keywords" content="创意礼品定制|企业团购|创意产品|个性礼品定制" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+
+
+<div >
+<!-- #BeginLibraryItem "/library/pinman.lbi" --><!-- #EndLibraryItem -->
+</div>
+<div class="blank"></div>
+<div class="footer">
+<div class="footerBody">
+<Div class="block">
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</Div>
+</div>
+</div>
+</body>
+</html>

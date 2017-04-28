@@ -1,0 +1,85 @@
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 管理员管理
+	<span class="c-gray en">&gt;</span> 权限管理
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新">
+		<i class="Hui-iconfont">&#xe68f;</i> </a>
+</nav>
+<div class="page-container">
+	<div class="text-l">
+		<form target="_self" action="" method="get" class="Huiform">
+			权限名称：<input type="text" name="title" value="{{$title}}" class="input-text" placeholder="权限名称"/>
+			控制器：<input type="text" name="controller_name" value="{{$controller_name}}" class="input-text" placeholder="控制器"/>
+			方法名：<input type="text" name="action_name" value="{{$action_name}}" class="input-text" placeholder="方法名"/>
+			权限组：<span class="select-box inline">
+				<select class="select" name="group_id">
+					<option value="0">全部分类</option>
+					<foreach name="groups" item="group" key="key">
+						<eq name="key" value="$group_id">
+							<option value="{{$key}}" selected>{{$group}}</option>
+							<else/>
+							<option value="{{$key}}">{{$group}}</option>
+						</eq>
+
+					</foreach>
+				</select>
+			</span>
+			<button type="submit" class="btn btn-success">
+				<i class="Hui-iconfont">&#xe665;</i> 搜索
+			</button>
+		</form>
+	</div>
+	<if condition="checkAuth('admin/ruleAdd')">
+		<div class="cl pd-5 bg-1 bk-gray">
+	<span class="l">
+
+	<a class="btn btn-primary radius" href="javascript:void(0);" onclick="rule_add('添加权限','{{:U(\'ruleAdd\')}}',800,360)">
+		<i class="Hui-iconfont">&#xe600;</i> 添加权限</a>
+	</span>
+		</div>
+	</if>
+	<div class="dataTables_wrapper no-footer">
+		<table class="table table-border table-bordered table-hover table-bg">
+			<thead>
+			<tr>
+				<th scope="col" colspan="5">角色管理</th>
+			</tr>
+			<tr class="text-c">
+				<th width="40">ID</th>
+				<th width="200">权限名称</th>
+				<th width="200">控制器/方法名</th>
+				<th width="200">组名称</th>
+				<!--<th width="200">状态</th>-->
+				<th width="70">操作</th>
+			</tr>
+			</thead>
+			<tbody>
+			<foreach name="list" item="rule">
+				<tr class="text-c">
+					<td>{{$rule['id']}}</td>
+					<td>{{$rule['title']}}</td>
+					<td>{{$rule['controller_name']}}/{{$rule['action_name']}}</td>
+					<td>{{$groups[$rule['group_id']]}}</td>
+					<td class="td-manage">
+						<if condition="checkAuth('admin/ruleEdit')">
+							<a class="ml-5" style="text-decoration:none" onclick="rule_edit('编辑权限','{{:U(\'ruleEdit\',array(\'id\'=>$rule[\'id\']))}}',800,360)" href="javascript:void(0);" title="编辑">
+								<i class="Hui-iconfont">&#xe6df;</i> </a>
+						</if>
+					</td>
+				</tr>
+			</foreach>
+
+			</tbody>
+		</table>
+		{{$page}}
+	</div>
+</div>
+<script type="text/javascript">
+	/*权限-增加*/
+	function rule_add(title, url, w, h) {
+		layer_show(title, url, w, h);
+	}
+	/*权限-编辑*/
+	function rule_edit(title, url, w, h) {
+		layer_show(title, url, w, h);
+	}
+</script>

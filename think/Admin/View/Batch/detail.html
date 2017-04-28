@@ -1,0 +1,34 @@
+<div class="page-container">
+    <div class="dataTables_wrapper no-footer">
+        <table class="table table-border table-bordered table-hover table-bg">
+            <thead>
+                <tr class="text-c">
+                    <th width="40">ID</th>
+                    <th width="40">唯一码</th>
+                    <th width="40">新建时间</th>
+                    <th width="40">打印时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="obj">
+                <tr class="text-c">
+                    <td>{{$obj['id']}}</td>
+                    <td>{{$obj['bill_num']}}</td>
+                    <td>{{$obj['create_time']}}</td>
+                    <td>{{$obj['update_time']}}</td>
+                </tr>
+            </foreach>
+
+            </tbody>
+        </table>
+        {{$page}}
+    </div>
+</div>
+
+<script type="text/javascript">
+    /*-详情列表*/
+    function shipmentList(title, url, w, h) {
+        layer_show(title, url, w, h);
+    }
+</script>
+

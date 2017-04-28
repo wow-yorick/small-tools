@@ -1,0 +1,60 @@
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 商品管理
+	<span class="c-gray en">&gt;</span> 单位管理
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新">
+		<i class="Hui-iconfont">&#xe68f;</i> </a>
+</nav>
+<div class="page-container">
+
+	<if condition="checkAuth('product/unitAdd')">
+		<div class="cl pd-5 bg-1 bk-gray">
+	<span class="l">
+
+	<a class="btn btn-primary radius" href="javascript:void(0);" onclick="unit_add('单位添加','{{:U(\'unitAdd\')}}',800,320)">
+		<i class="Hui-iconfont">&#xe600;</i> 单位添加</a>
+	</span>
+		</div>
+	</if>
+	<div class="dataTables_wrapper no-footer">
+		<table class="table table-border table-bordered table-hover table-bg">
+			<thead>
+			<tr>
+				<th scope="col" colspan="5">单位管理</th>
+			</tr>
+			<tr class="text-c">
+				<th width="40">ID</th>
+				<th width="200">单位名称</th>
+				<th width="200">描述</th>
+				<th width="70">操作</th>
+			</tr>
+			</thead>
+			<tbody>
+			<foreach name="list" item="unit">
+				<tr class="text-c">
+					<td>{{$unit['id']}}</td>
+					<td>{{$unit['name']}}</td>
+					<td>{{$unit['remark']}}</td>
+					<td class="td-manage">
+						<if condition="checkAuth('product/unitEdit')">
+							<a class="ml-5" style="text-decoration:none" onclick="unit_edit('单位编辑','{{:U(\'unitEdit\',array(\'id\'=>$unit[\'id\']))}}',800,320)" href="javascript:void(0);" title="编辑">
+								<i class="Hui-iconfont">&#xe6df;</i> </a>
+						</if>
+					</td>
+				</tr>
+			</foreach>
+
+			</tbody>
+		</table>
+		{{$page}}
+	</div>
+</div>
+<script type="text/javascript">
+	/*单位-增加*/
+	function unit_add(title, url, w, h) {
+		layer_show(title, url, w, h);
+	}
+	/*单位-编辑*/
+	function unit_edit(title, url, w, h) {
+		layer_show(title, url, w, h);
+	}
+</script>

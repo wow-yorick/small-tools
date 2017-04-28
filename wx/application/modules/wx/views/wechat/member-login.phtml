@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC " -//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<title>member-login</title>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl(); ?>/css/bootstrap-responsive.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl(); ?>/css/bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl(); ?>/css/style.css"/>
+<script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/js/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="<?php echo $this->baseUrl(); ?>/js/effect.js"></script>
+</head>
+<body>
+    <div class="head">
+        <div class="logo">
+            <a href="#" class="logo-left"><img src="<?php echo $this->baseUrl(); ?>/image/logo-left.png" /></a>
+            <a href="#" class="logo-right"><img src="<?php echo $this->baseUrl(); ?>/image/logo-right.png" /></a>
+        </div>
+    </div>
+    <div class="content content-login">
+        <form class="searchbox" action='<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/center'; ?>'>
+            <div class="form-people">
+                <a href="#"><img src="<?php echo $this->baseUrl(); ?>/image/form-people.jpg" /></a>
+            </div>
+            <div>
+                <strong class="phone-center">M Center 会员中心</strong>
+            </div>
+            <p>    
+                <input type="submit" value="登录" class="phone-submit member" />
+            </p>
+        </form>
+    </div>
+    <div class="foot foot-desktop">
+        <a href="phone-m-center.html" target="_blank" class="foot-morning desktop-morning"><img src="<?php echo $this->baseUrl(); ?>/image/foot-morning.png" /></a>
+        <a href="phone-desktop.html"  target="_blank" class="foot-square foot-shade-square"><img src="<?php echo $this->baseUrl(); ?>/image/foot-shade-square.jpg" /></a>
+        <a href="login-succeed.html"  target="_blank" class="foot-triangle-left"><img src="<?php echo $this->baseUrl(); ?>/image/foot-triangle-left.png" /></a>
+        <a href="login-succeed.html"  target="_blank" class="foot-triangle foot-triangle-right"><img src="<?php echo $this->baseUrl(); ?>/image/foot-triangle.png" /></a>
+        <a href="login-succeed.html"  target="_blank" class="foot-people foot-white-people"><img src="<?php echo $this->baseUrl(); ?>/image/foot-white-people.png" /></a>
+        <span class="circle desktop-circle"><img src="<?php echo $this->baseUrl(); ?>/image/foot-circle.png" /></span>
+        <span><img src="<?php echo $this->baseUrl(); ?>/image/foot-circle.png" /></span>
+        <span><img src="<?php echo $this->baseUrl(); ?>/image/foot-circle.png" /></span>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,234 @@
+
+<script>
+
+/*
+ * checkbox全选
+ */
+function switchChkRightsAll(obj) {
+	if ($(obj).attr('checked') == 'checked') {
+		$('#divActionRights').find(':checkbox').not(':checked').attr('checked', 'checked');
+	} else {
+		$('#divActionRights').find(':checkbox').removeAttr('checked');
+	}
+}
+
+/*
+ * checkbox横向判断
+ */
+function switchChkRightsRow(obj) {
+	if($(obj).hasClass('chkRightsAll')) {
+		if ($(obj).attr('checked') == 'checked') {
+			$(obj).closest('span').find('.chkRights').attr('checked', 'checked');
+		} else {
+			$(obj).closest('span').find('.chkRights').removeAttr('checked');
+		}
+	} else {
+		if ($(obj).closest('span').find('.chkRights:checked').length == $(obj).closest('span').find('.chkRights').length) {
+			$(obj).closest('span').find('.chkRightsAll').attr('checked', 'checked');
+		} else {
+			$(obj).closest('span').find('.chkRightsAll').removeAttr('checked');
+		}
+	}
+}
+
+/*
+ * checkbox纵向判断
+ */
+function switchChkRightsCol(obj) {
+	var index = $(obj).parent().index();
+	if($(obj).closest('span').hasClass('spanAllActionRights')) {
+		if ($(obj).attr('checked') == 'checked') {
+			$('#divActionRights').find('.spanActionRights').find(':checkbox:eq(' + index + ')').not(':checked').attr('checked', 'checked');
+		} else {
+			$('#divActionRights').find('.spanActionRights').find(':checkbox:eq(' + index + '):checked').removeAttr('checked');
+		}
+	} else {
+		if ($(obj).attr('checked') == 'checked') {
+			if ($('#divActionRights').find('.spanActionRights').find(':checkbox:eq(' + index + ')').filter(':checked').length == $('#divActionRights').find('.spanActionRights').length) {
+				$('#divActionRights').find('.spanAllActionRights').find(':checkbox:eq(' + index + ')').attr('checked', 'checked');
+			}
+		} else {
+			$('#divActionRights').find('.spanAllActionRights').find(':checkbox:eq(' + index + ')').removeAttr('checked');
+		}
+	}
+}
+
+/*
+ * 修改module的权限
+ */
+function modifyModuleRights(obj) {
+	if ($(obj).attr('disabled') == 'disabled') return;
+
+	var roleId = $('#divRole').find('[name=msltRolename]').find('option:selected').val();
+	var itemId = $('#divModule').find('[name=msltRoleModule]').find('option:selected').val();
+	var moduleId = $('#divModule').find('[name=msltRoleModule]').find('option:selected').attr('moduleId');
+	var strRights = '';
+	$('#divModuleRights').find('.chkRights').each(function() {
+		if ($(this).attr('checked') == 'checked') {
+			strRights += '1';
+		} else {
+			strRights += '0';
+		}
+	});
+
+	var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/'. $this->controllerName;?>/modifymodulerights";
+	$('#divRights').load(url, {
+		'roleId': roleId
+		,'itemId': itemId
+		,'moduleId': moduleId
+		,'strRights': strRights
+	});
+}
+
+/*
+ * 修改module下action的权限
+ */
+function modifyActionRights() {
+	$('#btnModuleRights').click();
+
+	var roleId = $('#divRole').find('[name=msltRolename]').find('option:selected').val();
+	var moduleId = $('#divModule').find('[name=msltRoleModule]').find('option:selected').attr('moduleId');
+	var arrActionRights = new Array();
+	var arrIsMenu = new Array();
+	$('#divActionRights').find('.spanActionRights').each(function() {
+		var arrTemp = new Array();
+		arrTemp.push(roleId);
+		arrTemp.push($(this).closest('tr').attr('itemId'));
+		var strRights = '';
+		$(this).find('.chkRights').each(function() {
+			if ($(this).attr('checked') == 'checked') {
+				strRights += '1';
+			} else {
+				strRights += '0';
+			}
+		});
+		arrTemp.push(strRights);
+		arrActionRights.push(arrTemp);
+		arrIsMenu.push($(this).find('.chkRightsIsMenu:checked').length);
+	});
+
+	var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/'. $this->controllerName;?>/modifyactionrights";
+	$('#divRights').load(url, {
+		'roleId': roleId
+		,'moduleId': moduleId
+		,'arrActionRights': arrActionRights
+		,'arrIsMenu': arrIsMenu
+	});
+}
+
+/*
+ * 初始化module的权限部分
+ */
+function iniRights() {
+	//设置module权限的默认值
+	$('#divModuleRights').find('#lblModuleName').text('Module：' + $('#divModule').find('[name=msltRoleModule]').find('option:selected').text() + '  ');
+	//给module的checkbox添加itemId属性
+	$('#divModuleRights').find('.spanModuleRights,.chkRights').attr('itemId', $('#divModule').find('[name=msltRoleModule]').find('option:selected').val());
+
+	$('#divActionRights').find('tr').each(function() {
+		$(this).find('.chkRights').attr('itemId', $(this).attr('itemId')); //给各action的checkbox添加itemId属性
+
+		//改变各action的样式
+		if ($.trim($(this).attr('actionName')) == '') {
+			$(this).find('[name=lblActionName]').text('Controller：' + $(this).find('[name=lblActionName]').text());
+			$(this).attr('title', 'PATH: /' + $(this).attr('moduleName') + '/' + $(this).attr('controllerName') + '/index');
+			$(this).find('td:first').css('font-weight', 'bold');
+			$(this).find('label:last').removeAttr('disabled');
+			$(this).find('label:last').show();
+		} else {
+			$(this).find('[name=lblActionName]').text('Action：' + $(this).find('[name=lblActionName]').text());
+			$(this).attr('title', 'PATH: /' + $(this).attr('moduleName') + '/' + $(this).attr('controllerName') + '/' + $(this).attr('actionName'));
+		}
+	});
+
+	//设置各action权限的默认值
+	var jsonAllItemRights =<?php echo json_encode($this->allItemRights); ?>;
+	var size = jsonAllItemRights.length;
+	for (var i=0; i<size; i++) {
+		var itemId = jsonAllItemRights[i]['itemId'];
+		var arrRights = jsonAllItemRights[i]['rights'].split('');
+		var isMenu = jsonAllItemRights[i]['isMenu'];
+		for (var j=0; j<arrRights.length; j++) {
+			//var jElement = $('#divRights').find('.chkRights[itemId=' + itemId + '][value=' +(j + 1) + ']');
+			var jElement = $('#divRights').find('.chkRights[itemid=' + itemId + '][value=' +(j + 1) + ']'); //firefox会把标签里所有属性名转为小写
+			if (arrRights[j] == 0) {
+				jElement.removeAttr('checked');
+			} else {
+				jElement.attr('checked', 'checked');
+			}
+		}
+		if (isMenu == 0) $('#divRights').find('.chkRightsIsMenu').removeAttr('checked');
+		switchChkRightsRow($('#divRights').find('.chkRights[itemId=' + itemId + ']:first')); //check全选
+	}
+
+	$('#divActionRights').find('.spanActionRights:first').find(':checkbox').each(function() {
+		switchChkRightsCol(this);
+	});
+}
+
+$(document).ready(function() {
+	$(':checkbox').css('vertical-align', 'middle');
+
+	iniRights();
+});
+</script>
+
+<div class="ui-state-default roledefine-item">
+	<div id="divModuleRights" disabled="disabled">
+		<label id="lblModuleName" style="font-weight:bold;"></label>
+		<span class="spanModuleRights">
+		<?php if (isset($this->allRights)): ?>
+			<?php foreach ($this->allRights as $arrSub): ?>
+			<label><input type="checkbox" class="chkRights" value="<?php echo $arrSub['rightsId'];?>" onclick="switchChkRightsRow(this);" disabled="disabled" /><?php echo $arrSub['rightsname'];?>&nbsp;&nbsp;</label>
+			<?php endforeach; ?>
+			<label><input type="checkbox" class="chkRightsAll" onclick="switchChkRightsRow(this);" disabled="disabled" />读写</label>
+		<?php endif; ?>
+		</span>
+	</div>
+	<div><input type="button" id="btnModuleRights" class="ui-state-default wiliz-cursor-pointer roledefine-btn" value="提交" onclick="modifyModuleRights(this);" disabled="disabled" /></div>
+</div>
+
+<div id="divActionRights" class="ui-state-default roledefine-item" style="height:450px;">
+	<div style="overflow-x:hidden;overflow-y:auto;">
+		<table style="width:100%;text-align:left;">
+			<tr>
+				<td style="font-weight:bold;">全部：</td>
+				<td>
+					<div>
+						<span class="spanAllActionRights">
+						<?php if (isset($this->allRights)): ?>
+							<?php foreach ($this->allRights as $arrSub): ?>
+							<label><input type="checkbox" class="chkRights" value="<?php echo $arrSub['rightsId'];?>" onclick="switchChkRightsRow(this);switchChkRightsCol(this);" /><?php echo $arrSub['rightsname'];?>&nbsp;&nbsp;</label>
+							<?php endforeach; ?>
+							<label><input type="checkbox" class="chkRightsAll" value="0" onclick="switchChkRightsAll(this);" />读写</label>
+						<?php endif; ?>
+						</span>
+					</div>
+				</td>
+			</tr>
+
+			<tr><td colspan="2"><hr /></td></tr>
+
+			<?php foreach ($this->allModuleAction as $arrSub): ?>
+			<tr itemId="<?php echo $arrSub['itemId'];?>" moduleName="<?php echo $arrSub['modulename'];?>" controllerName="<?php echo $arrSub['controllername'];?>" actionName="<?php echo $arrSub['actionname'];?>">
+				<td><label name="lblActionName"><?php echo $arrSub['itemname'];?>&nbsp;&nbsp;</label></td>
+				<td>
+					<span class="spanActionRights">
+					<?php if (isset($this->allRights)): ?>
+						<?php foreach ($this->allRights as $arrSub): ?>
+						<label><input type="checkbox" class="chkRights" value="<?php echo $arrSub['rightsId'];?>" onclick="switchChkRightsRow(this);switchChkRightsCol(this);" /><?php echo $arrSub['rightsname'];?>&nbsp;&nbsp;</label>
+						<?php endforeach; ?>
+						<label><input type="checkbox" class="chkRightsAll" value="0" onclick="switchChkRightsRow(this);switchChkRightsCol(this);" />读写</label>
+						<label disabled="disabled" style="display:none;">|&nbsp;<input type="checkbox" class="chkRightsIsMenu" checked="checked" />菜单项</label>
+					<?php endif; ?>
+					</span>
+				</td>
+			</tr>
+			<?php endforeach; ?>
+		</table>
+	</div>
+</div>
+
+<div class="ui-state-default roledefine-item">
+	<input type="button" class="ui-state-default wiliz-cursor-pointer roledefine-btn" value="提交" onclick="modifyActionRights();" />
+</div>

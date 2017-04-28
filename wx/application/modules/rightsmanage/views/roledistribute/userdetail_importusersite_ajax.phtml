@@ -1,0 +1,25 @@
+
+<script>
+/*var jsonUserSite = <?php echo json_encode($this->userSite); ?>;
+var size = jsonUserSite.length;
+for (var i=0; i<size; i++) {
+	$('#divDsVal').find('[name=sltAllDsVal]').find('option[value=' + jsonUserSite[i]['siteId'] + ']').attr('selected', 'selected');
+	movedownDsVal();
+}*/
+
+
+var atId = $('#formSearchUser').find('[name=atId]').find('option:selected').val();
+var userId = $('#tblUserList').find('.row_selected').attr('userId');
+var roleId = $('#divRoleSet').find('[name=sltRoleId]').find('option:selected').val();
+var dsId = $('#divRoleSet').find('[name=sltDsId]').find('option:selected').val();
+var dsVal = "<?php echo $this->userSite;?>";
+
+var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName  . '/' . $this->controllerName . '/adduserrole';?>";
+$('#divUserDetail').load(url, {
+	'atId': atId
+	,'userId': userId
+	,'roleId': roleId
+	,'dsId': dsId
+	,'dsVal': dsVal
+});
+</script>

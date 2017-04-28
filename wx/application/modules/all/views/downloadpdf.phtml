@@ -1,0 +1,16 @@
+<script>
+$(document).ready(function(){
+	//初始化弹窗
+	$('#dialogdown_').dialog({
+		title: 'pdf文件输出'
+		,width: 300
+		,height: 200
+		,modal: true
+		,resizable: false
+		,close: function(event, ui) {
+			$(this).remove();
+		}
+	});
+})
+</script>
+<div id="dialogdown_"><a href="<?php echo $this->urlFile;?>">111111</a></div>

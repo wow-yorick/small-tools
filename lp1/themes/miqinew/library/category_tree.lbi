@@ -1,0 +1,17 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<div class="navBar">
+
+  <div id="cate">
+  <!--{foreach from=$categories_pro item=cat name=categories_pro}-->
+
+	
+		<div style="clear:both"></div>
+	
+
+	<!--{/foreach}--> 
+</div>
+
+</div>
+<div class="blank"></div>
+<div class="blank"></div>

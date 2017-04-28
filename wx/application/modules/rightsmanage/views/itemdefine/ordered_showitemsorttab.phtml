@@ -1,0 +1,39 @@
+
+<script>
+/*
+ * 上移或下移按钮onclick事件
+ */
+function moveUpDown(obj, moveDirect) {
+	switch (moveDirect) {
+		case 'up':
+			$(obj).closest('td').find('.msltList').find('option:selected').insertBefore($(obj).closest('td').find('.msltList').find('option:selected').prev('option'));
+			break;
+		case 'down':
+			$(obj).closest('td').find('.msltList').find('option:selected').insertAfter($(obj).closest('td').find('.msltList').find('option:selected').next('option'));
+			break;
+	}
+}
+
+$(document).ready(function() {
+	//使能指定的图片功能
+	toggleMenuImg('data_menu', '<?php foreach($this->dataMenuInfo["menutoggle"]["btnItemSort"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>');
+
+	//添加新标签页
+	var strHtml = '<div id="divTabContainer"></div>';
+	$('#data_tabs').tabs('option', 'panelTemplate', strHtml);
+	$('#data_tabs').tabs('add', '#divTabContainer', '模块排序');
+	$('#data_tabs').tabs('select', 2);
+	$('#data_tabs').tabs('disable', 0);
+	$('#divTabContainer').append($('#divItemSort'));
+});
+</script>
+
+<div id="divItemSort">
+	<table>
+		<tr>
+			<td><div id="divModule" class="ui-widget-content"><?php require_once 'ordered_module_ajax.phtml';?></div></td>
+			<td><div id="divController" class="ui-widget-content" style="margin-left:15px;"></div></td>
+			<td><div id="divAction" class="ui-widget-content" style="margin-left:15px;"></div></td>
+		</tr>
+	</table>
+</div>

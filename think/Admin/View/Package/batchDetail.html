@@ -1,0 +1,28 @@
+<div class="page-container">
+    <div class="dataTables_wrapper no-footer">
+        <table class="table table-border table-bordered table-hover table-bg">
+            <thead>
+            <tr class="text-c">
+                <th width="40">ID</th>
+                <th width="200">产品唯一码</th>
+                <th width="200">箱码</th>
+                <th width="200">入库时间</th>
+                <th width="100">操作人</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="obj">
+                <tr class="text-c" id="tr_{{$obj['id']}}">
+                    <td>{{$obj['id']}}</td>
+                    <td>{{$obj['shape_code']}}</td>
+                    <td>{{$obj['package_code']}}</td>
+                    <td>{{$obj['createdatetime']}}</td>
+                    <td>{{$admins[$obj['createuser']]}}</td>
+                </tr>
+            </foreach>
+
+            </tbody>
+        </table>
+        {{$page}}
+    </div>
+</div>

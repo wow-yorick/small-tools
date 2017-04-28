@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" type="text/css" href="js/jquery/jquery-ui-1.9.2.min.css" >
+      <link type="text/css" href="js/flexigrid/flexigrid.css" rel="stylesheet" />
+      <script type="text/javascript" src="js/jquery/jquery-1.8.3.min.js"></script>
+      <script type="text/javascript" src="js/jquery/jquery-ui-1.9.2.min.js"></script>
+      <script type="text/javascript" src="js/flexigrid/flexigrid.js"></script>
+      <script type="text/javascript" src="js/demo.js"></script>
+      <style>
+         html * {font-size:12px;}
+         .print-icon{background: url(images/printer.png) no-repeat center left;}
+         .print-preview-icon{background: url(images/preview.png) no-repeat center left;}
+         .print-runtime-position-icon{background: url(images/runtime-position.png) no-repeat center left;}
+      </style>
+   </head>
+   <body>
+      <table id="print-data-table" style="display: none">
+      </table>
+      <div id='button-set' style='padding:10px;'>
+         <span>套打模板:</span><select id='templateSelector' style='margin-right:5px;margin-left:3px;'></select><a href='#'>打印</a><a href='#'>打印预览</a><a href='#'>新增模板</a><a href='#'>修改模板</a>
+      </div>
+      <object id="ojatoolsPrinter" codebase="../jatoolsPrinterUI/setup/jatoolsPrinter.cab#version=5,4,0,0"
+         classid="clsid:B43D3361-D075-4BE2-87FE-057188254255" width="0" height="0">
+         <embed id="ejatoolsPrinter" type="application/x-vnd.jatoolsPrinter" width="0" height="0" />
+      </object>
+   </body>
+</html>

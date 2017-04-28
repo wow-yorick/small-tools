@@ -1,0 +1,11 @@
+
+<script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery-1.6.1.js"></script>
+
+<script>
+var menuId = "<?php echo $this->menuId?>";
+if ($(window.parent.document).find('#' + menuId).length > 0) {
+	$(window.parent.document).find('#' + menuId).click();
+} else {
+	window.parent.location.reload();
+}
+</script>

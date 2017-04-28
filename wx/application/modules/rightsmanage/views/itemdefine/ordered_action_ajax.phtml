@@ -1,0 +1,18 @@
+
+<div class="ui-state-default itemdefine-item" style="font-weight:bold;">
+	<div>
+		<input type="button" class="ui-state-default wiliz-cursor-pointer wiliz-btn" value="上移" onclick="moveUpDown(this, 'up');" />
+		<input type="button" class="ui-state-default wiliz-cursor-pointer wiliz-btn" value="下移" onclick="moveUpDown(this, 'down');" />
+	</div>
+	<div><input type="button" class="ui-state-default wiliz-cursor-pointer itemdefine-btn" value="确认提交" onclick="confirmAction(this);" /></div>
+</div>
+
+<div class="ui-state-default itemdefine-item">
+	<select name="msltAction" class="wlz_mslt_sltSingle wiliz-sltl msltList" multiple="multiple" style="height:300px;">
+	<?php if (isset($this->allControllerAction)): ?>
+		<?php foreach ($this->allControllerAction as $arrSub): ?>
+		<option value="<?php echo $arrSub['itemId'];?>"><?php echo $arrSub['itemname'];?></option>
+		<?php endforeach; ?>
+	<?php endif; ?>
+	</select>
+</div>

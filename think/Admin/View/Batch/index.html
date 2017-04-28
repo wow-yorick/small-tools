@@ -1,0 +1,92 @@
+{{:W('Menu/Breadcrumb')}}
+<div class="page-container">
+    <div class="text-l">
+        <form target="_self" action="" method="get" class="Huiform">
+            <!--邮 箱： <input type="text" name="email" value="{{$email}}" class="input-text" placeholder="邮箱"/> 用户名：-->
+            <input type="text" name="user_name" value="{{$user_name}}" class="input-text" placeholder="用户名"/>
+            <button type="submit" class="btn btn-success">
+                <i class="Hui-iconfont">&#xe665;</i> 搜索
+            </button>
+        </form>
+    </div>
+
+    <if condition="checkAuth('batch/add')">
+        <div class="cl pd-5 bg-1 bk-gray">
+            <span class="l">
+                <a class="btn btn-primary radius" href="javascript:void(0);"
+                   onclick="batch_add('添加批次','{{:U(\'batch/add\')}}', 600, 250)"><i class="Hui-iconfont">
+                        &#xe600;</i> 添加批次</a>
+            </span>
+        </div>
+    </if>
+
+    <div class="dataTables_wrapper no-footer">
+        <table class="table table-border table-bordered table-hover table-bg">
+            <thead>
+                <tr>
+                    <th scope="col" colspan="8">批次列表</th>
+                </tr>
+                <tr class="text-c">
+                    <th width="200">批次号</th>
+                    <th width="200">商品名称</th>
+                    <th width="200">标签名称</th>
+                    <th width="100">产地</th>
+                    <th width="200">生产日期</th>
+                    <th width="100">是否打印</th>
+                    <th width="100">数量</th>
+                    <th width="70">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="batch">
+                <tr class="text-c">
+                    <td>{{$batch['batch_num']}}</td>
+                    <td>{{$batch['product_name']}}</td>
+                    <td>{{$batch['tag_name']}}</td>
+                    <td>{{$batch['product_place']}}</td>
+                    <td>{{$batch['product_date']}}</td>
+                    <if condition="$batch['number'] eq $batch['print_number']">
+                        <td>是</td>
+                        <else/>
+                        <td>否</td>
+                    </if>
+                    <td>{{$batch['number']}}</td>
+                    <td class="td-manage">
+                <if condition="checkAuth('batch/detail')">
+                    <a class="ml-5" style="text-decoration:none"
+                       onclick="batch_detail('详情','{{:U(\'detail\',array(\'batch_num\'=>$batch[\'batch_num\']))}}')"
+                       href="javascript:void(0);" title="详情">
+                        <i class="Hui-iconfont">&#xe687;</i> </a>
+                </if>
+                    <a class="ml-5" style="text-decoration:none"
+                       onclick="batch_print('打印','{{:U(\'printb\',array(\'id\'=>$batch[\'bid\']))}}')"
+                       href="javascript:void(0);" title="打印">
+                        <i class="Hui-iconfont">&#xe652;</i> </a>
+
+                </td>
+                </tr>
+            </foreach>
+
+            </tbody>
+        </table>
+        {{$page}}
+    </div>
+</div>
+<script type="text/javascript">
+    /*管理员-增加*/
+    function batch_detail(title, url, w, h) {
+        layer_show(title, url, 800, 550);
+    }
+    function batch_print(title, url, w, h) {
+        layer_show(title, url, 600, 200);
+    }
+
+    function batch_add(title, url, w, h) {
+        var index = layer.open({
+            type: 2,
+            title: title,
+            content: url
+        });
+        layer.full(index);
+    }
+</script>

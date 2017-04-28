@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<meta http-equiv="x-ua-compatible" content="ie=7" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title><?php echo $_SESSION[$this->sessionPrefix . 'webTitle'];?></title>
+
+<script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery-1.6.1.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl();?>/js/wiliz/wiliz.all.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery.form.js"></script>
+
+<script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery-UI/jquery-ui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl();?>/js/jquery-UI/themes/base/jquery.ui.all.css"/>
+
+<script>
+/*
+ * 刷新验证码
+ */
+function refreshVercode(obj) {
+	var url = "<?php echo $this->baseUrl();?>/login/index/vercode/avoidCache/" + Math.random();
+	$(obj).attr('src', url);
+}
+$(document).ready(function() {
+	//submit表单提交ajax实现
+	$('#formLogin').submit(function(){
+		$(this).find('[wlzAuth]:enabled:visible').blur();
+		if($(this).find('[wlzAuth]:enabled:visible.ui-state-error').length == 0) {
+			var options = {
+					target: '#divLoginErrorMsg'
+					,url: $(this).attr('action')
+					,type: $(this).attr('method')
+				};
+			$(this).ajaxSubmit(options);
+		}
+		return false; //禁止表单自动提交
+	});
+});
+</script>
+
+<style>
+*{
+	margin:0;
+	padding:0;
+}
+body {
+	background:#ffffff url(<?php echo $this->baseUrl();?>/img/login/bgbg.jpg) no-repeat left top;
+}
+.backgroundLoad img {
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:-1;
+	display:none;
+}
+
+#head-yudy {
+	background:url(<?php echo $this->baseUrl();?>/img/login/headbg2.png) repeat-x left top;
+	width:100%; 
+	height:41px;
+	line-height:41px;
+	position:relative;
+}
+
+.systitle {
+	background:url(<?php echo $this->baseUrl();?>/img/login/bgtt.png);
+	width:193px;
+	height:21px;
+	position:absolute;
+	top:7px;
+	left:360px;
+	color:#ffffff;
+	line-height:21px;
+	text-align:center;
+}
+.systitle b {
+	font-weight:normal;
+	color:#9dc225;
+}
+
+.logoimg {
+	position:absolute;
+	left:40px;
+	top:5px;
+}
+
+#footer {
+	position:absolute;
+	left:0;
+	bottom:0px;
+	width:100%;
+	padding:10px 0;
+	background:#000000;
+	text-align:left;
+	color:#ccc;
+	font-size:12px;
+}
+#footer h5{
+	padding-left:10px;
+}
+
+#divLogin {
+	width:540px;
+	height:191px;
+	font:14px;
+	color:#fff;
+	position:absolute;
+	top:55%;
+	left:35%;
+	background:transparent url(<?php echo $this->baseUrl();?>/img/login/loginbg.png) no-repeat center center;
+}
+
+#divLogin dl {
+	margin:15px 0 0 20px;
+}
+
+#divLogin dl dd input {
+	background:transparent url(<?php echo $this->baseUrl();?>/img/login/inputbg.png) no-repeat center center;
+	width:191px;
+	height:27px;
+	line-height:31px;
+	font-size:12px;
+	border:none;
+	text-align:left;
+	padding-left:25px;
+}
+#divLogin dl dt {
+	padding-left:20px;
+	color:#8FC31F;
+	font-size:15px;
+	font-weight:700;
+}
+#divLogin dl dd {
+	margin-bottom:4px;
+}
+
+</style>
+
+</head>
+
+<body>
+<div class="backgroundLoad">
+<img id="imgHomepageBgPic" src="<?php echo $this->baseUrl();?>/img/login/bgbg.jpg" onload="$(this).hide();$(this).fadeIn('slow');"/>
+</div>
+<div id="head-yudy">
+	<img src="<?php echo $this->baseUrl();?>/img/login/headbg1.png" />
+    <div class="systitle"><b>上汽销</b>会员网站</div>
+    <div class="logoimg"><img src="<?php echo $this->baseUrl();?>/img/login/icologo.png" /></div>
+</div>
+<div id="divLogin" style="overflow:hidden;">
+	<form id="formLogin" action="<?php echo $this->baseUrl();?>/login/index/login" method="post">
+    <dl>
+    	<dt>用户名</dt>
+        	<dd><input type="text" name="username" wlzAuth="txtValEmpty"/></dd>
+        <dt>密码</dt>
+        	<dd><input type="password" name="password" wlzAuth="txtValEmpty"/></dd>
+        <dt>验证码</dt>
+        	<dd><input  type="text" name="vercode" wlzAuth="txtValEmpty" style="width:80px; background:url(<?php echo $this->baseUrl(); ?>/img/login/yanzhen.png) no-repeat center center;" /><img id="imgLoginVercode" src="<?php echo $this->baseUrl();?>/login/index/vercode" class="wiliz-cursor-pointer" title="看不清，换一张！" onclick="refreshVercode(this);" style="vertical-align:middle; width:71px;height:26px;"/></dd>  
+    </dl>
+    <div id="divLoginErrorMsg" style="color:red;text-align:center; position:absolute;right:300px;top:10px;"></div>
+    <div style=" cursor:pointer; position:absolute;right:44px;bottom:20px;">
+        <input type="submit" value="" style="position:absolute;right:0;bottom:0;width:10px;height:10px;display:none;" />
+        <img alt="登录" src="<?php echo $this->baseUrl();?>/img/login/btnlogin.png" class="wiliz-cursor-pointer" onclick="$(this).closest('form').submit();" style="vertical-align:middle"/>
+    </div>
+    
+	</form>
+</div>
+<div id="footer">
+<h5>版权所有&nbsp;&nbsp;&copy;2012上海瓯速信息科技有限公司&nbsp;&nbsp;保留所有权力</h5>
+</div>
+</body>

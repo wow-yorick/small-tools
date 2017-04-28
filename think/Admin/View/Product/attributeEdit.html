@@ -1,0 +1,109 @@
+<article class="page-container">
+	<form class="form form-horizontal" id="attribute-edit" method="post" action="{{:U('product/attributeEdit')}}">
+		<input type="hidden" name="id" value="{{$attribute['id']}}">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"> <span class="c-red">*</span>属性名称： </label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{{$attribute['attribute_name']}}" placeholder="属性名称" name="attribute_name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"> <span class="c-red">*</span>属性类型： </label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+				<select name="type" class="select">
+					<option value="0">—请选择—</option>
+					<foreach name="attributeType" key="key" item="type">
+						<eq name="key" value="$attribute['type']">
+							<option value="{{$key}}" selected>{{$type}}</option>
+							<else/>
+							<option value="{{$key}}">{{$type}}</option>
+						</eq>
+
+					</foreach>
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"> <span class="c-red">*</span>属性选项值： </label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea name="default_value" cols="" rows="" class="textarea" placeholder="多个值请换行..." dragonfly="true">{{$attribute['default_value']|str_replace=',',"\\r\\n",###}}</textarea>
+				<p class="textarea-numberbar">多个选项值请换行</p>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"> <span class="c-red">*</span>描述： </label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea name="remark" cols="" rows="" class="textarea" placeholder="说点什么...100个字符以内" dragonfly="true" onkeyup="textarealength(this,100)">{{$attribute['remark']}}</textarea>
+				<p class="textarea-numberbar">
+					<em class="textarea-length">{{$attribute['remark']|mb_strlen=###,utf8}}</em>/100</p>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+<script type="text/javascript">
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	jQuery.validator.addMethod('checkDefault', function (value, element) {
+		var type = $(element).closest('.row').prev().find("select").val();
+		return (type == 1 || value.trim('').length > 0);
+	}, '请填写默认选项');
+	$("#attribute-edit").validate({
+		rules: {
+			attribute_name: {
+				required: true,
+			},
+			type: {
+				min: 1,
+			},
+			default_value: {
+				checkDefault: []
+			},
+//			remark: {
+//				required: true,
+//			}
+		},
+		messages: {
+			type: {
+				min: '这是必选字段'
+			}
+		},
+		onkeyup: false,
+		focusCleanup: false,
+		success: "valid",
+		submitHandler: function (form) {
+			var layerIndex = layer.load(1, {
+				shade: [0.1, '#fff'] //0.1透明度的白色背景
+			});
+			$(form).ajaxSubmit({
+				success: function (data) {
+					if (data.status == 1) {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 500,
+						}, function () {
+							layer_close();
+						});
+					} else {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 1000,
+						});
+					}
+				}
+			});
+		}
+	})
+</script>

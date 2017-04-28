@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>核心代理品牌-{$page_title}</title>
+<meta name="Keywords" content="创意品牌代理|品牌礼品|创意产品|个性礼品定制" />
+<meta name="Description" content="品漫所有核心代理品牌，均为有品质保障、价格优势产品，品牌分销代理，品漫创意工厂-汇聚全球创意产品及设计师品牌,支持个性化定制及全新设计服务."/>
+<script src="js/jquery-3.0.0.min.js"></script>
+<!-- TemplateBeginEditable name="doctitle" -->
+<!-- TemplateEndEditable -->
+<!-- TemplateBeginEditable name="head" -->
+<!-- TemplateEndEditable -->
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+<link rel="alternate" type="application/rss+xml" title="RSS|{$page_title}" href="{$feed_url}" />
+{* 包含脚本文件 *}
+{insert_scripts files='jquery-1.7.2.min.js,jquery.json.js'}
+{insert_scripts files='common.js,global.js,compare.js'}
+</head>
+<body>
+
+<!-- #BeginLibraryItem "/library/page_header2.lbi" --><!-- #EndLibraryItem -->
+
+<div >
+<!-- #BeginLibraryItem "/library/index_ad_b.lbi" --><!-- #EndLibraryItem -->
+</div>
+<div class="blank"></div>
+<div style="min-width:1200px;padding: 0px 75px; margin: 0;">
+<!-- #BeginLibraryItem "/library/temai.lbi" --><!-- #EndLibraryItem -->
+<div class="blank"></div>
+
+  </div>
+<div class="blank"></div>
+<div class="footer">
+<div class="footerBody">
+<Div class="block">
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem --> 
+</Div>
+</div>
+</div>
+</body>
+</html>

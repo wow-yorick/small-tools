@@ -1,0 +1,51 @@
+{{:W('Menu/Breadcrumb')}}
+<div class="page-container">
+	<div class="text-l">
+		<form target="_self" action="" method="get" class="Huiform">
+            {{:W('FormUnit/Input',array('标签名称','tag_name',$tag_name))}} 
+            {{:W('FormUnit/Input',array('批次号','batch_num',$batch_num))}} 
+            {{:W('FormUnit/Input',array('公司代号','depot_code',$depot_code))}} 
+			<button type="submit" class="btn btn-success">
+				<i class="Hui-iconfont">&#xe665;</i> 搜索
+			</button>
+		</form>
+	</div>
+
+	<div class="dataTables_wrapper no-footer">
+		<table class="table table-border table-bordered table-hover table-bg">
+			<thead>
+			<tr>
+				<th scope="col" colspan="8">打印历史</th>
+			</tr>
+			<tr class="text-c">
+				<th width="40">ID</th>
+				<th width="100">标签名称</th>
+				<th width="100">产品名称</th>
+				<th width="100">生产日期</th>
+				<th width="100">公司编号</th>
+				<th width="100">批次号</th>
+				<th width="100">打印张数</th>
+				<th width="100">打印时间</th>
+			</tr>
+			</thead>
+			<tbody>
+			<foreach name="list" item="obj">
+				<tr class="text-c" id="tr_{{$obj['id']}}">
+					<td>{{$obj['id']}}</td>
+					<td>{{$obj['tag_name']}}</td>
+					<td>{{$obj['product_name']}}</td>
+					<td>{{$obj['product_date']}}</td>
+					<td>{{$obj['depot_code']}}</td>
+					<td>{{$obj['batch_num']}}</td>
+					<td>{{$obj['page_num']}}</td>
+					<td>{{$obj['createdatetime']}}</td>
+				</tr>
+			</foreach>
+
+			</tbody>
+		</table>
+		{{$page}}
+	</div>
+</div>
+<script type="text/javascript">
+</script>

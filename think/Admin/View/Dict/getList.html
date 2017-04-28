@@ -1,0 +1,78 @@
+{{:W('Menu/Breadcrumb')}}
+<div class="page-container">
+	<div class="text-l">
+		<form target="_self" action="" method="get" class="Huiform">
+            {{:W('FormUnit/Input',array('名称','name',$name))}} 
+            {{:W('FormUnit/Select',array('类型','type', $typeGroup, $type, "name|name"))}} 
+			<button type="submit" class="btn btn-success">
+				<i class="Hui-iconfont">&#xe665;</i> 搜索
+			</button>
+		</form>
+	</div>
+
+    {{:W('FormUnit/BtnMenu', array('添加字典','dict','add'))}}
+
+	<div class="dataTables_wrapper no-footer">
+		<table class="table table-border table-bordered table-hover table-bg">
+			<thead>
+			<tr>
+				<th scope="col" colspan="8">数据字典</th>
+			</tr>
+			<tr class="text-c">
+				<th width="40">ID</th>
+				<th width="200">分类名称</th>
+				<th width="200">编号</th>
+				<th width="200">类型名称</th>
+				<th width="200">类型值</th>
+				<th width="70">操作</th>
+			</tr>
+			</thead>
+			<tbody>
+			<foreach name="list" item="obj">
+				<tr class="text-c" id="tr_{{$obj['id']}}">
+					<td>{{$obj['id']}}</td>
+					<td>{{$obj['type']}}</td>
+					<td>{{$obj['seq']}}</td>
+					<td>{{$obj['name']}}</td>
+					<td>{{$obj['value']}}</td>
+					<td class="td-manage">
+                        {{:W('FormUnit/BtnSmall', array('编辑','dict','edit',array('id'=>$obj['id'])))}}
+                        {{:W('FormUnit/BtnSmall', array('删除','dict','del',array('id'=>$obj['id'])))}}
+					</td>
+				</tr>
+			</foreach>
+
+			</tbody>
+		</table>
+		{{$page}}
+	</div>
+</div>
+<script type="text/javascript">
+	/*-增加*/
+	function add(title, url, w, h) {
+		layer_show(title, url, w, h);
+	}
+	/*-编辑*/
+	function edit(title, url, w, h) {
+		layer_show(title, url, w, h);
+	}
+
+	/*-删除*/
+	function del(title, url,w,h, obj) {
+		layer.confirm('确认要删除吗？', function () {
+			$.ajax({
+				url: url,
+				type: 'post',
+				//data: {id: id},
+				success: function (data) {
+					if (data.status == 1) {
+						$(obj).parents('tr').remove();
+						layer.msg('已删除!', {icon: 5, time: 1000});
+					} else {
+						layer.msg('删除失败!', {icon: 5, time: 1000});
+					}
+				}
+			});
+		})
+	}
+</script>

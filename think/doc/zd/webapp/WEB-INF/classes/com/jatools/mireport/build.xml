@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="main">
+	<taskdef resource="yuicompressor.tasks" />
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+	<buildnumber file="build.number" />
+	<tstamp>
+		<format property="today" pattern="yyyy.M.d" />
+	</tstamp>
+
+	<target name="main" depends="release" />
+
+
+	<target name="release">
+		<delete dir="E:\java\mireport\release" />
+		<copy file="D:\BrochureMachine\sample6\jatoolsPrinter\setup.exe" tofile="E:\java\mireport\webapps\mireport\jatoolsPrinter\setup.exe" overwrite="true" />
+		<copy todir="E:\java\mireport\release">
+			<fileset dir="E:\java\mireport\webapps" includes="**">
+				<exclude name="mireport/service/images/**" />
+				<exclude name="mireport/service/reports/**" />
+				<exclude name="mireport/work/**" />
+
+			</fileset>
+		</copy>
+
+		<replaceregexp match="js\/jatoolsPrinter\.js\b" replace="js/jatoolsPrinter-min.js" flags="g" byline="false" file="E:\java\mireport\release\mireport\designer\r.jsp" encoding="UTF-8">
+		</replaceregexp>
+		<replaceregexp match="js\/core\.js\b" replace="js/core-min.js" flags="g" byline="false" file="E:\java\mireport\release\mireport\designer\r.jsp" encoding="UTF-8">
+		</replaceregexp>
+
+		<exec executable="java" dir="E:/java/mireport/release/mireport/designer/js/">
+			<arg value="-jar" />
+			<arg value="D:/builder/ant/lib/yuicompressor-2.4.8.jar" />
+			<arg value="core.js" />
+			<arg value="-o" />
+			<arg value="core-min.js" />
+			<arg value="--charset" />
+			<arg value="utf-8" />
+		</exec>
+		<exec executable="java" dir="E:/java/mireport/release/mireport/designer/js/">
+			<arg value="-jar" />
+			<arg value="D:/builder/ant/lib/yuicompressor-2.4.8.jar" />
+			<arg value="jatoolsPrinter.js" />
+			<arg value="-o" />
+			<arg value="jatoolsPrinter-min.js" />
+			<arg value="--charset" />
+			<arg value="utf-8" />
+		</exec>
+		
+		<delete file="E:/java/mireport/release/mireport/designer/js/jatoolsPrinter.js" />
+		<delete file="E:/java/mireport/release/mireport/designer/js/core.js" />
+		<zip destfile="E:/java/mireport/mireport.zip">
+			<zipfileset dir="E:/java/mireport/release" includes="**" />
+		</zip>	
+	</target>
+
+</project>

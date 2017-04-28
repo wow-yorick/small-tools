@@ -1,0 +1,129 @@
+<article class="page-container">
+	<form class="form form-horizontal" id="product-add" method="post" action="{{:U('product/productEdit')}}">
+		<input name="id" value="{{$product['id']}}" type="hidden">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"> <span class="c-red">*</span>商品名称： </label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{{$product['product_name']}}" placeholder="商品名称" name="product_name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"> <span class="c-red">*</span>商品唯一码： </label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{{$product['product_code']}}" placeholder="商品名称" name="product_name" readonly>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"> <span class="c-red">*</span>公司名称： </label>
+			<div class="formControls col-xs-8 col-sm-9">
+               <span class="select-box">
+				<select name="depot" class="select" disabled>
+					<foreach name="depots" key="key" item="depot_name">
+                        <eq name="depot" value="$key">
+                            <option value="{{$key}}" selected>{{$depot_name}}</option>
+                            <else/>
+						    <option value="{{$key}}">{{$depot_name}}</option>
+                        </eq>
+					</foreach>
+				</select>
+				</span>
+			</div>
+		</div>
+		<foreach name="attributeList" item="attribute">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-3">
+					{{$attribute['attribute_name']}}：
+				</label>
+				<if condition="$attribute['type'] eq 1">
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" value="{{$access[$attribute['id']]}}" placeholder="{{$attribute['attribute_name']}}" name="attribute_{{$attribute['id']}}">
+					</div>
+					<elseif condition="$attribute['type'] eq 2"/>
+					<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+						<foreach name="attribute['default_value']" item="value">
+							<div class="radio-box">
+								<eq name="value" value="$access[$attribute['id']]">
+									<input type="radio" value="{{$value}}" name="attribute_{{$attribute['id']}}" checked>
+									<else/>
+									<input type="radio" value="{{$value}}" name="attribute_{{$attribute['id']}}">
+								</eq>
+
+								<label>{{$value}}</label>
+							</div>
+						</foreach>
+					</div>
+					<elseif condition="$attribute['type'] eq 3"/>
+					<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+						<foreach name="attribute['default_value']" key="key" item="value">
+							<div class="check-box">
+								<in name="value" value="$access[$attribute['id']]">
+									<input type="checkbox" name="attribute_{{$attribute['id']}}[]" value="{{$value}}" checked>
+									<else/>
+									<input type="checkbox" name="attribute_{{$attribute['id']}}[]" value="{{$value}}">
+								</in>
+								<label>{{$value}}</label>
+							</div>
+						</foreach>
+					</div>
+				</if>
+			</div>
+		</foreach>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"> <span class="c-red">*</span>描述： </label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea name="remark" cols="" rows="" class="textarea" placeholder="说点什么...100个字符以内" dragonfly="true" onkeyup="textarealength(this,100)">{{$product['remark']}}</textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+<script type="text/javascript">
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	$("#product-add").validate({
+		rules: {
+			name: {
+				required: true,
+			},
+			remark: {
+				required: true,
+			}
+		},
+		onkeyup: false,
+		focusCleanup: false,
+		success: "valid",
+		submitHandler: function (form) {
+			var layerIndex = layer.load(1, {
+				shade: [0.1, '#fff'] //0.1透明度的白色背景
+			});
+			$(form).ajaxSubmit({
+				success: function (data) {
+					if (data.status == 1) {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 500,
+						}, function () {
+							layer_close();
+						});
+					} else {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 1000,
+						});
+					}
+				}
+			});
+		}
+	})
+</script>

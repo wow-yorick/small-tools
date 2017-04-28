@@ -1,0 +1,115 @@
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i>
+	首页 <span class="c-gray en">&gt;</span>
+    发货作业
+	<span class="c-gray en">&gt;</span>
+	发货数据采集
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新">
+		<i class="Hui-iconfont">&#xe68f;</i>
+	</a>
+</nav>
+<div class="page-container">
+	<form class="form form-horizontal" id="formActionTable" method="post" action="__APP__/shipment/addBatchDetail">
+		<input type="hidden" id="batch_id" name="batch_id" value="{{$detail['id']}}" />
+		<input type="hidden" name="batch_num" value="{{$detail['shipment_code']}}" />
+		<input type="hidden" name="product_num" value="{{$detail['product_num']}}" />
+		<input type="hidden" name="product_name" value="{{$detail['product_name']}}" />
+		<input type="hidden" name="status" value="完成" />
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>箱编号：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="package_code" placeholder="箱编号" value="" class="input-text">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input type="submit" value="&nbsp;&nbsp;出库&nbsp;&nbsp;" class="btn btn-primary radius">
+			</div>
+		</div>
+	</form>
+    <!-- 操作 end -->
+
+    <div class="text-l">
+        厂名:<span  class="c-red">{{$staArr['depotInfo']['depot_name']}}</span> 客户: <span class="c-red" >{{$detail['customer_name']}}</span>
+        进度:<span class="c-red" id="detailCount">{{$staArr['detailCount']}}</span>/{{$detail['number']}}件 
+    </div>
+
+	<div class="dataTables_wrapper no-footer">
+		<table class="table table-border table-bordered table-hover table-bg">
+			<thead>
+			<tr>
+                <th scope="col" colspan="8">进行中批次</th>
+			</tr>
+			<tr class="text-c">
+				<th width="40">ID</th>
+				<th width="200">批次号</th>
+				<th width="200">箱编号</th>
+				<th width="200">产品编号</th>
+				<th width="200">产品名称</th>
+				<th width="200">状态</th>
+				<th width="200">时间</th>
+				<!--<th width="200">操作</th>-->
+			</tr>
+			</thead>
+			<tbody id="batchList">
+			</tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+    //异步获取统计信息
+    function ajaxBatchStatics()
+    {
+        var batch_id = $('#batch_id').val();
+        $.get('__APP__/shipment/ajaxBatchStatics',{id:batch_id} ,function(data) {
+            //console.log(data);
+            $('#detailCount').text(data.detailCount);
+        },'json');
+    }
+
+    function getBatchDetailList()
+    {
+        var batch_id = $('#batch_id').val();
+        $('#batchList').load('__APP__/shipment/ajaxBatchDetail',{batch_id:batch_id} ,function() {
+            layer.msg('获取成功', {time: 500,});
+        },'get');
+    }
+	$("#formActionTable").validate({
+		rules: {
+		},
+		onkeyup: false,
+		focusCleanup: true,
+		success: "valid",
+		submitHandler: function (form) {
+			var layerIndex = layer.load(1, {
+				shade: [0.1, '#fff'] //0.1透明度的白色背景
+			});
+			$(form).ajaxSubmit({
+				success: function (data) {
+                    getBatchDetailList();
+                    ajaxBatchStatics();
+                    layer.close(layerIndex);
+					if (data.status == 1) {
+						layer.msg(data.info, {
+							time: 1000,
+						}, function () {
+                            //location.replace(location.href);
+						});
+					} else {
+                        alert(data.info);
+						//layer.msg(data.info, {
+						//	time: 1000,
+						//});
+
+					}
+				}
+			});
+		}
+	})
+
+</script>

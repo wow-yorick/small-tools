@@ -1,0 +1,184 @@
+<!--<nav class="breadcrumb">-->
+<!--<i class="Hui-iconfont">&#xe67f;</i>-->
+<!--首页 <span class="c-gray en">&gt;</span>-->
+<!--小包装管理-->
+<!--<span class="c-gray en">&gt;</span>-->
+<!--小包装数据采集-->
+<!--<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新">-->
+    <!--<i class="Hui-iconfont">&#xe68f;</i>-->
+<!--</a>-->
+<!--</nav>-->
+{{:W('Menu/Breadcrumb')}}
+<div class="page-container">
+    <form class="form form-horizontal" id="formActionTable" method="post" action="__APP__/package/addBatchDetail">
+        <input type="hidden" id="batch_id" name="batch_id" value="{{$detail['id']}}" />
+        <input type="hidden" name="batch_num" value="{{$detail['batch_num']}}" />
+        <input type="hidden" name="product_num" value="{{$detail['product_num']}}" />
+        <input type="hidden" name="product_name" value="{{$detail['product_name']}}" />
+        <input type="hidden" name="status" value="完成" />
+
+        <div class="row cl mb-15">
+            <label class="form-label col-xs-12 col-sm-2">
+                <span class="c-red">*</span>产品条形码：
+            </label>
+
+            <div class="formControls col-xs-12 col-sm-4">
+                <input type="text" id="shape_code" name="shape_code" placeholder="产品条形码" value="" class="input-text">
+            </div>
+
+            <div class="col-xs-12 col-sm-1  f-l">
+                <input type="submit" value="&nbsp;&nbsp;入库&nbsp;&nbsp;" class="btn btn-primary radius">
+            </div>
+
+            <div class="col-xs-12 col-sm-2  f-l">
+                <input type="button" value="&nbsp;&nbsp;打印&nbsp;&nbsp;" onclick="showPrint({{$detail.id}})" class="btn btn-primary radius">
+            </div>
+        </div>
+
+    </form>
+    <!-- 操作 end -->
+    <div class="text-l">
+        <h1> 包装状态: 已包装<span class="c-red" id="packageNumStatus">{{$staArr['hasPack']}}</span>箱; 共<span>{{$staArr['packCount']}}</span>箱;  单箱进度：<span class="c-red" id="subNumStatus">{{$staArr['subCount']}}</span>/<span>{{$staArr['specification']}}</span>
+            总进度: <span id="detailCount" class="c-red">{{$staArr['detailCount']}}</span>/{{$staArr['proCount']}} </h1>
+    </div>
+    <div class="dataTables_wrapper no-footer">
+        <table class="table table-border table-bordered table-hover table-bg">
+            <thead>
+                <tr>
+                    <th scope="col" colspan="8">进行中批次</th>
+                </tr>
+                <tr class="text-c">
+                    <th width="200">产品条形码</th>
+                    <!--<th width="40">ID</th>-->
+                    <th width="200">批次号</th>
+                    <th width="200">产品编号</th>
+                    <th width="200">产品名称</th>
+                    <!--<th width="200">状态</th>-->
+                    <th width="200">时间</th>
+                    <th width="200">操作</th>
+                </tr>
+            </thead>
+            <tbody id="batchList">
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <h3 id="myModalLabel">对话框标题</h3><a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+    </div>
+    <div class="modal-body">
+        <p>对话框内容…</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary">确定</button> <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+    </div>
+</div>
+<script type="text/javascript">
+    getBatchDetailList();
+    ajaxBatchStatics();
+    function getBatchDetailList()
+    {
+        var batch_id = $('#batch_id').val();
+        $('#batchList').load('__APP__/package/ajaxBatchDetail',{batch_id:batch_id} ,function() {
+            layer.msg('获取成功', {time: 500,});
+        },'get');
+    }
+
+    function showPrint(batchId)
+    {
+        if(!batchId) {
+            layer.msg('批次号获取失败!', {
+                time: 3000,
+            });
+            return false;
+        }
+        //layer_show('打印配置', '__APP__/Print/printOperate/batchId/'+batchId, 800, 450);
+
+		var index = layer.open({
+			type: 2,
+			title: '打印配置',
+			content: '__APP__/Print/printOperate/batchId/'+batchId
+		});
+		layer.full(index);
+    }
+
+    //异步获取统计信息
+    function ajaxBatchStatics()
+    {
+        var batch_id = $('#batch_id').val();
+        $.get('__APP__/package/ajaxBatchStatics',{id:batch_id} ,function(data) {
+            //console.log(data);
+            $('#packageNumStatus').text(data.hasPack);
+            $('#subNumStatus').text(data.subCount);
+            $('#detailCount').text(data.detailCount);
+            if(data.printFlag) {
+                showPrint(data.batchId)
+            }
+        },'json');
+    }
+    $("#formActionTable").validate({
+        rules: {
+        },
+        onkeyup: false,
+        focusCleanup: true,
+        success: "valid",
+        submitHandler: function (form) {
+            var layerIndex = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+            $(form).ajaxSubmit({
+                success: function (data) {
+                    getBatchDetailList();
+                    ajaxBatchStatics();
+                    layer.close(layerIndex);
+                    if (data.status == 1) {
+                        layer.msg(data.info, {
+                            time: 1000,
+                        }, function () {
+                            //location.replace(location.href);
+                            $('#shape_code').val('');
+                        });
+                    } else {
+                        alert(data.info);
+                        //layer_close();
+                        //layer.msg(data.info, {
+                         //   time: 3000,
+                        //});
+                    }
+                }
+            });
+        }
+    })
+
+    /**
+     * batchDetailDel 
+     * 输入错误的删除
+     * @param title $title 
+     * @param url $url 
+     * @param w $w 
+     * @param h $h 
+     * @param obj $obj 
+     * @access public
+     * @return void
+     */
+    function batchDetailDel(title, url,w,h, obj)
+    {
+		layer.confirm('确认要删除吗？', function () {
+			$.ajax({
+				url: url,
+				type: 'post',
+				//data: {id: id},
+				success: function (data) {
+					if (data.status == 1) {
+						$(obj).parents('tr').remove();
+						layer.msg('已删除!', {icon: 5, time: 3000});
+                        ajaxBatchStatics();
+					} else {
+						layer.msg('删除失败!', {icon: 5, time: 3000});
+					}
+				}
+			});
+		})
+    }
+</script>

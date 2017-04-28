@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
+<meta http-equiv="content-style-type" content="text/css" />
+<script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl();?>/js/jquery-1.6.1.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $this->baseUrl();?>/js/Validform_v5.3.1_min.js"></script>
+<!--[if lte IE 9]><script src="<?php echo $this->baseUrl();?>/js/html5.js"></script><![endif]-->
+<link href="<?php echo $this->baseUrl();?>/css/login.css" type="text/css" rel="stylesheet"/>
+<title><?php echo $_SESSION[$this->sessionPrefix . 'webTitle'];?></title>
+
+
+</head>
+<body>
+<form id="formLogin" action="<?php echo $this->baseUrl().'/login/index/login';?>" method="post">
+	<div class="logo"></div>
+	<div class="login_frame">
+	<div id="msgerr" style="position:absolute; left:20px; top:40px;"></div>
+	<div class="input">
+	<input type="text" name="username" placeholder="用户名" datatype="*3-16" nullmsg="请输入用户名！" errormsg="用户名范围在3~16位之间！"/>
+	<input type="password" name="password" placeholder="密码" datatype="*3-16" nullmsg="请输入密码！" errormsg="密码范围在3~16位之间！" style="margin-top:13px;" />
+	</div>
+	<div class="clear"></div>
+	<input type="text" name="vercode" placeholder="验证码" datatype="*" nullmsg="请输入验证码！" ajaxurl="<?php echo $this->baseUrl(); ?>/login/index/vercodecheck" errormsg="" style="margin:13px 0 0 20px;width:110px;padding-left:5px;float:left;" />
+	<a style="display:block;width:100px;height:30px;margin:13px 15px 0 0;float:right; cursor:pointer"><img src="<?php echo $this->baseUrl();?>/login/index/vercode" title="看不清，换一张！" onclick="refreshVercode(this);" width="100" height="30" /></a>
+	<div class="clear blank"></div>
+	<input class="no-sty" type="checkbox" name="memberpsw"/>记住密码
+	<a class="btn" id="btn_submit"></a>
+	<div class="clear blank"></div>
+	<div style="margin:0 0 0 20px;display:none">忘记密码？<a href="javascript:void(0);" style="color:#056FB8;" >点击这里</a></div>
+	</div>
+</form>
+
+<script>
+/*
+ * 刷新验证码
+ */
+function refreshVercode(obj) {
+	var url = "<?php echo $this->baseUrl();?>/login/index/vercode/avoidCache/" + Math.random();
+	$(obj).attr('src', url);
+}
+$(function(){
+	var check = $("#formLogin").Validform({
+		btnSubmit:"#btn_submit", //提交按钮
+		postonce:true,
+		//异步提交
+		ajaxPost:true,
+		tiptype:function(msg,o,cssctl){
+		var objtip=$("#msgerr");
+		cssctl(objtip,o.type);
+		objtip.text(msg);
+		},
+		beforeSubmit:function(curform){
+			if(curform.find('input[name=memberpsw]').attr('checked')){
+				var user = curform.find('input[name=username]').val();
+				var pws = user.substr(0,2)+curform.find('input[name=password]').val();
+				etjm = EnEight(user+'|'+pws);
+				setCookie('usapw',etjm,7);				
+			}else{
+				DelCookie('usapw');
+			}
+			//return false;
+		},
+		callback:function(data){
+			if(data.status=="n"){
+				//location.href = "<?php //echo $this->baseUrl();?>/login/index";
+			}else if(data.status=='y'){
+				location.href = "<?php echo $this->baseUrl();?>/main/main";
+			}
+		}
+	});
+	//禁止重复提交
+	$("#btn_submit").click(function(){
+		check.resetStatus();
+		return false;	
+	})	
+})
+
+/*jia*/
+function EnEight(txt){
+    var monyer = new Array();var i,s;
+    for(i=0;i<txt.length;i++)
+        monyer+="\\"+txt.charCodeAt(i).toString(8); 
+    return monyer;
+}
+
+/*jie*/
+function DeEight(txt){
+    var monyer = new Array();var i;
+    var s=txt.split("\\");
+    for(i=1;i<s.length;i++)
+        monyer+=String.fromCharCode(parseInt(s[i],8));
+    return monyer;
+}
+
+function setCookie(name,value,days){
+	var exp = new Date();
+	exp.setTime(exp.getTime() + days*24*60*60*1000);
+	document.cookie = name + "="+ escape(value) + ";expires=" + exp.toGMTString();
+}
+
+//读取cookie
+function getCookie(c_name){
+if (document.cookie.length>0)
+  {
+  c_start=document.cookie.indexOf(c_name + "=")
+  if (c_start!=-1)
+    { 
+    c_start=c_start + c_name.length+1 
+    c_end=document.cookie.indexOf(";",c_start)
+    if (c_end==-1) c_end=document.cookie.length
+    return unescape(document.cookie.substring(c_start,c_end))
+    } 
+  }
+return ""
+}
+
+//删除Cookie
+function  DelCookie(name){
+	var  exp  =  new  Date();
+	exp.setTime  (exp.getTime()  -  1);
+	var  cval  =  getCookie(name);
+	document.cookie  =  name  +  "="  +  cval  +  ";  expires="+  exp.toGMTString();
+}
+
+$(document).ready(function(){
+	cook = DeEight(getCookie('usapw'));
+	if(cook != ''){
+		var str = cook.split('|');
+		$('#formLogin').find('input[name=username]').val(str[0]);
+		$('#formLogin').find('input[name=password]').val(str[1].substr(2));
+		$('#formLogin').find('input[name=memberpsw]').attr('checked',true);
+	}
+});
+</script>
+</body>
+</html>

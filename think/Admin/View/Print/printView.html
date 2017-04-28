@@ -1,0 +1,71 @@
+{__NOLAYOUT__}
+<html> 
+<head> 
+<title>打印预览</title> 
+<OBJECT  ID="jatoolsPrinter" CLASSID="CLSID:B43D3361-D075-4BE2-87FE-057188254255" 
+codebase="/jatoolsPrinter.cab#version=5,7,0,0"></OBJECT> 
+<!--<style>
+    *{word-wrap:break-word}
+html,body,h1,h2,h3,h4,h5,h6,hr,p,iframe,dl,dt,dd,ul,ol,li,pre,form,button,input,textarea,th,td,fieldset{margin:0;padding:0}
+ul,ol,dl{list-style-type:none}
+html,body{*position:static}
+html{font-family: sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+    span{display:block;}
+    p{position:relative;}
+    #qrcode{position:absolute;top:1em;left: 1em;}
+    #barcode{position:absolute;top:2em;left: 8em;width:15em;height:4em;}
+    #batchNum{position: absolute; top:7em;left:9em}
+    #productDate{display:block;position: absolute;  bottom:4em;left: 5.5em;block-size:14;width:10em;font-weight: bold};
+    p{margin:0;padding:0;width:100%}
+</style>-->
+<style type="text/css" media=print>  
+.noprint{display : none }  
+</style>  
+</head> 
+
+<body bgcolor="#e0e0e0"> 
+<if condition="$print eq 1 "> 
+    <div><p class="noprint"><input id="btnPrint" type="button" value="打印" onclick="preview(1)" /></p> </div>
+</if>
+    <!--startprint1--><div id='page1'  style='background:#ffffff;margin:5;width:70;height:50;float:left'>{{$showBody}}</div><!--endprint1-->
+</body> 
+<script>
+function preview(oper)         
+{  
+    if (oper < 10)  
+    {  
+        bdhtml=window.document.body.innerHTML;//获取当前页的html代码  
+        sprnstr="<!--startprint"+oper+"-->";//设置打印开始区域  
+        eprnstr="<!--endprint"+oper+"-->";//设置打印结束区域  
+        prnhtml=bdhtml.substring(bdhtml.indexOf(sprnstr)+18); //从开始代码向后取html  
+        prnhtmlprnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));//从结束代码向前取html  
+        window.document.body.innerHTML=prnhtml;  
+        window.print();  
+        window.document.body.innerHTML=bdhtml;  
+    } else {  
+        window.print();  
+    }  
+}  
+/*function doPrint() 
+{ 
+    //打印文档对象 
+    var myDoc ={ 
+            settings:{ 
+                        // 如果想使用默认打印机,不需要设置 
+                        // printer: '联想激打', 
+                        // 指定纸张的高宽以十分之一毫米为单位,本设置实际是指定为a4大小 
+                        paperWidth : 100, 
+                        paperHeight : 70, 
+
+                        // 指定打打印方向为横向, 1/2 = 纵向/横向 
+                        orientation : 2
+                    }, 
+            documents: document,  // 打印页面(div)们在本文档中 
+            copyrights : '杰创软件拥有版权  www.jatools.com' // 版权声明必须 
+    }; 
+    jatoolsPrinter.print(myDoc,false);
+}  
+doPrint();
+*/
+</script>
+</html> 

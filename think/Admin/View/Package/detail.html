@@ -1,0 +1,199 @@
+{{:W('Menu/Breadcrumb')}}
+<div class="page-container">
+	<form class="form form-horizontal" id="formActionTable" method="post" action="__ACTION__">
+		<input type="hidden" name="id" value="{{$detail['id']}}">
+		<input type="hidden" name="product_name" value="">
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>选择产品：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+				<select class="select" name="product_num" id="changeProduct">
+					<option value="">—请选择—</option>
+					<foreach name="productList" key="key" item="product">
+						<eq name="product.product_code" value="$detail['product_num']">
+							<option value="{{$product.product_code}}" selected>{{$product.product_name}}</option>
+							<else/>
+							<option value="{{$product.product_code}}">{{$product.product_name}}</option>
+						</eq>
+
+					</foreach>
+				</select>
+				</span>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>总包数：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="total_package" placeholder="总包数" value="{{$detail['total_package']}}" class="input-text">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>每箱包数：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="specification" placeholder="每箱包数" value="{{$detail['specification']}}" class="input-text">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>箱数(只读)：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="number" readonly placeholder="箱数" value="{{$detail['number']}}" class="input-text">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" class="btn btn-primary radius">
+				<input type="button" value="&nbsp;&nbsp;查询进行批次&nbsp;&nbsp;" class="btn btn-primary radius" onclick="getBatchList()" id="getActBatchList">
+			</div>
+		</div>
+	</form>
+    <input type="hidden" id="currentPackagePatchNum" />
+    <!-- 操作 end -->
+	<div class="dataTables_wrapper no-footer">
+		<table class="table table-border table-bordered table-hover table-bg">
+			<thead>
+			<tr>
+                <th scope="col" colspan="10">进行中批次</th>
+			</tr>
+			<tr class="text-c">
+				<th width="40">ID</th>
+				<th width="200">批次号</th>
+				<th width="200">产品编号</th>
+				<th width="200">产品名称</th>
+				<th width="200">箱数</th>
+				<th width="200">每箱包数</th>
+				<th width="200">已包产品</th>
+				<th width="200">批次状态</th>
+				<th width="200">批次生成时间</th>
+				<th width="70">操作</th>
+			</tr>
+			</thead>
+			<tbody id="batchList">
+			</tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+$('input[name=specification]').blur(function(){
+    var tpObj = $('input[name=total_package]');
+    var numberObj = $('input[name=number]');
+    var specification = $(this).val();
+    var total_package = tpObj.val();
+    if(!specification || !total_package) {
+        alert('请填写包数和每箱的包数!');
+        return false;
+    }
+    var numbers = total_package/specification;
+    if(0 == total_package%specification) {
+        numberObj.val(numbers);
+    } else {
+        alert('您输入的包数无法装满整箱');
+        tpObj.val('');
+        $(this).val('');
+        numberObj.val('');
+    }
+});
+// 验证箱数     
+jQuery.validator.addMethod("isZipCode", function(value, element) {     
+    var tel = /^[0-9]{6}$/;  
+    return this.optional(element) || (tel.test(value));  
+}, "请正确填写您的邮政编码");  
+getBatchList();
+	$("#formActionTable").validate({
+		rules: {
+            total_package:{
+				required: true,
+            },
+            specification:{
+				required: true,
+            },
+		},
+		onkeyup: false,
+		focusCleanup: true,
+		success: "valid",
+		submitHandler: function (form) {
+			var layerIndex = layer.load(1, {
+				shade: [0.1, '#fff'] //0.1透明度的白色背景
+			});
+			$(form).ajaxSubmit({
+				success: function (data) {
+					if (data.status == 1) {
+                            getBatchList();
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 500,
+						}, function () {
+                            console.log(data);
+							//layer_close();
+                            //location.replace(location.href);
+                            //getBatchList();
+						});
+					} else {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 1000,
+						});
+
+					}
+				}
+			});
+		}
+	})
+
+    function packAct(title, url,w,h, obj) {
+        var thisTr = $(obj);
+        var thisBathId = thisTr.attr('data-id');
+        var url = "__APP__/package/ajaxSetCurrentPatch";
+        $.ajax({
+            url:url,
+            type:'post',
+            dataType:'json',
+            data:{id:thisBathId},
+            success: function(data) {
+                //if(200 != data.code) {
+                    //return false;
+                //}
+                $('#currentPackagePatchNum').val(thisBathId);
+                var url = "__APP__/package/ajaxDatCollect/id/"+data.id;
+                //layer_show('小包装数据采集', url, 800, 450);
+                var index = layer.open({
+                    type: 2,
+                    title: '小包装数据采集',
+                    content: url
+                });
+                layer.full(index);
+            },
+            complete: function(XHR, TS) {
+                getBatchList();
+            }
+        });
+    }
+
+function getBatchList()
+{
+    $('#batchList').load('__APP__/package/ajaxInActBatch',{} ,function() {
+        layer.msg('获取成功', {time: 500,});
+    });
+}
+
+    $('#changeProduct').change(function(){
+        var selectText = $(this).find('option:selected').text();
+        $('input[type=hidden][name=product_name]').val(selectText);
+    })
+</script>

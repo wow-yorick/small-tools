@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>视频播放</title>
+
+  <link href="common/default.css" rel="stylesheet" type="text/css">
+  <link href="common/layout.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="jwplayer/jwplayer.js"></script>
+  <script type="text/javascript">/*jwplayer.key="ABCDEFGHIJKLMOPQ";*/</script>
+  <!-- 必须放在head标签里旧的ie才起作用. -->
+  <script src="common/jquery-1.7.2.min.js"></script> 
+    <!–[if lt IE 9]>   
+	<script type="text/javascript" src="common/html5.js"></script>
+    <![endif]–>  
+<script>
+	//读取xml中的数据并加载到html中
+	$(document).ready(function () {
+		$.ajax({
+			//请求方式为get
+			type: "GET",
+			//xml文件位置
+			url: "videoList.xml",
+			//返回数据格式为xml
+			dataType: "xml",
+			//请求成功完成后要执行的方法
+			success: function (xml) {
+				$(xml).find("item").each(function (i) {
+					//i从0开始，累加，如果要显示所有数据，将判断去除即可
+					if (i < 30) {
+						//链接地址
+						var type = $(this).find("type").text();
+						var videourl = $(this).find("videourl").text();
+						var tempimg = $(this).find("tempimg").text();
+						var title = $(this).find("title").text();
+						var htmlli = "<li  data-index='"+i+"' type='"+type+"' videourl='"+videourl+"'><div class='pic picml'><a href='javascript:void(0)' title='"+title+"'><img src='"+tempimg+"'></a><span class='maskbg'></span><span class='masktxt'>当前视频</span></div><h4><a href='javascript:void(0);'>"+title+"</a></h4></li>";
+						$('#js_scrollList').append(htmlli);
+				   }
+				   if(i == 0){
+					   creatfilmobj(videourl,type,'stop');
+					}
+				
+				});
+				
+				//选中第一个视频
+				$("#js_scrollList").find("li:first").addClass('current');
+			}
+		});
+		
+		//绑定click事件
+		lieventbind();
+
+		//翻页按钮显示
+		turnpageshow();
+
+		//翻页
+		pagego();
+
+	});
+	
+	//绑定列表click事件
+	function lieventbind(statue){
+		$('#js_scrollList').find('li').live('click',function(){
+			$('#js_scrollList').find('li').removeClass('current');
+			$(this).addClass('current');
+			var type = $(this).attr('type');
+			var videourl = $(this).attr('videourl');
+			if(statue =='stop'){
+				creatfilmobj(videourl,type,'false');
+			}else{
+				creatfilmobj(videourl,type,'true');
+			}
+		});
+	}
+	
+	//创建视频对象
+	function creatfilmobj(videourl,type,autoplay){
+		if(type=="flv"){
+			jwplayer("cusplayer").setup({
+				file: videourl,
+				image: "common/pbg.jpg",
+				width:600,
+				height:549
+			});
+			if(autoplay=='true'){
+				jwplayer("cusplayer").play();
+			}
+			//创建支持flv格式的对象
+			//console.log(autoplay)
+			/*var obj = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="600" height="549" id="FLVPlayer" style="float:left;"><param name="movie" value="FLVPlayer_Progressive.swf" /><param name="quality" value="high"><param name="wmode" value="opaque"><param name="scale" value="noscale"><param name="bgColor" value="#000000" /><param name="salign" value="B"><param name="FlashVars" value="&amp;MM_ComponentVersion=1&amp;skinName=Halo_Skin_3&amp;streamName='+videourl+'&amp;autoPlay='+autoplay+'&amp;autoRewind=false"/><param name="swfversion" value="8,0,0,0"><!-- 此 param 标签提示使用 Flash Player 6.0 r65 和更高版本的用户下载最新版本的 Flash Player。如果您不想让用户看到该提示，请将其删除。 --><param name="expressinstall" value="Scripts/expressInstall.swf"><!-- 下一个对象标签用于非 IE 浏览器。所以使用 IECC 将其从 IE 隐藏。 --><!--[if !IE]>--><object type="application/x-shockwave-flash" data="FLVPlayer_Progressive.swf" width="600" height="549" name="othplayer"><!--<![endif]--><param name="quality" value="high"><param name="bgColor" value="#000000" /><param name="wmode" value="opaque"><param name="scale" value="noscale"><param name="salign" value="B"><param name="swliveconnect" value="true"> <param name="FlashVars" value="&amp;MM_ComponentVersion=1&amp;skinName=Halo_Skin_3&amp;streamName='+videourl+'&amp;autoPlay='+autoplay+'&amp;autoRewind=false" id="url-b" /><param name="swfversion" value="8,0,0,0"><param name="expressinstall" value="Scripts/expressInstall.swf"><!-- 浏览器将以下替代内容显示给使用 Flash Player 6.0 和更低版本的用户。--><div><h4>此页面上的内容需要较新版本的 Adobe Flash Player。</h4><p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="获取 Adobe Flash Player" /></a></p></div><!--[if !IE]>--></object><!--<![endif]--></object>';*/
+		}else if(type=="swf"){
+			//创建支持swf格式的对象
+			var obj = '<object id="FlashID" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="600" height="549" style="float:left"><param name="movie" value="'+videourl+'"><param name="quality" value="high"><param name="wmode" value="opaque"><param name="swfversion" value="14.0.0.0"><!-- 此 param 标签提示使用 Flash Player 6.0 r65 和更高版本的用户下载最新版本的 Flash Player。如果您不想让用户看到该提示，请将其删除。 --><param name="expressinstall" value="Scripts/expressInstall.swf"><!-- 下一个对象标签用于非 IE 浏览器。所以使用 IECC 将其从 IE 隐藏。 --><!--[if !IE]>--><object type="application/x-shockwave-flash" data="'+videourl+'" width="600" height="549"><!--<![endif]-->  <param name="quality" value="high"><param name="wmode" value="opaque"><param name="swfversion" value="14.0.0.0"><param name="expressinstall" value="Scripts/expressInstall.swf"><!-- 浏览器将以下替代内容显示给使用 Flash Player 6.0 和更低版本的用户。 --><div><h4>此页面上的内容需要较新版本的 Adobe Flash Player。</h4>  <p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="获取 Adobe Flash Player" width="112" height="33" /></a></p></div><!--[if !IE]>--></object><!--<![endif]--></object>';
+		}else if(type ="mp4"){
+			/*var obj ='<video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="600" height="549" poster="common/pbg.jpg" data-setup="{}"><source src="video/oceans-clip.mp4" type="video/mp4" /><track kind="captions" src="demo.captions.vtt" srclang="en" label="English" /></video>';*/
+			var obj = "";
+			$('example_video_1').show();
+			}else{
+			var obj = "对不起！此视频格式不支持！"
+			}
+		$('#swfcont').html(obj);
+	}
+
+//翻页按钮显示隐藏
+function turnpageshow(){
+	$('#js_playlist').hover(
+		function(){$('#js_listbar').show();},
+		function(){$('#js_listbar').hide();}
+	);
+}
+
+//翻页功能
+function pagego(){
+	$('#js_pageUp').click(function(){
+		var newpos = parseInt($('#js_scrollList').css('top'))+500;
+		newpos = newpos>0? 0:newpos;
+		$('#js_scrollList').css('top',newpos);
+		//if(newpos>=0)alert('已经是第一页了！');
+	});
+	$('#js_pageDown').click(function(){
+		var obj = $('#js_scrollList');
+		var li = obj.find('li');
+		if(li.length > 0){
+			var pag = parseInt(li.length/6);
+			var pagesum = li.length%6;
+		}
+		var maxT = pagesum==0?500*(pag-1):500*pag;
+		var newpos = parseInt($('#js_scrollList').position().top)-500;
+		newpos = Math.abs(newpos)>=maxT?-maxT:newpos;
+		//console.log(newpos+' max:'+maxT+' pag:'+pag);
+		$('#js_scrollList').css('top',newpos);
+	});
+}
+
+var listloop='';
+//循环播放
+function listLoopPlay(){
+	var state =jwplayer("cusplayer").getState();
+	if(state =='PLAYING'){
+		//console.log(jwplayer("cusplayer").getState());
+		listloop = true;
+	}
+	//console.log(listloop+' -state:'+state);
+	if(state =='IDLE' && listloop==true ){
+		var len = $('#js_scrollList').find('li').length;
+		var ind = $('#js_scrollList').find('li.current').attr('data-index');
+		var turp=0;
+		ind =parseInt(ind)+1;
+		console.log('ind:'+ind+' len:'+len);
+		if(ind<len){
+			$('#js_scrollList').find('li[data-index='+ind+']').click();
+			var judge = (ind+1)/6;
+			turp = judge>1?500*parseInt(judge):0;
+		}else{
+			$('#js_scrollList').find('li[data-index=0]').click();
+			jwplayer("cusplayer").pause();
+		}
+		$('#js_scrollList').css('top',-turp);
+	}	
+	
+}
+
+setInterval("listLoopPlay()",3000)
+	
+</script>
+</head>
+<body>
+<div class="playercont">
+    <div id="swfcont">
+		<div id="cusplayer">Loading the player...</div>
+	</div> 
+<div class="playright">
+		<div class="listloading" id="js_listloading" style="display: none;">
+			<i></i>
+			<p>正在载入中...</p>
+	</div>
+		<div class="playlist" id="js_playlist" >
+			<div class="listcont">
+				<ul id="js_scrollList"></ul>
+			</div>
+
+			<div class="listbar" id="js_listbar" style="display:none;">
+				<div  class="uparrow" id="js_pageUp"><a href="javascript:void(0);" title="上一页">上一页</a></div>
+				<div class="downarrow" id="js_pageDown"><a href="javascript:void(0);" title="下一页">下一页</a></div>
+			</div>
+		</div>
+  </div>
+
+</div>
+</body>
+</html>

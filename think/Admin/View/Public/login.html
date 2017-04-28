@@ -1,0 +1,326 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit|ie-comp|ie-stand">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<meta http-equiv="Cache-Control" content="no-siteapp"/>
+		<LINK rel="Bookmark" href="/favicon.ico">
+		<LINK rel="Shortcut Icon" href="/favicon.ico"/>
+		<!--[if lt IE 9]>
+		<script type="text/javascript" src="__JS__/html5.js"></script>
+		<script type="text/javascript" src="__JS__/respond.min.js"></script>
+		<script type="text/javascript" src="__JS__/PIE_IE678.js"></script>
+		<![endif]-->
+		<link rel="stylesheet" type="text/css" href="__CSS__/main.min.css"/>
+		<link rel="stylesheet" type="text/css" href="__CSS__/admin.css"/>
+		<link rel="stylesheet" type="text/css" href="__JS__/iconfont/iconfont.css"/>
+		<link rel="stylesheet" type="text/css" href="__JS__/icheck/icheck.css"/>
+		<link rel="stylesheet" type="text/css" href="__SKIN__/default/skin.css" id="skin"/>
+		<link rel="stylesheet" type="text/css" href="__CSS__/style.css"/>
+		<!--[if IE 6]>
+		<script type="text/javascript" src="__JS__/DD_belatedPNG_0.0.8a-min.js"></script>
+		<script>DD_belatedPNG.fix('*');</script>
+		<![endif]-->
+
+		<script type="text/javascript" src="__JS__/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="__JS__/jquery/jquery.form.js"></script>
+		<script type="text/javascript" src="__JS__/icheck/jquery.icheck.min.js"></script>
+		<script type="text/javascript" src="__JS__/layer/layer.js"></script>
+		<script type="text/javascript" src="__JS__/validate/jquery.validate.min.js"></script>
+		<script type="text/javascript" src="__JS__/validate/validate-methods.js"></script>
+		<script type="text/javascript" src="__JS__/validate/messages_zh.min.js"></script>
+		<script type="text/javascript" src="__JS__/My97DatePicker/WdatePicker.js"></script>
+		<script type="text/javascript" src="__JS__/main.js"></script>
+		<script type="text/javascript" src="__JS__/admin.js"></script>
+		<script type="text/javascript" src="__JS__/Highcharts/highcharts.js"></script>
+		<script type="text/javascript" src="__JS__/Highcharts/modules/exporting.js"></script>
+		<style type="text/css">
+			/*@CHARSET "UTF-8";*/
+			body {
+				color: #666;
+				background: #fff;
+				font: 14px/1.5 Verdana, 'Microsoft yahei', Tahoma, Geneva, sans-serif;
+				min-width: 1100px;
+				-webkit-font-smoothing: antialiased;
+				-moz-osx-font-smoothing: grayscale;
+			}
+
+			body, ul, ol, li, dl, dd, dt, p, h1, h2, h3, h4, h5, h6, form, fieldset, table, td, img, div, tr {
+				margin: 0;
+				padding: 0;
+			}
+
+			input, select {
+				font-size: 12px;
+				vertical-align: middle;
+			}
+
+			body div {
+				text-align: left;
+			}
+
+			textarea, input {
+				word-wrap: break-word;
+				word-break: break-all;
+				padding: 0px;
+			}
+
+			ul, li {
+				list-style-type: none;
+			}
+
+			img {
+				border: 0 none;
+			}
+
+			a:link, a:visited {
+				color: #000000;;
+				text-decoration: none;
+				outline: none;
+			}
+
+			a:hover {
+				color: #0c242e;
+			}
+
+			button, input, select, textarea {
+				font-size: 100%;
+				font-family: inherit;
+				margin: 0;
+				outline: none;
+			}
+
+			h1 {
+				font-size: 24px;
+			}
+
+			h2 {
+				font-size: 20px;
+			}
+
+			h3 {
+				font-size: 18px;
+			}
+
+			h4 {
+				font-size: 16px;
+			}
+
+			h5 {
+				font-size: 14px;
+			}
+
+			h6 {
+				font-size: 12px;
+			}
+
+			.block {
+				width: 1200px;
+				height: auto;
+				clear: both;
+				margin: 0 auto;
+			}
+
+			.clearfix:after {
+				visibility: hidden;
+				display: block;
+				font-size: 0;
+				content: " ";
+				clear: both;
+				height: 0;
+			}
+
+			.clearfix {
+				display: inline-table;
+			}
+
+			* html .clearfix {
+				height: 1%;
+			}
+
+			.clearfix {
+				display: block;
+			}
+
+			.clear {
+				clear: both;
+			}
+
+			.fl {
+				float: left;
+			}
+
+			.fr {
+				float: right;
+			}
+
+			pre {
+				overflow: auto;
+				margin: 0 0 1em 0;
+				width: 99%;
+				font-size: 12px;
+				font-family: 'Courier New', Monospace;
+				white-space: pre-wrap;
+				white-space: -moz-pre-wrap;
+				white-space: -pre-wrap;
+				white-space: -o-pre-wrap;
+				word-wrap: break-word;
+			}
+
+			/* 头部代码开始 */
+			.head {
+				width: 100%;
+				background: #fffafa;
+			}
+
+			.head .block .logo {
+				width: 365px;
+				height: 42px;
+				float: left;
+				padding: 30px 0;
+			}
+
+			.head .block .tell {
+				width: 235px;
+				height: 26px;
+				float: right;
+				padding-top: 40px;
+			}
+
+			.login {
+				width: 100%;
+				background: url(__IMG__/login_bg.png) no-repeat center center;
+				height: 598px;
+			}
+
+			.login .block .login-yz {
+				width: 400px;
+				height: 400px;
+				margin-left: 805px;
+				margin-top: 110px;
+				background: rgba(255, 255, 255, 0.8);
+				float: left;
+				box-shadow: 0 0 17px rgba(0, 0, 0, .13);
+			}
+
+			.login .block .login-yz h1 {
+				padding-top: 57px;
+				text-align: center;
+				color: #000;
+				margin-bottom: 43px;
+			}
+
+			.srk {
+				width: 283px;
+				height: 42px;
+				border: 1px solid #b6b6b6;
+				margin: 0 auto;
+				margin-bottom: 26px;
+				margin-left: 32px;
+				padding-left: 50px;
+				color: #b6b6b6
+			}
+
+			.bg {
+				background: url(__IMG__/yhm.png) no-repeat 20px center;
+			}
+
+			.bg1 {
+				background: url(__IMG__/password.png) no-repeat 20px center;
+			}
+
+			.but {
+				width: 160px;
+				height: 40px;
+				border: none;
+				border-radius: 10px;
+				display: inline-block;
+				color: #fff;
+			}
+
+			.footer {
+				width: 100%;
+				background: #eeeeee;
+			}
+
+			.footer .block p {
+				float: left;
+				line-height: 50px;
+			}
+
+			.footer .block span {
+				float: right;
+				line-height: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="head">
+			<div class="block">
+
+				<div class="logo"><a href="#"><img src="__IMG__/logo.png"/></a></div>
+				<div class="tell"><img src="__IMG__/tell.png"/></div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div class="login">
+
+			<div class="block">
+				<div class="clear"></div>
+				<div class="login-yz">
+					<h1>用户登录</h1>
+					<form action="" id="loginform" method="post">
+						<input name="email" type="text" value="{{$email}}" placeholder="请输入邮箱" class="srk bg"/>
+						<input name="password" value="{{$password}}" type="password" placeholder="请输入密码" class="srk bg1"/>
+						<div style="width:100%;text-align:center;padding-top:20px;">
+							<input type="submit" value="登录" class="but" style="background:#80c269;"/>
+							<input type="reset" value="取消" class="but" style="background:#333333;"/>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="footer">
+
+			<div class="block">
+				<p>产品追溯系统管理后台 Copyright © 2016</p>
+				<span>安佑生物科技集团有限公司版权所有</span>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$("#loginform").validate({
+				rules: {
+				},
+				onkeyup: false,
+				focusCleanup: true,
+				success: "valid",
+				submitHandler: function (form) {
+					var layerIndex = layer.load(1, {
+						shade: [0.1, '#fff'] //0.1透明度的白色背景
+					});
+					$(form).ajaxSubmit({
+						success: function (data) {
+							if (data.status == 1) {
+								layer.close(layerIndex);
+								layer.msg(data.info, {
+									time: 1000,
+								}, function () {
+									location.href = data.url;
+								});
+							} else {
+								layer.close(layerIndex);
+								layer.msg(data.info, {
+									time: 1000,
+								});
+							}
+						}
+					});
+				}
+			});
+		</script>
+	</body>
+</html>

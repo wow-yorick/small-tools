@@ -1,0 +1,16 @@
+<script>
+$(document).ready(function(){
+	//初始化弹窗
+	$('#dialogdown').dialog({
+		title: 'EXCEL文件输出'
+		,width: 300
+		,height: 200
+		,modal: true
+		,resizable: false
+		,close: function(event, ui) {
+			$(this).remove();
+		}
+	});
+})
+</script>
+<div id="dialogdown"><a href="<?php echo $this->urlFile;?>"><?php echo $this->fileName;?></a></div>

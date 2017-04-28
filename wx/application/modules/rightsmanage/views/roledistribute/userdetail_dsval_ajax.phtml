@@ -1,0 +1,64 @@
+
+<script>
+/*
+ * 下移按钮onclick事件
+ */
+function movedownDsVal() {
+	if ($('#divDsVal').find('[name=sltAllDsVal]').find('option:selected').index() == 0) return;
+
+	var jElement = $('#divDsVal').find('[name=sltAllDsVal]').find('option:selected');
+	$('#divDsVal').find('[name=sltDsVal]').append(jElement);
+	$('#divDsVal').find('[name=sltDsVal]').find('option:selected').removeAttr('selected');
+
+	//$('#divRoleSet').find('[name=sltAllDsVal]').parent().find('[name=sltContainer]').text(''); //报错
+	$('#divRoleSet').find('[name=sltAllDsVal]').parent().find('[name=sltContainer]').blur(); //清空combobox里的内容
+}
+
+/*
+ * 导入按钮onclick事件，导入用户所管辖的工地
+ */
+function importUserManageSite() {
+	$('#divDsVal').find('[name=sltDsVal]').find('[wlzAuth]:enabled:visible').blur();
+	if($('#divDsVal').find('[name=sltDsVal]').find('[wlzAuth]:enabled:visible.ui-state-error').length == 0) {
+		var userId = $('#tblUserList').find('.row_selected').attr('userId');
+		var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName  . '/' . $this->controllerName . '/importusermanagesite';?>";
+		$('#divTempContainer').load(url, {
+			'userId': userId
+		});
+	}
+}
+
+$(document).ready(function() {
+	var atId = $('#formSearchUser').find('[name=atId]').find('option:selected').attr('roletypeId');
+	var dsId = $('#divRoleSet').find('[name=sltDsId]').find('option:selected').val();
+	if (atId == 3 && dsId == 1) { //如果是安监账号并且节点名选的是工地时才能导入
+		$('#divRoleSet').find('#btnImportSite').show();
+	}
+
+	//初始化combobox (要放在初始化此slt值后)
+	$('#divRoleSet').find('[name=sltAllDsVal]').combobox();
+	$('.ui-autocomplete').css({ //只能这样，这个ui-autocomplete不在$('#divRoleSet')内
+		'max-width': '250px'
+		,'max-height': '200px'
+		,'overflow-x': 'hidden'
+		,'overflow-y': 'auto'
+	});
+});
+</script>
+
+<div>节点值：</div>
+<div class="ui-widget-content">
+	<div style="margin:10px;">
+		<select name="sltAllDsVal" class="wiliz-slt">
+		<option></option>
+		<?php if (isset($this->allDsVal)): ?>
+			<?php foreach ($this->allDsVal as $arrSub): ?>
+				<option value="<?php echo $arrSub['id'];?>"><?php echo $arrSub['name'];?></option>
+			<?php endforeach; ?>
+		<?php endif; ?>
+		</select>
+		<input type="button" class="ui-state-default wiliz-cursor-pointer wiliz-btns" value="下移" onclick="movedownDsVal();" />
+	</div>
+
+	<div style="margin:5px 10px;"><select name="sltDsVal" multiple="multiple" wlzAuth="sltSize" style="width:210px;height:100px;"></select></div>
+</div>

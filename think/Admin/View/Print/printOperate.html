@@ -1,0 +1,193 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<article class="page-container">
+	<form class="form form-horizontal" id="role-edit" method="get" action="">
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>当前批次：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" disabled="disabled"  value="{{$currentBatch['batch_num']}}" class="input-text">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>标签模板选择：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+				<select class="select" name="template" id="template">
+					<!--<option value="">—请选择—</option>-->
+					<foreach name="tagList" key="key" item="group">
+						<eq name="group.id" value="$detail['id']">
+							<option value="{{$group.id}}" selected>{{$group.tag_name}}</option>
+							<else/>
+							<option value="{{$group.id}}">{{$group.tag_name}}</option>
+						</eq>
+
+					</foreach>
+				</select>
+				</span>
+			</div>
+		</div>
+
+        <div class="row cl">
+            <div class="formControls col-xs-12 col-sm-12">
+                <iframe src="{{:get_domain()}}:8080/MR/mireport/designer/r.jsp?report={{$tagList[0]['tag_num']}}&ds=tagpackage&&package_num={{$currentBoxNum}}" height="600px;" width="98%" scrolling="auto" allowtransparency="true" id="layui-layer-iframe3" name="layui-layer-iframe3" onload="this.className='';" class="" frameborder="0" ></iframe>
+            </div>
+        </div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>生产日期：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+                <input type="text" name="product_date" id="product_date" placeholder="生产日期" onfocus="WdatePicker({})" value="<?php echo date("Y-m-d",time()); ?>" class="input-text Wdate">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>打印张数：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="page_count" id="page_count" placeholder="打印张数" value="2" class="input-text">
+			</div>
+		</div>
+
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-4 col-xs-offset-4 col-sm-offset-3">
+				<input type="button" id="submitDetail" value="&nbsp;&nbsp;打印&nbsp;&nbsp;" class="btn btn-primary radius">
+				<input type="button" id="submitPrintView" value="&nbsp;&nbsp;预览&nbsp;&nbsp;" class="btn btn-secondary radius">
+			</div>
+		</div>
+	</form>
+</article>
+
+<!-- 声明打印控件 -->
+<object id="ojatoolsPrinter"
+    codebase="{{:get_domain()}}/jatoolsPrinter.cab#version=5,4,0,0"
+    classid="clsid:B43D3361-D075-4BE2-87FE-057188254255" width="0"
+    height="0">
+    <embed id="ejatoolsPrinter" type="application/x-vnd.jatoolsPrinter"
+        width="0" height="0" />
+</object>
+<script type="text/javascript" src="{{:get_domain()}}:8080/MR/mireport/designer/js/jatoolsPrinter-min.js"></script>
+<!--<script type="text/javascript" src="http://115.47.57.234:8080/MR/mireport/designer/js/core-min.js"></script>-->
+<script type="text/javascript">
+
+function doPrint(how, url) {
+    var myDoc = {
+        settings : 'auto',
+        marginIgnored : true,
+        documents : url,
+        copyrights : '杰创软件拥有版权  www.jatools.com'
+    };
+    var jatoolsPrinter = getJatoolsPrinter();
+    if (how == '打印预览...')
+        jatoolsPrinter.printPreview(myDoc, false);
+
+    else if (how == '打印...')
+        jatoolsPrinter.print(myDoc, true);
+
+    else
+        jatoolsPrinter.print(myDoc, false);
+
+}
+    var formObj = $("#role-edit");
+    $('#submitDetail').click(function(){
+        var tagId = $('#role-edit').find('select[name=template]').val();
+        var pages = $('#role-edit').find('input[name=page_count]').val();
+        var productDate = $('#role-edit').find('input[name=product_date]').val();
+        var batchId = '{{$currentBatch.id}}';
+        if(!batchId) {
+            alert('获取批次id失败!');
+            return false;
+        }
+        if(!tagId) {
+            alert('请选择模板!');
+            return false;
+        }
+        if(!pages || isNaN(pages)) {
+            alert('请输入数字页码!');
+            return false;
+        }
+        if(!productDate) {
+            alert('生产日期不能为空!');
+            return false;
+        }
+        //window.open('__APP__/Print/printView/tagid/'+tagId+'/pages/'+pages+'/product/'+productDate+'/batchId/'+batchId);
+        var url = '__APP__/Print/printView/';
+        $.post(url,
+            {
+                'tagid':tagId,
+                'pages':pages,
+                'product':productDate,
+                'batchId':batchId,
+            },
+            function(data){
+                //console.log(data);
+                if(data.status) {
+                    var url = data.info;
+                    doPrint('打印', url);
+                    //layer_close();
+                } else {
+                    alert(data.info);
+                }
+            }
+        );
+        return false;
+
+    });
+
+    $('#submitPrintView').click(function(){
+        var tagId = $('#role-edit').find('select[name=template]').val();
+        var pages = $('#role-edit').find('input[name=page_count]').val();
+        var productDate = $('#role-edit').find('input[name=product_date]').val();
+        var batchId = '{{$currentBatch.id}}';
+        if(!batchId) {
+            alert('获取批次id失败!');
+            return false;
+        }
+        if(!tagId) {
+            alert('请选择模板!');
+            return false;
+        }
+        if(!pages || isNaN(pages)) {
+            alert('请输入数字页码!');
+            return false;
+        }
+        if(!productDate) {
+            alert('生产日期不能为空!');
+            return false;
+        }
+        //window.open('__APP__/Print/view/tagid/'+tagId+'/pages/'+pages+'/product/'+productDate+'/batchId/'+batchId);
+        var url = '__APP__/Print/view/';
+        $.post(url,
+            {
+                'tagid':tagId,
+                'pages':pages,
+                'product':productDate,
+                'batchId':batchId,
+            },
+            function(data){
+                //console.log(data);
+                if(data.status) {
+                    var url = data.info;
+                    //console.log(url);
+                    doPrint('打印预览...', url);
+                    //layer_close();
+                } else {
+                    alert(data.info);
+                }
+            }
+        );
+        return false;
+
+    });
+</script>

@@ -1,0 +1,52 @@
+<style type="text/css">
+#container{width:100%;background:#fff;border：1px solid #ccc;height:100%}
+#navlist{float:left;width:200px;margin:0 10px;}
+#mainshow{float:left;}
+	* html .clearFix {
+	  zoom: 1;
+	}
+	
+	*+html .clearFix {
+	  zoom: 1;
+	}
+.clearFix:after {
+	height: 0;
+	visibility: hidden;
+	content: ".";
+	display: block;
+	clear: both;
+}
+
+.selected a{
+	color:red;
+}
+</style>
+<script type="text/javascript">
+<!--
+$(document).ready(function(){
+	mainload();
+})
+
+function mainload(){
+	var url ='';
+	$('#navlist').find('li').click(function(){
+		url = $(this).attr('lodurl');
+		$('#mainshow').load(url);
+		$('#navlist').find('li').removeClass('selected');
+		$(this).addClass('selected');
+	})
+	$('#navlist').find('li:first').click();
+}
+//-->
+</script>
+<div id="container" class="clearFix">
+	<h1>素材管理</h1>
+		<ul id="navlist">
+			<li lodurl="<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/imgtextmsg'?>"><a href="javascript:void(0)">图文消息</a></li>
+			<li lodurl="<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/imgmsg'?>"><a href="javascript:void(0)">图片</a></li>
+			<li lodurl="<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/voice'?>"><a href="javascript:void(0)">语音</a></li>
+			<li lodurl="<?php echo $this->baseUrl().'/'.$this->moduleName.'/'.$this->controllerName.'/video' ?>"><a href="javascript:void(0)">视频</a></li>
+		</ul>
+		<div id="mainshow"></div>
+</div>
+

@@ -1,0 +1,89 @@
+
+<script>
+/*
+ * 获取角色的module
+ */
+function getRoleModule(obj) {
+	$('#divRole').find('[wlzAuth]:enabled:visible.ui-state-error.ui-state-error').removeClass('ui-state-error'); //移除红框
+
+	var roleId = $(obj).find('option:selected').val();
+	var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/'. $this->controllerName;?>/getrolemodule";
+	$('#divModule').load(url, {
+		'roleId': roleId
+	});
+}
+
+/*
+ * 添加角色
+ */
+function addRole() {
+	$('#divRole').find('[wlzAuth]:enabled:visible').blur();
+	if($('#divRole').find('[wlzAuth]:enabled:visible.ui-state-error').length == 0) {
+		var roleName =  $.trim($('#divRole').find('[name=txtRolename]').val());
+		var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/'. $this->controllerName;?>/addrole";
+		$('#divRole').load(url, {
+			'roleName': roleName
+		});
+	}
+}
+
+/*
+ * 删除角色
+ */
+function deleteRole() {
+	if ($('#divRole').find('[name=msltRolename]').find('option:selected').length > 0) {
+		var flag = confirm('删除角色"' + $('#divRole').find('[name=msltRolename]').find('option:selected').text() + '"，请确认！\n警告：此操作会同时删除与该角色对应的用户组关系，还有与其相关的所有权限关系！');
+		if(flag) {
+			var roleId =  $('#divRole').find('[name=msltRolename]').find('option:selected').val();
+			var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/'. $this->controllerName;?>/deleterole";
+			$('#divRole').load(url, {
+				'roleId': roleId
+			});
+		}
+	}
+}
+
+/*
+ * 检查text值是否存在于select中
+ */
+function checkValExist(obj) {
+	var roleName =  $.trim($('#divRole').find('[name=txtRolename]').val());
+	if (roleName != '') {
+		if($('#divRole').find('[name=msltRolename]').find('option[text=' + roleName + ']').length > 0) {
+			$(obj).addClass('ui-state-error');
+			//alert('值已存在，请重新填写！');
+		} else {
+			$(obj).removeClass('ui-state-error');
+		}
+	}
+}
+
+$(document).ready(function() {
+	//初始化角色列表
+	if ("<?php echo isset($this->afterAddRole); ?>") {
+		$('#divRole').find('[name=msltRolename]').find('option[text=' + "<?php echo $this->afterAddRole; ?>" + ']').attr('selected', 'selected');
+	} else {
+		$('#divRole').find('[name=msltRolename]').find('option:first').attr('selected', 'selected');
+	}
+	$('#divRole').find('[name=msltRolename]').change();
+});
+</script>
+
+<div class="ui-state-default roledefine-item" style="font-weight:bold;">
+	<div>角色名：<input type="text" name="txtRolename" class="wiliz-txts" wlzAuth="txtValEmpty" onblur="checkValExist(this);" /></div>
+	<div><input type="button" class="ui-state-default wiliz-cursor-pointer roledefine-btn" value="新增角色" onclick="addRole();" /></div>
+</div>
+
+<div class="ui-state-default roledefine-item">
+	<select name="msltRolename" class="wlz_mslt_sltSingle wiliz-slt" multiple="multiple" onchange="getRoleModule(this);" style="height:450px;">
+	<?php if (isset($this->allRole)): ?>
+		<?php foreach ($this->allRole as $arrSub): ?>
+		<option value="<?php echo $arrSub['roleId'];?>" text="<?php echo $arrSub['rolename'];?>"><?php echo $arrSub['rolename'];?></option>
+		<?php endforeach; ?>
+	<?php endif; ?>
+	</select>
+</div>
+
+<div class="ui-state-default roledefine-item">
+	<input type="button" class="ui-state-default wiliz-cursor-pointer roledefine-btn" value="删除角色" onclick="deleteRole();" />
+</div>

@@ -1,0 +1,100 @@
+<script>
+/*
+ * 初始化页面
+ */
+function iniPage_detail() {
+	//控制tab标签的diabled
+	$('#data_tabs').tabs('enable', 1);
+	$('#data_tabs').tabs('select', 1);
+	$('#data_tabs').tabs('disable', 0);
+
+	switch ("<?php echo $this->editType;?>") {
+		case 'add':
+			//使能指定的图片功能
+			toggleMenuImg('data_menu', '<?php foreach($this->dataMenuInfo["menutoggle"]["btnAdd"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>');
+			$('#data_formDetail').find('[name=beianstates]').find('option[value=产权备案]').attr('selected', 'selected');
+			
+			//修改form的action属性
+			$('#data_formDetail').attr('action', "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/' . $this->controllerName . '/' . $this->dataMenuInfo['basemenu']['btnAdd']['actionname'];?>");
+			
+			//enable输入框
+			$('#data_formDetail').find('.data-detail-input').removeAttr('disabled');
+			$('#data_formDetail').find('[name=beianstates]').attr('disabled','disabled');
+			break;
+		case 'modify':
+			//使能指定的图片功能
+			toggleMenuImg('data_menu', '<?php foreach($this->dataMenuInfo["menutoggle"]["btnModify"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>');
+			
+			//enable输入框
+			$('#data_formDetail').find('.data-detail-input').removeAttr('disabled');
+			
+			//修改form的action属性
+			$('#data_formDetail').attr('action', "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/' . $this->controllerName . '/' . $this->dataMenuInfo['basemenu']['btnModify']['actionname'];?>");
+			break;
+		case 'detail':
+			//使能指定的图片功能
+			toggleMenuImg('data_menu', '<?php foreach($this->dataMenuInfo["menutoggle"]["btnDetail"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>');
+			break;
+	}
+	
+	//设置标签默认值
+	if ("<?php echo isset($this->dataDetail);?>") {
+		var jsonDataInfo = <?php echo json_encode($this->dataDetail);?>;
+		// !---------- BEGIN: MODIFY ---------- //
+		$('#data_formDetail').find('[name=Id]').val(jsonDataInfo['keyId']);
+		$('#data_formDetail').find('[name=username]').val(jsonDataInfo['username']);
+		$('#data_formDetail').find('[name=fullname]').val(jsonDataInfo['fullname']);
+		$('#data_formDetail').find('[name=password]').val(jsonDataInfo['password']);
+		$('#data_formDetail').find('[name=inserttime]').val(jsonDataInfo['inserttime']);
+		$('#data_formDetail').find('[name=modifytime]').val(jsonDataInfo['modifytime']);
+		// !---------- END  : MODIFY ---------- //
+	} else {
+		// !---------- BEGIN: CUSTOM ---------- //
+		// !---------- END  : CUSTOM ---------- //
+	}
+}
+
+$(document).ready(function() {
+	iniPage_detail(); //初始化页面
+});
+
+</script>
+<style type="text/css">
+<!--
+.battselect { border: 1px solid #ccc; height:20px;cursor:pointer;}
+.ui-widget-content {margin-bottom:5px;}
+.ui-widget-content table tbody tr td {padding-bottom:5px;}
+.ui-widget-content table tbody tr td input {margin-right:15px;}
+.ui-widget-content table tbody tr td label {font-weight:700;color:#000;}
+.headlabel {text-align:right;}
+-->
+</style>
+<div>
+	<form id="data_formDetail" class="wlz_ajaxForm" ajaxContainer="#data_divList" method="post">
+		<input type="hidden" name="keyId" value="<?php echo $this->keyId;?>" />
+		<input type="hidden" name="companyid" value="" />
+		<div class="ui-widget-header wiliz-widget-header">用户信息</div>
+		<div class="ui-widget-content" style="padding:5px;">
+		<table cellspacing="4">
+			<tr>
+				<td class="headlabel">用户编号:</td>
+				<td><input type="text" name="Id" class="wiliz-txt" wlzAuth="txtValEmpty" readonly="readonly" disabled="disabled"/></td>
+				<td class="headlabel"><label>登录帐号:</label></td>
+				<td ><input type="text" name="username" class="data-detail-input wiliz-txtl" wlzAuth="txtValEmpty" disabled="disabled" style="margin-right:3px;" /></td>
+			</tr>
+			<tr>
+				<td class="headlabel"><label>用户姓名:</label></td>
+				<td ><input type="text" name="fullname" class="data-detail-input wiliz-txtl" wlzAuth="txtValEmpty" disabled="disabled" style="margin-right:3px;" /></td>
+				<td class="headlabel"><label>用户密码:</label></td>
+				<td ><input type="password" name="password" class="data-detail-input wiliz-txtl" wlzAuth="txtValEmpty" disabled="disabled" style="margin-right:3px;" /></td>
+			</tr>
+			<tr>
+				<td class="headlabel"><label>创建时间:</label></td>
+				<td ><input type="text" name="inserttime" class="wiliz-txtl" disabled="disabled" style="margin-right:3px;" /></td>
+				<td class="headlabel"><label>最后修改时间:</label></td>
+				<td ><input type="text" name="modifytime" class="wiliz-txtl" disabled="disabled" style="margin-right:3px;" /></td>
+			</tr>
+		</table>
+		</div>
+	</form>
+</div>

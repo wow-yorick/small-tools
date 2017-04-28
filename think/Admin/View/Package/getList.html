@@ -1,0 +1,79 @@
+<nav class="breadcrumb">
+    <i class="Hui-iconfont">&#xe67f;</i>
+    首页 <span class="c-gray en">&gt;</span>
+    小包装管理
+    <span class="c-gray en">&gt;</span>
+    小包装数据采集
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="Hui-iconfont">&#xe68f;</i>
+    </a>
+</nav>
+<div class="page-container">
+    <div class="text-l">
+        <form target="_self" action="" method="get" class="Huiform">
+            商品名称： <input type="text" name="product_name" value="{{$product_name}}" class="input-text"
+                        placeholder="商品名称"/>
+            商品编号： <input type="text" name="product_num" value="{{$product_num}}"
+                        class="input-text" placeholder="商品编号"/>
+
+            <button type="submit" class="btn btn-success">
+                <i class="Hui-iconfont">&#xe665;</i> 搜索
+            </button>
+        </form>
+    </div>
+    <div class="dataTables_wrapper no-footer">
+        <table class="table table-border table-bordered table-hover table-bg">
+            <thead>
+            <tr>
+                <th scope="col" colspan="10">小包装数据管理</th>
+            </tr>
+            <tr class="text-c">
+                <th width="40">ID</th>
+                <th width="200">产品名称</th>
+                <th width="200">产品编号</th>
+                <th width="200">批次号</th>
+                <th width="100">规格</th>
+                <th width="100">箱数</th>
+                <th width="100">已采集数量</th>
+                <th width="200">入库时间</th>
+                <th width="200">操作人</th>
+                <th width="100">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="obj">
+                <tr class="text-c" id="tr_{{$obj['id']}}">
+                    <td>{{$obj['id']}}</td>
+                    <td>{{$obj['product_name']}}</td>
+                    <td>{{$obj['product_num']}}</td>
+                    <td>{{$obj['batch_num']}}</td>
+                    <td>{{$obj['specification']}}</td>
+                    <td>{{$obj['number']}}</td>
+                    <td>{{$obj['has_packed']}}/{{$obj['specification']*$obj['number']}}</td>
+                    <td>{{$obj['createdatetime']}}</td>
+                    <td>{{$admins[$obj['createuser']]}}</td>
+                    <td class="td-manage">
+                        <if condition="checkAuth('package/detail')">
+
+                            <a class="ml-5" style="text-decoration:none"
+                               onclick="packList('详情列表','{{:U(\'detail\',array(\'id\'=>$obj[\'id\']))}}')"
+                               href="javascript:void(0);" title="详情列表">
+                                详情列表
+                            </a>
+                        </if>
+                    </td>
+                </tr>
+            </foreach>
+
+            </tbody>
+        </table>
+        {{$page}}
+    </div>
+</div>
+<script type="text/javascript">
+    /*-详情列表*/
+    function packList(title, url, w, h) {
+        layer_show(title, url, w, h);
+    }
+</script>

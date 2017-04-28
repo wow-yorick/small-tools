@@ -1,0 +1,71 @@
+<article class="page-container">
+	<form class="form form-horizontal" id="rule-add" method="post" action="{{:U('product/unitAdd')}}">
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"> <span class="c-red">*</span>单位名称： </label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="单位名称" name="name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"> <span class="c-red">*</span>描述： </label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea name="remark" cols="" rows="" class="textarea" placeholder="说点什么...100个字符以内" dragonfly="true" onkeyup="textarealength(this,100)"></textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+			</div>
+		</div>
+
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+<script type="text/javascript">
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+
+	$("#rule-add").validate({
+		rules: {
+			name: {
+				required: true,
+			},
+			remark:{
+				required: true,
+			}
+		},
+
+		onkeyup: false,
+		focusCleanup: false,
+		success: "valid",
+		submitHandler: function (form) {
+			var layerIndex = layer.load(1, {
+				shade: [0.1, '#fff'] //0.1透明度的白色背景
+			});
+			$(form).ajaxSubmit({
+				success: function (data) {
+					if (data.status == 1) {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 500,
+						}, function () {
+							layer_close();
+						});
+					} else {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 1000,
+						});
+
+					}
+				}
+			});
+		}
+	})
+</script>

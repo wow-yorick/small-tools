@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="themes/miqinew/style.css" rel="stylesheet" type="text/css" />
+
+{* 包含脚本文件 *}
+ {insert_scripts files='jquery-1.7.2.min.js'}
+ <script type="text/javascript" src="js/superslide.2.1.js"></script>
+ <script type="text/javascript">var jq = jQuery.noConflict();</script>
+</head>
+<body>
+
+
+<div class="fullSlide">
+	<div class="bd">
+		<ul>
+			<li _src="url(../themes/miqinew/images/picture/201.jpg)" style="background:#E2025E center 0 no-repeat;" alt="police眼镜特卖"><a href="#"></a></li>
+			<li _src="url(../themes/miqinew/images/picture/202.jpg)" style="background:#DED5A1 center 0 no-repeat;" alt="实体店同步销售"><a href="#"></a></li>
+		
+		</ul>
+	</div>
+	<div class="hd"><ul></ul></div>
+	<span class="prev"></span>
+	<span class="next"></span>
+</div>
+
+
+<script type="text/javascript">
+jq(".fullSlide").hover(function(){
+    jq(this).find(".prev,.next").stop(true, true).fadeTo("show", 0.5)
+},
+function(){
+   jq(this).find(".prev,.next").fadeOut()
+});
+jq(".fullSlide").slide({
+    titCell: ".hd ul",
+    mainCell: ".bd ul",
+    effect: "fold",
+    autoPlay: true,
+    autoPage: true,
+    trigger: "click",
+    startFun: function(i) {
+        var curLi = jQuery(".fullSlide .bd li").eq(i);
+        if ( !! curLi.attr("_src")) {
+            curLi.css("background-image", curLi.attr("_src")).removeAttr("_src")
+        }
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 基础数据管理
+	<span class="c-gray en">&gt;</span> 公司管理
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新">
+		<i class="Hui-iconfont">&#xe68f;</i> </a>
+</nav>
+<div class="page-container">
+	<div class="text-l">
+		<form target="_self" action="" method="get" class="Huiform">
+			公司名称： <input type="text" name="depot_name" value="{{$depot_name}}" class="input-text" placeholder="公司名称"/>
+			公司名称：
+			<input type="text" name="depot_code" value="{{$depot_code}}" class="input-text" placeholder="公司代码"/>
+			<button type="submit" class="btn btn-success">
+				<i class="Hui-iconfont">&#xe665;</i> 搜索
+			</button>
+		</form>
+	</div>
+
+	<if condition="checkAuth('admin/adminAdd')">
+		<div class="cl pd-5 bg-1 bk-gray">
+		<span class="l">
+		<a class="btn btn-primary radius" href="javascript:void(0);" onclick="depot_add('添加角色','{{:U(\'basic/depotAdd\')}}',800,290)"><i class="Hui-iconfont">
+			&#xe600;</i> 添加公司</a>
+		</span>
+		</div>
+	</if>
+
+	<div class="dataTables_wrapper no-footer">
+		<table class="table table-border table-bordered table-hover table-bg">
+			<thead>
+			<tr>
+				<th scope="col" colspan="8">公司管理</th>
+			</tr>
+			<tr class="text-c">
+				<th width="40">ID</th>
+				<th width="200">公司名称</th>
+				<th width="200">公司代码</th>
+				<th width="200">加入时间</th>
+				<th width="200">公司地址</th>
+				<th width="200">状态</th>
+				<th width="70">操作</th>
+			</tr>
+			</thead>
+			<tbody>
+			<foreach name="list" item="depot">
+				<tr class="text-c">
+					<td>{{$depot['id']}}</td>
+					<td>{{$depot['depot_name']}}</td>
+					<td>{{$depot['depot_code']}}</td>
+					<td>{{$depot['create_time']}}</td>
+					<td>{{$depot['depot_address']}}</td>
+					<td class="td-status">
+						<if condition="$depot['status'] eq 1">
+							<span class="label label-success radius">已启用</span>
+							<else/>
+							<span class="label radius">已停用</span>
+						</if>
+					</td>
+					<td class="td-manage">
+
+						<if condition="checkAuth('basic/depotToggleStatus')">
+							<if condition="$depot['status'] eq 1">
+								<a class="ml-5" style="text-decoration:none" onClick="depot_stop(this,'{{$depot[\'id\']}}')" href="javascript:void (0);" title="停用">
+									<i class="Hui-iconfont">&#xe631;</i></a>
+								<else/>
+								<a class="ml-5" style="text-decoration:none" onClick="depot_start(this,'{{$depot[\'id\']}}')" href="javascript:;" title="启用">
+									<i class="Hui-iconfont">&#xe615;</i> </a>
+							</if>
+						</if>
+
+						<if condition="checkAuth('depot/depotEdit')">
+
+							<a class="ml-5" style="text-decoration:none" onclick="depot_edit('编辑信息','{{:U(\'depotEdit\',array(\'id\'=>$depot[\'id\']))}}',800,290)" href="javascript:void(0);" title="编辑">
+								<i class="Hui-iconfont">&#xe6df;</i> </a>
+						</if>
+
+					</td>
+				</tr>
+			</foreach>
+
+			</tbody>
+		</table>
+		{{$page}}
+	</div>
+</div>
+<script type="text/javascript">
+	/*仓库-增加*/
+	function depot_add(title, url, w, h) {
+		layer_show(title, url, w, h);
+	}
+	/*仓库-编辑*/
+	function depot_edit(title, url, w, h) {
+		layer_show(title, url, w, h);
+	}
+	/*仓库-启用*/
+	function depot_start(obj, id) {
+		layer.confirm('确认要启用吗？', function () {
+			$.ajax({
+				url: "{{:U('basic/depotToggleStatus')}}",
+				type: 'post',
+				data: {id: id, status: 1},
+				success: function (data) {
+					if (data.status == 1) {
+						$(obj).parents("tr").find(".td-manage").prepend("<a class='ml-5' onClick='depot_stop(this," + id + ")' href='javascript:void(0);' title='停用' style='text-decoration:none'><i class='Hui-iconfont'>&#xe631;</i></a>");
+						$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+						$(obj).remove();
+						layer.msg('已启用!', {icon: 6, time: 1000});
+					} else {
+						layer.msg('启用失败!', {icon: 5, time: 1000});
+					}
+				}
+			})
+		})
+	}
+	/*仓库-停用*/
+	function depot_stop(obj, id) {
+		layer.confirm('确认要停用吗？', function () {
+			$.ajax({
+				url: "{{:U('basic/depotToggleStatus')}}",
+				type: 'post',
+				data: {id: id, status: 0},
+				success: function (data) {
+					if (data.status == 1) {
+						$(obj).parents("tr").find(".td-manage").prepend("<a class='ml-5' onClick='depot_start(this," + id + ")' href='javascript:void(0);' title='启用' style='text-decoration:none'><i class='Hui-iconfont'>&#xe615;</i></a>");
+						$(obj).parents("tr").find(".td-status").html('<span class="label radius">已停用</span>');
+						$(obj).remove();
+						layer.msg('已停用!', {icon: 5, time: 1000});
+					} else {
+						layer.msg('停用失败!', {icon: 5, time: 1000});
+					}
+				}
+			});
+		})
+	}
+
+</script>

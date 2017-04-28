@@ -1,0 +1,59 @@
+{
+	dataset : {
+		"default" : {
+			id : "151201"
+		},
+		factory : "com.jatools.mireport.JDBCDatasetFactory",
+		jdbc : "pg",
+		master : {
+			name : "报表任务",
+			sql : "SELECT tbl_task.id as id,tbl_task.name as 报表名称,   tbl_task.xml_id as XMLID,   tbl_task.configure_id as 设置id,   tbl_task.period_cd  as 期次,   tbl_task.status as 状态,   tbl_task.approve_setting,   tbl_task.sys_upd_user,   tbl_task.sys_upd_date,   tbl_task.sys_add_user,   tbl_task.sys_add_date,   tbl_task.start_date,   tbl_task.end_date FROM   public.tbl_task"
+		},
+		detail : {
+			name : "xml",
+			sql : "SELECT * FROM   public.tbl_xml"
+		}
+	},
+	ui : {
+		defaults : {
+			"text-editable" : true
+		},
+		fields : [{
+					type : 'label',
+					expr : ' ',
+					display : '+'
+				}, {
+					type : 'text',
+					display : "页码",
+					expr : '${$当前页}/${$总页数}',
+					editable : true
+				}, {
+					type : 'text',
+					field : '$当前页',
+					editable : true
+				}, {
+					type : 'text',
+					field : '$总页数',
+					editable : true
+				}, {
+					type : 'text',
+					field : 'id',
+					editable2 : true
+				}, {
+					type : 'text',
+					field : '报表名称'
+				}, {
+					type : 'text',
+					field : 'xmlid'
+				}, {
+					type : 'text',
+					field : '设置id'
+				}, {
+					type : 'text',
+					field : '期次'
+				}, {
+					type : 'text',
+					field : '状态'
+				}]
+	}
+}

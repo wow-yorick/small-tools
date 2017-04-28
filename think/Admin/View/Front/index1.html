@@ -1,0 +1,133 @@
+<section class="mb-10">
+	<notempty name='ad'>
+		<div id="top" style="display:none;">
+			<a href="{{$ad.ad_1_url}}" target="_blank"><img src="__ROOT__/{{$ad.ad_1}}" width="100%" height="100%"/></a>
+		</div>
+		<div id="banner" style="display:none;">
+			<a href="{{$ad.ad_2_url}}" target="_blank"><img src="__ROOT__/{{$ad.ad_2}}" width="100%" height="100%"/></a>
+		</div>
+		<else/>
+	</notempty>
+	<div id="top" style="display:none;"><img
+			src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTEwYmJhZjQzYSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1MTBiYmFmNDNhIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQ0LjA1NDY4NzUiIHk9Ijc0LjUiPjE0MHgxNDA8L3RleHQ+PC9nPjwvZz48L3N2Zz4="
+			width="100%" height="60"/></div>
+	<div id="banner" style="display:none;"><img
+			src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgdmlld0JveD0iMCAwIDE0MCAxNDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzE0MHgxNDAKQ3JlYXRlZCB3aXRoIEhvbGRlci5qcyAyLjYuMC4KTGVhcm4gbW9yZSBhdCBodHRwOi8vaG9sZGVyanMuY29tCihjKSAyMDEyLTIwMTUgSXZhbiBNYWxvcGluc2t5IC0gaHR0cDovL2ltc2t5LmNvCi0tPjxkZWZzPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+PCFbQ0RBVEFbI2hvbGRlcl8xNTEwYmJhZjQzYSB0ZXh0IHsgZmlsbDojQUFBQUFBO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1mYW1pbHk6QXJpYWwsIEhlbHZldGljYSwgT3BlbiBTYW5zLCBzYW5zLXNlcmlmLCBtb25vc3BhY2U7Zm9udC1zaXplOjEwcHQgfSBdXT48L3N0eWxlPjwvZGVmcz48ZyBpZD0iaG9sZGVyXzE1MTBiYmFmNDNhIj48cmVjdCB3aWR0aD0iMTQwIiBoZWlnaHQ9IjE0MCIgZmlsbD0iI0VFRUVFRSIvPjxnPjx0ZXh0IHg9IjQ0LjA1NDY4NzUiIHk9Ijc0LjUiPjE0MHgxNDA8L3RleHQ+PC9nPjwvZz48L3N2Zz4="
+			width="100%" height="291"/></div>
+</section>
+<div class="page-container">
+	<empty name="code">
+		<form class="form form-horizontal" method="get" action="__ACTION__">
+			<div class="row cl">
+				<label class="form-label col-xs-6 col-sm-6 text-r">
+					产品唯一码：
+				</label>
+				<div class="formControls col-xs-6 col-sm-6 ">
+					<input name="code" class="input-text" value="{{$code}}"/>
+				</div>
+			</div>
+			<div class="row cl">
+				<div class="formControls text-c">
+					<input type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" class="btn btn-primary radius">
+				</div>
+			</div>
+		</form>
+		<else/>
+		<empty name="data">
+			<div class="row cl text-c">对应信息未找到</div>
+			<else/>
+			<if condition="$type eq 1 ">
+				<div class="row cl">
+					<label class="form-label col-xs-5 col-sm-5 text-r">
+						产品名称：
+					</label>
+					<div class="formControls col-xs-7 col-sm-7 text-l">
+						{{$data['product_name']}}
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-5 col-sm-5 text-r">
+						产品编号：
+					</label>
+					<div class="formControls col-xs-7 col-sm-7 text-l">
+						{{$data['product_code']}}
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-5 col-sm-5 text-r">
+						批次号：
+					</label>
+					<div class="formControls col-xs-7 col-sm-7 text-l">
+						{{$data['batch_num']}}
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-5 col-sm-5 text-r">
+						生产日期：
+					</label>
+					<div class="formControls col-xs-7 col-sm-7 text-l">
+						{{$data['product_date']}}
+					</div>
+				</div>
+				<elseif condition="$type =2"/>
+				<div class="row cl">
+					<label class="form-label col-xs-5 col-sm-5 text-r">
+						产品名称：
+					</label>
+					<div class="formControls col-xs-7 col-sm-7 text-l">
+						{{$data['product_name']}}
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-5 col-sm-5 text-r">
+						产品编号：
+					</label>
+					<div class="formControls col-xs-7 col-sm-7 text-l">
+						{{$data['product_num']}}
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-5 col-sm-5 text-r">
+						批次号：
+					</label>
+					<div class="formControls col-xs-7 col-sm-7 text-l">
+						{{$data['batch_num']}}
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-5 col-sm-5 text-r">
+						箱码：
+					</label>
+					<div class="formControls col-xs-7 col-sm-7 text-l">
+						{{$data['package_code']}}
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-5 col-sm-5 text-r">
+						生产日期：
+					</label>
+					<div class="formControls col-xs-7 col-sm-7 text-l">
+						{{$data['createdatetime']}}
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-5 col-sm-5 text-r">
+						发货时间：
+					</label>
+					<div class="formControls col-xs-7 col-sm-7 text-l">
+						<empty name="batch['shipment_date']">
+							未发货
+							<else/>
+							{{$data['shipment_date']}}
+						</empty>
+					</div>
+				</div>
+			</if>
+		</empty>
+	</empty>
+</div>
+<footer class="footer mt-20">
+	安佑集团
+</footer>
+
+</div>

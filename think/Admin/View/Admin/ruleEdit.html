@@ -1,0 +1,117 @@
+<article class="page-container">
+	<form class="form form-horizontal" id="rule-edit" method="post" action="{{:U('admin/ruleEdit')}}">
+		<input type="hidden" name="id" value="{{$rule['id']}}">
+
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"> <span class="c-red">*</span>权限名称： </label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{{$rule['title']}}" placeholder="权限名称" name="title">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"> <span class="c-red">*</span>控制器： </label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{{$rule['controller_name']}}" placeholder="控制器" name="controller_name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"> <span class="c-red">*</span>方法名： </label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{{$rule['action_name']}}" placeholder="方法名" name="action_name">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"> <span class="c-red">*</span>是否设置为菜单： </label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<label> 是:<input type="radio" value="1" name="is_menu"
+					<if condition="$rule['is_menu'] == 1"> checked="checked"</if>
+					> 否:<input type="radio" value="0" name="is_menu"
+					<if condition="$rule['is_menu'] == 0"> checked="checked"</if>
+					> </label>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">权限组：</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box">
+				<select name="group_id" class="select">
+					<option value="0">—请选择—</option>
+					<foreach name="groups" key="key" item="group">
+						<eq name="key" value="$rule['group_id']">
+							<option value="{{$key}}" selected>{{$group}}</option>
+							<else/>
+							<option value="{{$key}}">{{$group}}</option>
+						</eq>
+
+					</foreach>
+				</select>
+				</span>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+<script type="text/javascript">
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	$("#rule-edit").validate({
+		rules: {
+			id: {
+				required: true,
+			},
+			title: {
+				required: true,
+			},
+			controller_name: {
+				required: true,
+			},
+			action_name: {
+				required: true,
+			},
+			group_id: {
+				min: 1,
+			},
+		},
+		messages: {
+			group_id: {
+				min: '这是必选字段'
+			}
+		},
+		onkeyup: false,
+		focusCleanup: false,
+		success: "valid",
+		submitHandler: function (form) {
+			var layerIndex = layer.load(1, {
+				shade: [0.1, '#fff'] //0.1透明度的白色背景
+			});
+			$(form).ajaxSubmit({
+				success: function (data) {
+					if (data.status == 1) {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 500,
+						}, function () {
+							layer_close()
+						});
+					} else {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 1000,
+						});
+					}
+				}
+			});
+		}
+	})
+</script>

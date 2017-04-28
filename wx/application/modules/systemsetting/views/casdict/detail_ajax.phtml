@@ -1,0 +1,137 @@
+<script>
+/*
+ * 初始化页面
+ */
+function iniPage_detail() {
+	//控制tab标签的diabled
+	$('#data_tabs').tabs('enable', 1);
+	$('#data_tabs').tabs('select', 1);
+	$('#data_tabs').tabs('disable', 0);
+
+	switch ("<?php echo $this->editType;?>") {
+		case 'add':
+			//使能指定的图片功能
+			toggleMenuImg('data_menu', '<?php foreach($this->dataMenuInfo["menutoggle"]["btnAdd"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>');
+			
+			//修改form的action属性
+			$('#data_formDetail').attr('action', "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/' . $this->controllerName . '/' . $this->dataMenuInfo['basemenu']['btnAdd']['actionname'];?>");
+			
+			//enable输入框
+			$('#data_formDetail').find('.data-detail-input').removeAttr('disabled');
+			break;
+		case 'modify':
+			//使能指定的图片功能
+			toggleMenuImg('data_menu', '<?php foreach($this->dataMenuInfo["menutoggle"]["btnModify"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>');
+			
+			//enable输入框
+			$('#data_formDetail').find('.data-detail-input').removeAttr('disabled');
+			
+			//修改form的action属性
+			$('#data_formDetail').attr('action', "<?php echo $this->baseUrl() . '/' . $this->moduleName . '/' . $this->controllerName . '/' . $this->dataMenuInfo['basemenu']['btnModify']['actionname'];?>");
+			break;
+		case 'detail':
+			//使能指定的图片功能
+			toggleMenuImg('data_menu', '<?php foreach($this->dataMenuInfo["menutoggle"]["btnDetail"] as $item):?>#<?php echo $item;?>,<?php endforeach;?>');
+			break;
+	}
+	
+	//设置标签默认值
+	if ("<?php echo isset($this->dataDetail);?>") {
+		var jsonDataInfo = <?php echo json_encode($this->dataDetail);?>;
+		
+		// !---------- BEGIN: MODIFY ---------- //
+		$('#data_formDetail').find('[name=from]').find('option[value=' + jsonDataInfo['from'] + ']').attr('selected', 'selected');
+		$('#data_formDetail').find('[name=fromtype]').find('option[value=' + jsonDataInfo['from'] + ']').attr('selected', 'selected');
+		$('#data_formDetail').find('[name=fromvalue]').find('option[value=' + jsonDataInfo['from'] + ']').attr('selected', 'selected');
+		$('#data_formDetail').find('[name=seq]').val(jsonDataInfo['seq']);
+		$('#data_formDetail').find('[name=name]').val(jsonDataInfo['name']);
+		$('#data_formDetail').find('[name=value]').val(jsonDataInfo['value']);
+		$('#data_formDetail').find('[name=type]').find('option[value=' + jsonDataInfo['type'] + ']').attr('selected', 'selected');
+		select_value($('#data_formDetail').find('[name=from]'),'fromtype');
+		// !---------- END  : MODIFY ---------- //
+	} else {
+		// !---------- BEGIN: CUSTOM ---------- //
+		// !---------- END  : CUSTOM ---------- //
+	}
+}
+
+//下拉框联动
+function select_value(data,name){
+	var casdata=data.options[data.selectedIndex].text,
+	url="<?php echo $this->baseUrl();?>/<?php echo $this->moduleName?>/<?php echo $this->controllerName?>/getselect";
+	$.get(url, {'casdata':casdata,'type':name}, function (data, textStatus){
+		$($('#data_formDetail').find('[name='+name+']')).removeAttr("disabled").html(data);
+	});
+}
+
+$(document).ready(function() {
+	iniPage_detail(); //初始化页面
+});
+</script>
+<style type="text/css">
+<!--
+.battselect { border: 1px solid #ccc; height:20px;cursor:pointer;}
+.ui-widget-content {margin-bottom:5px;}
+.ui-widget-content table tbody tr td {padding-bottom:5px;}
+.ui-widget-content table tbody tr td input {margin-right:15px;}
+.ui-widget-content table tbody tr td label {font-weight:700;color:#000;}
+.headlabel {text-align:right;}
+-->
+</style>
+
+<div>
+	<form id="data_formDetail" class="wlz_ajaxForm" ajaxContainer="#data_divList" method="post">
+		<input type="hidden" name="keyId" value="<?php echo $this->keyId;?>" />
+		<div class="ui-widget-header wiliz-widget-header">级联配置</div>
+		<div class="ui-widget-content" style="padding:5px;">
+		<table cellspacing="5">
+			<tr>
+				<td>来源:</td>
+				<td>
+					<select name="from" class="data-detail-input wiliz-slt" onchange="select_value(this,'fromtype');return false;" wlzAuth="sltNotFirst" disabled="disabled" >
+						<option></option>
+						<?php echo $this->allFROM;?>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>来源类型:</td>
+				<td>
+					<select name="fromtype" class="wiliz-slt" onchange="select_value(this,'fromvalue');return false;" wlzAuth="sltNotFirst" disabled="disabled" >
+					<?php if (isset($this->allSel)) echo $this->allSel["fromtype"];?>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>来源值:</td>
+				<td>
+					<select name="fromvalue" class="wiliz-slt" disabled="disabled" >
+					<?php if (isset($this->allSel)) echo $this->allSel["fromvalue"];?>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>分类名称:</td>
+				<td>
+					<select name="type" class="data-detail-input wiliz-slt" wlzAuth="sltNotFirst" disabled="disabled" >
+						<option></option>
+						<?php echo $this->allTYPE;?>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>类型序号:</td>
+				<td><input type="text" name="seq" class="data-detail-input wiliz-txt" wlzAuth="txtValEmpty" disabled="disabled" /></td>
+			</tr>
+			<tr>
+				<td>类型名称:</td>
+				<td><input type="text" name="name" class="data-detail-input wiliz-txt" wlzAuth="txtValEmpty" disabled="disabled" /></td>
+			</tr>
+			<tr>
+				<td>类型值:</td>
+				<td><textarea  name="value" class="data-detail-input wiliz-txt" wlzAuth="txtValEmpty" disabled="disabled" style="height:230px;width:500px;" /></textarea>(来源类型为(会员级别)-多个值时请用空格隔开)</td>
+			</tr>
+		</table>
+		</div>
+	</form>
+</div>

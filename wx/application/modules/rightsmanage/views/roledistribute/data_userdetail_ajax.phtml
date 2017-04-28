@@ -1,0 +1,167 @@
+
+<script>
+/*
+ * 根据节点id，获取节点值
+ */
+function getDsVal(obj) {
+	var dsId = $(obj).find('option:selected').val();
+	if (dsId != 4) {
+		var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName  . '/' . $this->controllerName . '/getdsval';?>";
+		$('#divDsVal').load(url, {
+			'dsId': dsId
+		});
+	} else {
+		$('#divDsVal').empty();
+	}
+}
+
+/*
+ * 添加用户角色对应关系
+ */
+function addUserRole() {
+	$('#divRoleSet').find('[wlzAuth]:enabled:visible').blur();
+	if($('#divRoleSet').find('[wlzAuth]:enabled:visible.ui-state-error').length > 0) return;
+
+	var atId = $('#formSearchUser').find('[name=atId]').find('option:selected').val();
+	var userId = $('#tblUserList').find('.row_selected').attr('userId');
+	var roleId = $('#divRoleSet').find('[name=sltRoleId]').find('option:selected').val();
+	var dsId = $('#divRoleSet').find('[name=sltDsId]').find('option:selected').val();
+	var dsVal = '';
+	$('#divDsVal').find('[name=sltDsVal]').find('option').each(function() {
+		dsVal += ',' + $(this).val();
+	});
+	dsVal = dsVal.substr(1);
+
+	var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName  . '/' . $this->controllerName . '/adduserrole';?>";
+	$('#divUserDetail').load(url, {
+		'atId': atId
+		,'userId': userId
+		,'roleId': roleId
+		,'dsId': dsId
+		,'dsVal': dsVal
+	});
+}
+
+/*
+ * 删除用户角色对应关系
+ */
+function deleteUserRole(obj) {
+	var flag = confirm('删除操作无法恢复，请确认！');
+	if (!flag) return;
+
+	var atId = $('#formSearchUser').find('[name=atId]').find('option:selected').val();
+	var userId = $('#tblUserList').find('.row_selected').attr('userId');
+	var deleteId = $(obj).closest('tr').attr('rowId');
+	var url = "<?php echo $this->baseUrl() . '/' . $this->moduleName  . '/' . $this->controllerName . '/deleteuserrole';?>";
+	$('#divUserDetail').load(url, {
+		'atId': atId
+		,'userId': userId
+		,'deleteId': deleteId
+	});
+}
+
+/*
+ * 初始化用户详细信息
+ */
+function iniUserDetail() {
+	$('#divUserDetail').find('#lblAccountType').text($('#formSearchUser').find('[name=atId]').find('option:selected').text());
+	$('#divUserDetail').find('#lblUsername').text($('#tblUserList').find('.row_selected').attr('username'));
+	$('#divUserDetail').find('#lblFullname').text($('#tblUserList').find('.row_selected').find('td:eq(1)').text());
+	$('#divUserDetail').find('[name=sltRoleId]').find('option:first').attr('selected', 'selected');
+}
+
+$(document).ready(function() {
+	iniUserDetail();
+
+	//初始化dataTable
+	$('#tblUserRoleView').OusuTable(1, null, null, {
+		'sScrollY': '150px'
+	});
+});
+</script>
+
+<div style="margin:10px;text-align:center;">
+	<div class="ui-widget-header wiliz-widget-header">用&nbsp;户&nbsp;信&nbsp;息</div>
+	<div class="ui-widget-content" style="padding:5px;">
+		<label>账号类型：</label><label id="lblAccountType" style="text-decoration:underline;"></label>
+		<label style="margin-left:50px;">用户名：</label><label id="lblUsername" style="text-decoration:underline;"></label>
+		<label style="margin-left:50px;">姓名：</label><label id="lblFullname" style="text-decoration:underline;"></label>
+	</div>
+</div>
+
+<div style="margin:0 10px;text-align:center;">
+	<div class="ui-widget-header wiliz-widget-header">角&nbsp;色&nbsp;节&nbsp;点&nbsp;查&nbsp;看</div>
+	<div class="ui-widget-content" style="padding:5px;">
+		<table id="tblUserRoleView">
+			<thead>
+				<tr>
+					<th>角色</th>
+					<th>节点名</th>
+					<th>节点值</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php if (isset($this->userRoleInfo)): ?>
+				<?php foreach ($this->userRoleInfo as $arrSub): ?>
+				<tr rowId="<?php echo $arrSub['id'];?>">
+					<td title="<?php echo $arrSub['remarks'];?>"><?php echo $arrSub['roleName'];?></td>
+					<td><?php echo $arrSub['dsName'];?></td>
+					<td>
+					<?php if (gettype($arrSub['dsVal']) == 'array'): ?>
+						<?php foreach ($arrSub['dsVal'] as $arrThird): ?>
+						<div><?php echo $arrThird['name'];?></div>
+						<?php endforeach; ?>
+					<?php endif; ?>
+					</td>
+					<td style="vertical-align:top;"><input type="button" class="ui-state-default wiliz-cursor-pointer wiliz-btn" value="删除" onclick="deleteUserRole(this);" /></td>
+				</tr>
+				<?php endforeach; ?>
+			<?php endif; ?>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id="divRoleSet" style="margin:10px;text-align:left;">
+	<div class="ui-widget-header wiliz-widget-header">角&nbsp;色&nbsp;节&nbsp;点&nbsp;设&nbsp;置</div>
+	<div class="ui-widget-content">
+		<table cellspacing="10" style="text-align:left;"><tr>
+			<td>
+				<div>角色：</div>
+				<div>
+					<select name="sltRoleId" multiple="multiple" wlzAuth="sltHasSelected" style="width:150px;height:150px;">
+					<?php if (isset($this->allRole)): ?>
+						<?php foreach ($this->allRole as $arrSub): ?>
+						<option value="<?php echo $arrSub['roleId'];?>" text="<?php echo $arrSub['roleName'];?>" title="<?php echo $arrSub['remarks'];?>"><?php echo $arrSub['roleName'];?></option>
+						<?php endforeach; ?>
+					<?php endif; ?>
+					</select>
+				</div>
+			</td>
+
+			<td>
+				<div>节点名：</div>
+				<div>
+					<select name="sltDsId" multiple="multiple" onchange="getDsVal(this);" style="width:150px;height:150px;">
+					<?php if (isset($this->allDs)): ?>
+						<?php foreach ($this->allDs as $arrSub): ?>
+						<option value="<?php echo $arrSub['dsId'];?>" text="<?php echo $arrSub['dsName'];?>"><?php echo $arrSub['dsName'];?></option>
+						<?php endforeach; ?>
+					<?php endif; ?>
+					</select>
+				</div>
+			</td>
+
+			<td style="vertical-align:top;">
+				<div id="divDsVal"></div>
+			</td>
+
+			<td style="vertical-align:top;padding-top:20px;">
+				<div><input type="button" class="ui-state-default wiliz-cursor-pointer wiliz-btn" value="确认提交" onclick="addUserRole();" /></div>
+				<br/>
+				<div><input type="button" id="btnImportSite" class="ui-state-default wiliz-cursor-pointer wiliz-btn" value="直接导入" title="直接导入用户所管辖的工地" onclick="importUserManageSite();" style="display:none;" /></div>
+			</td>
+		</tr></table>
+	</div>
+</div>

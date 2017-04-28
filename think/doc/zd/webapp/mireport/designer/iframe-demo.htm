@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MiReport 报表在frame中的集成演示</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="js/jquery/jquery-1.9.min.js"></script>
+<script type="text/javascript" src="js/jquery/jquery-1.9.migrate.js"></script>
+<script type="text/javascript" src='js/jatoolsPrinter.js'></script>
+<script type="text/javascript" src='templateAdd.js'></script>
+
+<script>
+
+		
+	function saveReport() {
+		document.getElementById("designer").contentWindow.saveReport({
+			"type" : "sales"
+		}, function(result) {
+			if (result) {
+				alert("保存成功!")
+
+			} else
+				alert("保存失败！");
+		})
+	}
+	function testReport() {
+		document.getElementById("designer").contentWindow.testReport();
+	}
+</script>
+</head>
+<body style="position: relative;">
+	<button onclick="saveReport()">保存</button>
+	<button onclick="testReport()">打印预览</button><br><br>
+	<!-- 可以用nobuttons控制，哪些按钮不可见，以jquery selector形式一次指定多个 -->
+	<iframe id="designer" style="width: 1024px; height: 768px;"
+		src=""></iframe>
+
+		<object id="ojatoolsPrinter" codebase="jatoolsPrinter.cab#version=5,4,0,0"
+        classid="clsid:B43D3361-D075-4BE2-87FE-057188254255" width="0" height="0">
+            <embed id="ejatoolsPrinter" type="application/x-vnd.jatoolsPrinter"
+            pluginspage="jatoolsPrinter.exe" width="0" height="0"
+            /></object>
+</body>
+</html>

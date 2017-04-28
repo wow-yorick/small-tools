@@ -1,0 +1,19 @@
+<div class="page-container">
+	<if condition="$remind">
+		<p class="f-20" style="color: red">
+			您的系统将于{{$term_day|date='Y-m-d',###}}过期，请及时续费。
+		</p>
+	</if>
+	<p class="f-20 text-success">欢迎登录 管理后台！</p>
+	<p>累计登录次数：{{$count}} </p>
+	<p>上次登录IP：{{$log['login_ip']}} 上次登录时间：{{$log['login_time']}}</p>
+	<p>当前公司名称：<b>{{$depotList[$depot]}}</b></p>
+	<div id="container" style="min-width:700px;height:300px"></div>
+</div>
+<footer class="footer mt-20">
+	<div class="container">
+		<p>
+			管理后台
+		</p>
+	</div>
+</footer>

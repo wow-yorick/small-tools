@@ -1,0 +1,76 @@
+<article class="page-container">
+    <form class="form form-horizontal" id="batch-add" method="post" action="{{:U('batch/add')}}">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">
+                <span class="c-red">*</span>数量：
+            </label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="number" name="number" class="input-text" value="" placeholder="数量"/>
+            </div>
+        </div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>生产日期：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+                <input type="text" name="product_date" id="product_date" placeholder="生产日期" onfocus="WdatePicker({})" value="<?php echo date("Y-m-d",time()); ?>" class="input-text Wdate">
+			</div>
+		</div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"> <span class="c-red">*</span>模板选择： </label>
+
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select id="tag_id" name="tag_num" class="select">
+                        <foreach name="tags" item="tag">
+                            <option value="{{$tag['tag_num']}}">{{$tag['tag_name']}}</option>
+                        </foreach>
+                    </select>
+                </span>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="formControls col-xs-12 col-sm-12">
+                <iframe src="{{:get_domain()}}:8080/MR/mireport/designer/r.jsp?report={{$tags[0]['tag_num']}}&ds=mysql2" height="600px;" width="98%" scrolling="auto" allowtransparency="true" id="layui-layer-iframe3" name="layui-layer-iframe3" onload="this.className='';" class="" frameborder="0" ></iframe>
+            </div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+            </div>
+        </div>
+    </form>
+</article>
+<script type="text/javascript">
+    $("#tag_id").change(function () {
+       var code = $("#tag_id>option:selected").val();
+        $("iframe").attr("src","http://115.47.57.234:8080/MR/mireport/designer/r.jsp?report="+code+"&ds=mysql");
+
+    })
+    $("#batch-add").validate({
+        submitHandler: function (form) {
+            var layerIndex = layer.load(1, {
+                shade: [0.1, '#fff'] //0.1透明度的白色背景
+            });
+            $(form).ajaxSubmit({
+                success: function (data) {
+                    if (data.status == 1) {
+                        layer.close(layerIndex);
+                        layer.msg(data.info, {
+                            time: 500,
+                        }, function () {
+                            layer_close()
+                        });
+                    } else {
+                        layer.close(layerIndex);
+                        layer.msg(data.info, {
+                            time: 1000,
+                        });
+                    }
+                }
+            });
+        }
+    })
+</script>

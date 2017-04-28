@@ -1,0 +1,83 @@
+<!-- $Id: goods_info.htm 17126 2010-04-23 10:30:26Z liuhui $ -->
+{include file="pageheader.htm"}
+{insert_scripts files="../js/utils.js,selectzone.js,colorselector.js"}
+<script type="text/javascript" src="../js/calendar.php?lang={$cfg_lang}"></script>
+<link href="../js/calendar/calendar.css" rel="stylesheet" type="text/css" />
+<style>
+input, select{height: 23px;padding: 0 4px;vertical-align: middle;}
+
+</style>
+<!-- start goods form -->
+ <div class="tab-div" style="width:100%;border-top:1px solid #FF6699; border-bottom:1px solid #FF6699;">
+
+  <div id="tabbody-div" style="background: #FFFDEA;margin:30px 0 30px 0;">
+ <form method='post' id="form" name="form" action="shops.php?act=tb_update">
+  <table cellpadding="4" cellspacing="0" border="0" class="table-form">
+
+    <tr >
+      <td><div align="left" style="margin-left:10px">插件版本：</div></td><td ><span id="ecs_hh_ver" style="color:#009933;"></span><a style="color:#FF0000; margin-left:20px;"  href="shops.php?act=huahua_check_new" ><span>查看最新版本</span></a></td>
+	  </tr>
+    
+				<tr><td height="10"></td></tr>
+    <tr>
+      <th><div align="left" style="margin-left:10px">授权码：</div></th>
+      <td><input  value="{$vo.content.session_key}" class="textinput" name="almmname" size="65" style="height:35px;" >
+
+			  <input type="button" class="submit_btn" value="验证授权"  style=" height:35px; background:#FF9900; border:0px; width:88px; color:#FFFFFF; font-size:14; font-weight:bold;" onmousemove="style.backgroundColor='#ff6600'" onmouseout="style.backgroundColor='#ff9900'" onclick="VeriUser(this.parentNode)"/>
+
+        </td>
+    </tr>
+ 
+			<tr><td height="10"></td></tr>
+    <tr>
+      <th><div align="left" style="margin-left:10px">价格变动：</div></th>
+      <td><input type="text" value="{$user_data.price_change}" class="textinput" name="price_change" size="10">
+	  <input type="text" value="{$user_data.price_change1}" class="textinput" name="price_change1" size="10">
+        <span> (在数字前面写[ + - * / ]表示算法，如原价调高1.2倍写成*1.2)</span> </td>
+    </tr>
+				<tr><td height="10"></td></tr>
+    <tr>
+      <th><div align="left" style="margin-left:10px">默认下架：</div></th>
+      <td><input type="checkbox" value="1" class="textinput" name="not_sale" size="10" {if $user_data.not_sale} checked="checked" {/if}>
+        下架 <span>&nbsp;&nbsp;&nbsp;(勾选后采集的商品为下架状态)</span> </td>
+    </tr>
+   
+			<tr><td height="10"></td></tr>
+    <tr class="act">
+      <th>&nbsp;</th>
+      <td><input type="hidden" name="id" value="{$vo.id}" />
+           <input type="submit" class="submit_btn" value="保存设置" style=" height:35px; background:#FF9900; border:0px; width:117px; color:#FFFFFF; font-size:14; font-weight:bold;" onmousemove="style.backgroundColor='#ff6600'" onmouseout="style.backgroundColor='#ff9900'" />
+        &nbsp;&nbsp; </td>
+    </tr>
+				<tr><td height="10"></td></tr>
+  </table>
+</form>
+
+</div>
+</div>
+<!-- end goods form -->
+
+ <script language="JavaScript">
+ var hhver = '{$hhver}';
+ document.getElementById('ecs_hh_ver').innerHTML = hhver;
+ </script>
+<script language="JavaScript">
+  /**
+   * 添加扩展分类
+   */
+  {literal}
+  function VeriUser()
+  {
+    Ajax.call('shops.php?act=yanzheng', "", VeriUserResponse, "GET", "JSON");
+  }
+
+  function VeriUserResponse(result)
+  {
+      if (result.error == 0)
+      {
+          alert(result.content);
+      }
+  }
+  {/literal}
+</script>
+{include file="pagefooter.htm"}

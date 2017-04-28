@@ -1,0 +1,88 @@
+{{:W('Menu/Breadcrumb')}}
+<div class="page-container">
+	<div class="text-l">
+		<form target="_self" action="" method="get" class="Huiform">
+			接口名称： <input type="text" name="sap_name" value="{{$sap_name}}" class="input-text" placeholder="接口名称"/>
+			<button type="submit" class="btn btn-success">
+				<i class="Hui-iconfont">&#xe665;</i> 搜索
+			</button>
+		</form>
+	</div>
+
+	<if condition="checkAuth('sap/sapAdd')">
+		<div class="cl pd-5 bg-1 bk-gray">
+		<span class="l">
+		<a class="btn btn-primary radius" href="javascript:void(0);" onclick="btn_add('添加接口','{{:U(\'sap/sapAdd\')}}')"><i class="Hui-iconfont">
+			&#xe600;</i> 添加接口配置</a>
+		</span>
+		</div>
+	</if>
+
+	<div class="dataTables_wrapper no-footer">
+		<table class="table table-border table-bordered table-hover table-bg">
+			<thead>
+			<tr>
+				<th scope="col" colspan="8">SAP接口管理</th>
+			</tr>
+			<tr class="text-c">
+				<th width="40">ID</th>
+				<th width="200">接口名称</th>
+				<th width="200">账号</th>
+				<th width="200">密码</th>
+				<th width="200">新增时间</th>
+				<th width="70">操作</th>
+			</tr>
+			</thead>
+			<tbody>
+			<foreach name="list" item="sap">
+				<tr class="text-c">
+					<td>{{$sap['id']}}</td>
+					<td>{{$sap['sys_sap_name']}}</td>
+					<td>{{$sap['sys_sap_account']}}</td>
+					<td>{{$sap['sys_sap_password']}}</td>
+					<td>{{$sap['create_time']|date='Y-m-d H:i:s',###}}</td>
+					<td class="td-manage">
+						<if condition="checkAuth('sys/sap/sapEdit')">
+							<a title="编辑" href="javascript:void(0);" onclick="btn_edit('SAP编辑','{{:U(\'sap/sapEdit\',array(\'id\'=>$sap[\'id\']))}}',800)" class="ml-5" style="text-decoration:none">
+								<i class="Hui-iconfont"> &#xe6df;</i>
+							</a>
+						</if>
+						<if condition="checkAuth('sap/sapDel')">
+							<a title="删除" href="javascript:void(0);" onclick="btn_del(this,'{{$sap[\'id\']}}')" class="ml-5" style="text-decoration:none">
+								<i class="Hui-iconfont"> &#xe6e2;</i>
+							</a>
+						</if>
+					</td>
+				</tr>
+			</foreach>
+
+			</tbody>
+		</table>
+		{{$page}}
+	</div>
+</div>
+<script type="text/javascript">
+	function btn_add(title, url, w, h) {
+		layer_show(title, url, w, h);
+	}
+	function btn_edit(title, url, w, h) {
+		layer_show(title, url, w, h);
+	}
+	function btn_del(obj, id) {
+		layer.confirm('确认要删除吗？', function () {
+			$.ajax({
+				url: "{{:U('sap/sapDel')}}",
+				type: 'post',
+				data: {id: id},
+				success: function (data) {
+					if (data.status == 1) {
+						$(obj).parents("tr").remove();
+						layer.msg('已删除!', {icon: 5, time: 1000});
+					} else {
+						layer.msg('删除失败!', {icon: 5, time: 1000});
+					}
+				}
+			});
+		})
+	}
+</script>

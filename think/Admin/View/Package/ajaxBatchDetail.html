@@ -1,0 +1,17 @@
+{__NOLAYOUT__}
+<notempty name="list">
+			<foreach name="list" item="obj">
+				<tr class="text-c" id="tr_{{$obj['id']}}">
+					<td>{{$obj['shape_code']}}</td>
+					<!--<td>{{$obj['id']}}</td>-->
+					<td>{{$obj['batch_num']}}</td>
+					<td>{{$obj['product_num']}}</td>
+					<td>{{$obj['product_name']}}</td>
+					<!--<td>{{$obj['status']}}</td>-->
+					<td>{{$obj['createdatetime']}}</td>
+                    <td class="td-manage">
+                        {{:W('FormUnit/BtnSmall', array('删除','package','batchDetailDel',array('id'=>$obj['id']), '&#xe60b;'))}}
+                    </td>
+				</tr>
+                </foreach>
+</notempty>

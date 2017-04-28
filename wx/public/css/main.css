@@ -1,0 +1,581 @@
+@import "wlz-default.css";
+
+html, body {
+	height: 100%;
+	margin: 0;
+}
+
+body.wlz-body {
+	margin: 0;
+	color: #505050;
+	background-color: #EEF2FB;
+	font-size: 12px;
+	font-family: Arial,Helvetica,sans-serif;
+}
+
+/****** BEGIN: 网页居中，两边留空 ******/
+--body.wlz-body {
+	background-color: white;
+}
+
+--div.wlz-root {
+	width: 80%;
+	min-width: 1200px;
+	min-height: 750px;
+	margin: 0 auto;
+	background-color: #EEF2FB;
+}
+/****** END: 网页居中，两边留空 ******/
+
+/******************************************************************/
+
+.wlz-remarks {
+	border: 1px solid #cd0a0a;
+	background: #fef1ec url(<?php echo $this->baseUrl();?>/js/jquery-UI/themes/base/images/ui-bg_glass_95_fef1ec_1x400.png) 50% 50% repeat-x;
+	color: #cd0a0a;
+	padding: 5px;
+}
+
+/******************************************************************/
+#divTempContainer {
+	color: red;
+	font-weight: bold;
+	--display:none;
+}
+
+.wlz-table {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+.wlz-table > tbody > tr > td {
+	vertical-align: top;
+}
+
+.wiliz-dialog {
+	background-color: #F5DEB3;
+}
+
+.wiliz-title {
+	font-weight: bold;
+	margin: 5px;
+}
+
+.wiliz-word-sign {
+	color: blue;
+	font-weight: bold;
+}
+
+.wiliz-fieldset {
+	width: 95%;
+	margin: 5px;
+	padding: 5px;
+}
+
+/****** button 按钮 ******/
+.wiliz-btns { /* small */
+	width: 50px;
+	height: 20px;
+}
+
+.wiliz-btn { /* normal */
+	width: 80px;
+	height: 25px;
+}
+
+.wiliz-btnl { /* large */
+	width: 100px;
+	height: 30px;
+}
+
+.wiliz-btnh { /* huge */
+	width: 150px;
+	height: 35px;
+}
+
+/****** file 标签 ******/
+.wiliz-filet { /* tiny */
+	width: 130px;
+}
+.wiliz-files { /* small */
+	width: 180px;
+}
+.wiliz-file { /* normal */
+	width: 230px;
+}
+.wiliz-file { /* big */
+	width: 280px;
+}
+.wiliz-filel { /* large */
+	width: 330px;
+}
+.wiliz-fileh { /* huge */
+	width: 480px;
+}
+
+/****** text 标签 ******/
+.wiliz-txtt { /* tiny */
+	width: 50px;
+}
+.wiliz-txts { /* small */
+	width: 100px;
+}
+.wiliz-txt { /* normal */
+	width: 150px;
+}
+.wiliz-txtb { /* big */
+	width: 200px;
+}
+.wiliz-txtl { /* large */
+	width: 250px;
+}
+.wiliz-txth { /* huge */
+	width: 400px;
+}
+
+/****** select 标签 ******/
+.wiliz-sltt { /* tiny */
+	width: 55px;
+}
+.wiliz-slts { /* small */
+	width: 105px;
+}
+.wiliz-slt { /* normal */
+	width: 155px;
+}
+.wiliz-sltb { /* big */
+	width: 205px;
+}
+.wiliz-sltl { /* large */
+	width: 255px;
+}
+.wiliz-slth { /* huge */
+	width: 405px;
+}
+
+/****** multiple select 标签 ******/
+.wiliz-msltt { /* tiny */
+	width: 55px;
+	height: 100px;
+}
+.wiliz-mslts { /* small */
+	width: 105px;
+	height: 150px;
+}
+.wiliz-mslt { /* normal */
+	width: 155px;
+	height: 200px;
+}
+.wiliz-msltl { /* large */
+	width: 255px;
+	height: 300px;
+}
+.wiliz-mslth { /* huge */
+	width: 405px;
+	height: 450px;
+}
+
+/****** textarea 标签 ******/
+.wiliz-textareas {
+	width: 150px; /* small */
+	height: 100px;
+}
+
+.wiliz-textarea {
+	width: 250px; /* normal */
+	height: 150px;
+}
+
+.wiliz-textareal {
+	width: 400px; /* large */
+	height: 200px;
+}
+
+
+/****** img 标签 ******/
+.wiliz-imgt { /* tiny */
+	width: 15px;
+	height: 15px;
+	vertical-align: bottom;
+}
+
+.wiliz-imgs { /* small */
+	width: 25px;
+	height: 25px;
+	vertical-align: bottom;
+}
+
+.wiliz-img { /* normal */
+	width: 50px;
+	height: 50px;
+	vertical-align: bottom;
+}
+
+/******************************************************************/
+
+.rootArea {
+	height: 100%;
+}
+
+.content-menu {
+	height: 120px;
+	color: #505050;
+	background-color: #FCFCFC;
+	font-weight: bold;
+}
+
+.content-menu > td > div {
+	border: 1px solid #CCCCCC;
+}
+
+.content-menu label {
+	font-weight: bold;
+	white-space: nowrap;
+	display: block;
+}
+
+.content-menu-item {
+	border: 1px solid #CCCCCC;
+	background-color: #F7F8F9;
+	margin: 5px;
+	padding: 2px;
+	text-align: center;
+}
+
+.content-menu-item-search {
+	white-space:nowrap;
+	overflow: auto;
+	text-align: left;
+	line-height: 31px;
+}
+
+.content-menu-item-search td{
+	vertical-align: middle;
+}
+
+.content-menu-item-imgb {
+	width: 64px;
+	height: 64px;
+}
+
+.content-menu-item-img {
+	width: 50px;
+	height: 50px;
+}
+
+.content-menu-item-imgs {
+	width: 40px;
+	height: 40px;
+	margin: -2px 0 -3px 0;
+	vertical-align: middle;
+}
+
+.content-menu-item-bottom {
+	padding-top: 5px;
+	background-color: #E8E8E8;
+	text-align: center;
+}
+
+/******************************************************************/
+
+.content-body {
+	text-align: left;
+	vertical-align: top;
+	border: 1px solid #CCCCCC;
+	color: #505050;
+	margin-top: 10px;
+	padding: 10px;
+}
+
+.content-body > td {
+	height: 100%;
+}
+
+.content-body-item {
+	vertical-align: top;
+	border: 1px solid #CCCCCC;
+	background-color: #FFFFFF;
+	padding: 5px;
+	height: 100%;
+	min-height: 400px;
+}
+
+.content-body-tree {
+	width: 150px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	min-height: 400px;
+}
+
+.content-body-item #data_tabs {
+	border: 0 solid black;
+}
+
+/****** 定义 content-body 左边的树结构 (旧，greencard项目里用的) ***/
+--.content_tree {
+	width: 300px;
+	height: 200px;
+	text-align: left;
+	border: 1px solid #CCCCCC;
+	background-color: #FCFCFC;
+	overflow: hidden;
+}
+
+--.content-body-tree ul {
+	margin: 0px; /*IE7默认有margin*/
+	padding-left: 20px;
+	line-height: 20px;
+	white-space: nowrap;
+}
+
+--.content-body-tree > ul > li {
+	margin-left: -10px;
+}
+
+--.content-body-tree > ul > li >label {
+	font-weight: bold;
+}
+
+/******************************************************************/
+.main-top-bg {
+	background-image: url('../img/main/top-right.gif');
+	background-repeat: repeat-x;
+}
+
+h5.main-menu-parent {
+	margin: 0px;
+	/*cursor: pointer;*/
+}
+
+h5.main-menu-parent a {
+	height: 47px;
+	line-height:70px;
+	color: #D2D2D2;
+	/*background-image: url('../img/main/menu_bgs.gif');*/
+	background-image: url('../img/main/titlebg.png');
+	background-repeat: no-repeat;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+.main-menu {
+	/*margin-left: 5px;*/
+	font-weight: bold;
+}
+
+.main-menu-tips {
+	width: 140px;
+	height: 90px;
+	line-height: 150%;
+	padding: 8px 5px;
+	vertical-align: top;
+	font-size: 13px;
+	/*text-indent: 2em;*/
+}
+
+.main-menu-son {
+	line-height: 26px;
+	padding: 0px;
+}
+
+.main-menu-son ul {
+	list-style-type: none;
+}
+
+.main-menu-son li {
+	list-style-type: none;
+	height:25px;
+	margin-bottom:7px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:normal;
+}
+
+.main-menu-son a:link {
+	color: #ffffff;
+	/*background-image: url('../img/main/menu_bg1.gif');*/
+	background-repeat: no-repeat;
+	display: block;
+	text-align: center;
+	outline:none;
+	text-decoration: none;
+}
+.main-menu-son a:visited {
+	color: #fff;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+}
+.main-menu-son a:active {
+	color: #fff;
+	/*background-image: url('../img/main/menu_bg1.gif');*/
+	background-repeat: no-repeat;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+}
+.main-menu-son a:hover {
+	font-weight: bold;
+	color: #fff;
+	/*background-image: url('../img/main/menu_bg2.gif');
+	background-repeat: no-repeat;*/
+	display: block;
+	text-align: center;
+	text-decoration: none;
+}
+
+/*.main-content-top1 {
+	vertical-align: top;
+	background-image: url('../img/main/mail_leftbg.gif');
+	width: 1%;
+}
+
+.main-content-top2 {
+	vertical-align: top;
+	background-image: url('../img/main/content-bg.gif');
+}
+
+.main-content-top3 {
+	vertical-align: top;
+	background-image: url('../img/main/content-bg.gif');
+	background-repeat: repeat-x;
+}
+
+.main-content-top4 {
+	vertical-align: top;
+	line-height: 26px;
+	font-weight: bold;
+	color: #000000;
+	background-image: url('../img/main/top_bt.jpg');
+	background-repeat: no-repeat;
+	text-indent: 15px;
+	padding-top: 5px;
+}
+
+.main-content-top5 {
+	vertical-align: top;
+	background-image: url('../img/main/mail_rightbg.gif');
+	width: 1%;
+}
+
+
+.main-content-middle1 {
+	vertical-align: top;
+	background-image: url('../img/main/mail_leftbg.gif');
+}
+
+.main-content-middle2 {
+	vertical-align: top;
+	background-color: #F7F8F9;
+}
+
+.main-content-middle3 {
+	vertical-align: top;
+	background-image: url('../img/main/mail_rightbg.gif');
+}
+
+
+.main-content-bottom1 {
+	vertical-align: top;
+	background-image: url('../img/main/buttom_left2.gif');
+	background-repeat: no-repeat;
+}
+
+.main-content-bottom2 {
+	vertical-align: top;
+	background-image: url('../img/main/buttom_bgs.gif');
+	background-repeat: repeat-x;
+}
+
+.main-content-bottom3 {
+	vertical-align: top;
+	background-image: url('../img/main/buttom_right2.gif');
+	background-repeat: no-repeat;
+}
+*/
+
+/******************************************************************/
+
+.dataTable_WrapDiv {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	overflow: auto;
+}
+
+/*
+ * dataTable Row highlighting
+ */
+.dataTable_highlight tbody tr.even:hover, dataTable_highlight tbody tr.even td.highlighted {
+	background-color: #ECFFB3;
+}
+
+.dataTable_highlight tbody tr.odd:hover, dataTable_highlight tbody tr.odd td.highlighted {
+	background-color: #E6FF99;
+}
+
+.dataTable_highlight_row tr.even:hover {
+	background-color: #ECFFB3;
+}
+
+.dataTable_highlight_row tr.even:hover td.sorting_1 {
+	background-color: #DDFF75;
+}
+
+.dataTable_highlight_row tr.even:hover td.sorting_2 {
+	background-color: #E7FF9E;
+}
+
+.dataTable_highlight_row tr.even:hover td.sorting_3 {
+	background-color: #E2FF89;
+}
+
+.dataTable_highlight_row tr.odd:hover {
+	background-color: #E6FF99;
+}
+
+.dataTable_highlight_row tr.odd:hover td.sorting_1 {
+	background-color: #D6FF5C;
+}
+
+.dataTable_highlight_row #example tr.odd:hover td.sorting_2 {
+	background-color: #E0FF84;
+}
+
+.dataTable_highlight_row #example tr.odd:hover td.sorting_3 {
+	background-color: #DBFF70;
+}
+
+/*
+ * dataTable Row click
+ */
+table.display tr.even.row_selected td {
+	/*background-color: #B0BED9;*/
+	background-color: #00FFFF;
+}
+
+table.display tr.odd.row_selected td {
+	/*background-color: #9FAFD1;*/
+	background-color: #00FFFF;
+}
+
+
+
+/******************* jquery-ui 样式重定义 ***************************/
+
+.wiliz-widget-header {
+	text-align: center;
+	height: 20px;
+	padding-top:5px;
+}
+
+/****** selecttable ******/
+.wlz-ui-selecttable .ui-selecting { background:#FECA40; }
+.wlz-ui-selecttable .ui-selected { background:#F39814; color:white; }
+.wlz-ui-selecttable { list-style-type:none; margin:0; padding:0; font-family:'楷体' }
+.wlz-ui-selecttable li { margin:10px; padding-top:15px; float:left; width:130px; height:120px; font-size:4em; text-align:center; }

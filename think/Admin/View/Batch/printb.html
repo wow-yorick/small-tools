@@ -1,0 +1,54 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="{{:get_domain()}}:8080/MR/mireport/designer/js/jatoolsPrinter-min.js"></script>
+<!--<script type="text/javascript" src="http://115.47.57.234:8080/MR/mireport/designer/js/core-min.js"></script>-->
+<script type="text/javascript">
+	function doPrint(how) {
+		var myDoc = {
+			settings : 'auto',
+			marginIgnored : true,
+            documents : "{{:get_domain()}}:8080/MR/mireport/service/buildPage.jsp?report={{$detail['tag_num']}}&ds=tagbzd&batch_id={{$detail['batch_id']}}",
+			copyrights : '杰创软件拥有版权  www.jatools.com'
+		};
+        myDoc.done=function(err){ 
+            if(!err) {
+              var url='__APP__/Batch/ajaxUpdatePrintStatus'
+              $.post(url,{batchId:"{{$detail['batch_id']}}"}, function(data){
+                  if(!data.status) {
+                      alert(data.info);
+                  }
+              });
+            } else {
+              alert(err);   
+            }
+         } 
+		var jatoolsPrinter = getJatoolsPrinter();
+		if (how == '打印预览...')
+			jatoolsPrinter.printPreview(myDoc, false);
+
+		else if (how == '打印...')
+			jatoolsPrinter.print(myDoc, true);
+
+		else
+			jatoolsPrinter.print(myDoc, false);
+
+	}
+</script>
+</head>
+<body>
+	<H2>打印mireport</H2>
+	<input type="button" value="打印预览..." onClick="doPrint('打印预览...')">
+	<input type="button" value="打印..." onClick="doPrint('打印...')">
+	<input type="button" value="打印" onClick="doPrint('打印')">
+	<!-- 声明打印控件 -->
+	<object id="ojatoolsPrinter"
+		codebase="{{:get_domain()}}/jatoolsPrinter.cab#version=5,4,0,0"
+		classid="clsid:B43D3361-D075-4BE2-87FE-057188254255" width="0"
+		height="0">
+		<embed id="ejatoolsPrinter" type="application/x-vnd.jatoolsPrinter"
+			width="0" height="0" />
+	</object>
+</body>
+</html>
+

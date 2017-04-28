@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html class="no-js">
+<head>
+<?php require_once 'loadjs.phtml';?>
+<script>
+function domodifypwd(){
+	var url="<?php echo $this->baseUrl();?>/usermanage/modifypwd";
+	$('#divTempContainer').load(url);
+}
+
+$(document).ready(function(){
+	$('#divMainMenu>li>a').each(function() {
+		$(this).bind('click', function() {
+			var moduleName = $(this).attr('moduleName');
+			$('ul.subnav:first').show();
+		});
+	});
+});
+</script>
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="topbar">你好，<?php if(!empty($_SESSION[$this->sessionPrefix . 'username'])) echo "<span>" . $_SESSION[$this->sessionPrefix . 'username']; ?>！<span class="fenge">|</span><a href="<?php echo $this->baseUrl();?>/login/index/logout" class="logout">退出</a><!--  <a href="javascript:voide(0)" onClick="domodifypwd()" class="logout">修改密码</a>--></div>
+<h1 class="logo">安吉会员网站管理平台</h1>
+<nav>
+<ul id="divMainMenu">
+<?php //all_model_ousu_helper::ousu_dump($this->menuList);?>
+<?php if (isset($this->menuList)): ?>
+<?php foreach ($this->menuList as $key =>$arr):?>
+<?php if($key != '首页'): ?>
+<li ><a href="javascript:void(0)" moduleName = "<?php echo $arr[0]['moduleName'];?>"><?php echo $key;?></a>
+	<ul class="subnav">
+	<?php foreach($arr as $arrsub): ?>
+	<?php if($arrsub['isMenu'] == 1): ?>
+    <li><a href="javascript:void(0)" moduleName="<?php echo $arrsub['moduleName'];?>" controllerName = "<?php echo $arrsub['controllerName']?>"><?php echo $arrsub['itemName'];?></a></li>
+    <?php endif;?>
+    <?php endforeach;?>
+  </ul></li>
+<?php endif; ?>
+<?php endforeach;?>
+</ul>
+<?php endif;?>
+
+</nav>
+</div>
+<div class="subbox">
+<div class="wrap">
+<div class="ur_here"><h2>管理平台首页</h2><em>></em><p>系统设置</p></div>
+</div>
+</div>
+</header>
+<div id="divTempContainer"></div>
+<div id="divTempDialog"></div>
+<div class="wrapper clearfix" id="divMainContent">
+
+
+
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+
+
+
+
+<?php require_once 'content.phtml';?>
+</div>
+<footer>版权所有  ©2012上海瓯速信息科技有限公司  保留所有权力</footer>
+</body>
+</html>

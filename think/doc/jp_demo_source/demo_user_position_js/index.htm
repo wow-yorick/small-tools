@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+  
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="demo.js"></script>
+   
+    <style>
+      html *{font-size:12px;}
+         .jp-classic-table {border: 1px solid #CFCFCF;}
+         .jp-classic-table td{padding:2px;background: none repeat scroll 0 0 #FFFFFF;color: #333333;border-right: 1px solid #D0D0D0;border-bottom: 1px solid #EDEDED;vertical-align:middle;}
+         .jp-classic-table .jp-header-row td{color: #666666;font-weight: bold;
+         text-shadow: 0 1px 0 #FFFFFF;border-bottom:solid 1px #CFCFCF;text-align:center;border-right:1px solid #D0D0D0;}
+         .jp-classic-table tr.jp-header-row{background-image:url(images/column-header-bg.png);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#e6e6e6');border-bottom:1px solid #EDEDED; 
+         background: -moz-linear-gradient(center top , #FEFEFE, #E6E6E6) repeat scroll 0 0 transparent;height:30px;}
+         .jp-classic-table tr.jp-header-row td{background:transparent}
+         td.jp-last-col{border-right:none!important;}
+         .jp-last-row td{border-bottom:none!important;}
+         .jp-classic-table tr {height:26px;}
+         tr.jp-odd-row td {
+         background: none repeat scroll 0 0 #FAFAFA;
+         }
+         td.jp-align-center{text-align:center}
+    </style>
+  </head>
+  
+  <body>
+    <table cellspacing="0" cellpadding="0" class="jp-classic-table">
+      <tr class="jp-header-row">
+        <td style="width:30px" class="jp-align-center">
+          <input type="checkbox" onclick='selectAll(this)'  value=''/>
+        </td>
+        <td style="width:50px" class="jp-align-center">订单号</td>
+        <td style="width:80px">收件人</td>
+        <td style="width:180px">单位</td>
+        <td style="width:80px">省</td>
+        <td style="width:80px">市(县)</td>
+        <td style="width:80px">区(镇)</td>
+        <td style="width:310px">地址</td>
+        <td style="width:110px">电话</td>
+        <td style="width:80px">手机</td>
+        <td style="width:80px" class="jp-last-col">物品</td>
+      </tr>
+      <tr class="jp-odd-row">
+        <td class="jp-align-center">
+          <input type="checkbox" value='100'/>
+        </td>
+        <td class="jp-align-center">100</td>
+        <td>王德明</td>
+        <td>北京斯达软件有限公司</td>
+        <td>北京市</td>
+        <td>西城区</td>
+        <td></td>
+        <td>展览馆路XXX号</td>
+        <td>010-88635255</td>
+        <td>13790438608</td>
+        <td class="jp-last-col">合同</td>
+      </tr>
+      <tr>
+        <td class="jp-align-center">
+          <input type="checkbox"  value='101'/>
+        </td>
+        <td class="jp-align-center">101</td>
+        <td>崔永山</td>
+        <td>山东省淄博市行政服务中心</td>
+        <td>山东省</td>
+        <td>淄博</td>
+        <td>西湖区</td>
+        <td>西斗门路12号天堂软件园19b1</td>
+        <td>88254255</td>
+        <td>13777865078</td>
+        <td class="jp-last-col">发票</td>
+      </tr>
+      <tr class="jp-odd-row">
+        <td class="jp-align-center">
+          <input type="checkbox"  value='102'/>
+        </td>
+        <td class="jp-align-center">102</td>
+        <td>李晓</td>
+        <td>深圳市科达信息技术有限公司</td>
+        <td>广东省</td>
+        <td>深圳市</td>
+        <td>南山区</td>
+        <td>高新技术产业园北区朗山路</td>
+        <td>0755-26991111</td>
+        <td>13923841111</td>
+        <td class="jp-last-col">合同</td>
+      </tr>
+      <tr>
+        <td class="jp-align-center">
+          <input type="checkbox"  value='103'/>
+        </td>
+        <td class="jp-align-center">103</td>
+        <td>张春燕</td>
+        <td>农业部渔政指挥中心</td>
+        <td>北京</td>
+        <td></td>
+        <td>朝阳区</td>
+        <td>西斗门路12号天堂软件园19b1</td>
+        <td>010-59191111</td>
+        <td>13683151111</td>
+        <td class="jp-last-col">培训资料</td>
+      </tr>
+      <tr class="jp-odd-row">
+        <td class="jp-align-center">
+          <input type="checkbox"  value='104'/>
+        </td>
+        <td class="jp-align-center">104</td>
+        <td>李涛</td>
+        <td>中联新佳科技（北京）有限公司</td>
+        <td>山东省</td>
+        <td>济南市</td>
+        <td></td>
+        <td>洪楼西路101号广场4号楼2单元999室</td>
+        <td>0531-88031111-603</td>
+        <td>13655311111</td>
+        <td class="jp-last-col">技术文档</td>
+      </tr>
+      <tr>
+        <td class="jp-align-center">
+          <input type="checkbox"  value='105'/>
+        </td>
+        <td class="jp-align-center">105</td>
+        <td>宋小波</td>
+        <td>上海广大电子技术有限公司</td>
+        <td>上海市</td>
+        <td>徐汇区</td>
+        <td></td>
+        <td>乐山路33号慧谷创业10号楼700室</td>
+        <td>021-51711111</td>
+        <td>13524921111</td>
+        <td class="jp-last-col">发票</td>
+      </tr>
+      <tr class="jp-odd-row">
+        <td class="jp-align-center">
+          <input type="checkbox"  value='106'/>
+        </td>
+        <td class="jp-align-center">106</td>
+        <td>王燕</td>
+        <td>浙江省渔业船舶交易服务中心</td>
+        <td>浙江省</td>
+        <td>杭州</td>
+        <td>拱墅区</td>
+        <td>莫干山路76号万达宾馆北楼345室</td>
+        <td>0571-89912222</td>
+        <td>13732281111</td>
+        <td class="jp-last-col">技术资料</td>
+      </tr>
+      <tr>
+        <td class="jp-align-center">
+          <input type="checkbox"  value='107'/>
+        </td>
+        <td class="jp-align-center">107</td>
+        <td>刘承光</td>
+        <td>阳光保险集团股份有限公司</td>
+        <td>北京市</td>
+        <td>海淀区</td>
+        <td></td>
+        <td>花园北路22号湖南大厦A座1层</td>
+        <td>010-59936666</td>
+        <td>13621215678</td>
+        <td class="jp-last-col">保险单</td>
+      </tr>
+      <tr class="jp-odd-row">
+        <td class="jp-align-center">
+          <input type="checkbox"  value='108'/>
+        </td>
+        <td class="jp-align-center">108</td>
+        <td>梁森</td>
+        <td>广州市明光计算机科技有限公司</td>
+        <td>广东省</td>
+        <td>广州市</td>
+        <td>天河区</td>
+        <td>天河北路国家软件基地科贸园区991号1009</td>
+        <td>020-38383333-801</td>
+        <td>13711173372</td>
+        <td class="jp-last-col">报销单据</td>
+      </tr>
+      <tr class="jp-last-row">
+        <td class="jp-align-center">
+          <input type="checkbox"  value='109'/>
+        </td>
+        <td class="jp-align-center">109</td>
+        <td>吴敏珠</td>
+        <td>北京蓝图信息技术有限公司</td>
+        <td>北京市</td>
+        <td>朝阳区</td>
+        <td></td>
+        <td>朝外南大街三丰北里六号楼2层</td>
+        <td>010-85615555-851</td>
+        <td>13910507777</td>
+        <td class="jp-last-col">技术文档</td>
+      </tr>
+    </table>
+    <br>
+     <button onclick='doPrint("打印")'>打印</button><button onclick='doPrint("打印预览")'>打印预览</button><button onclick='doPosition()'>打印位置调整</button>
+    
+    <object id="ojatoolsPrinter" codebase="../jatoolsPrinterUI/setup/jatoolsPrinter.cab#version=5,4,0,0" classid="clsid:B43D3361-D075-4BE2-87FE-057188254255" width="0" height="0">
+      <embed id="ejatoolsPrinter" type="application/x-vnd.jatoolsPrinter" width="0" height="0" />
+    </object>
+  </body>
+
+</html>

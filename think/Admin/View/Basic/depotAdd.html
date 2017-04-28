@@ -1,0 +1,87 @@
+<article class="page-container">
+	<form class="form form-horizontal" id="depot-add" method="post" action="__ACTION__">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>公司名称：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="depot_name" placeholder="公司名称" value="" class="input-text">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>公司代码：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="depot_code" placeholder="公司代码" value="" class="input-text">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>公司地址：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="depot_address" placeholder="公司地址" value="" class="input-text">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">
+				<span class="c-red">*</span>数据同步ip：
+			</label>
+
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" name="depot_ip" placeholder="数据同步ip" value="" class="input-text">
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;" class="btn btn-primary radius">
+			</div>
+		</div>
+	</form>
+</article>
+<script type="text/javascript">
+	$("#depot-add").validate({
+		rules: {
+			depot_name: {
+				required: true,
+			},
+			depot_code: {
+				required: true,
+				maxlength:7,
+				minlength:7
+			},
+			depot_address:{
+				required:true,
+			}
+		},
+		onkeyup: false,
+		focusCleanup: true,
+		success: "valid",
+		submitHandler: function (form) {
+			var layerIndex = layer.load(1, {
+				shade: [0.1, '#fff'] //0.1透明度的白色背景
+			});
+			$(form).ajaxSubmit({
+				success: function (data) {
+					if (data.status == 1) {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 500,
+						}, function () {
+							layer_close();
+						});
+					} else {
+						layer.close(layerIndex);
+						layer.msg(data.info, {
+							time: 1000,
+						});
+					}
+				}
+			});
+		}
+	})
+</script>

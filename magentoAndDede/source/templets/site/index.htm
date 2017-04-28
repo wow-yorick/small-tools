@@ -1,0 +1,469 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" id="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <link href="http://www.winpowercreation.com/statics/images/apple-touch-icon-57.png" sizes="57x57" rel="apple-touch-icon">
+    <link href="http://www.winpowercreation.com/statics/images/apple-touch-icon-72.png" sizes="72x72" rel="apple-touch-icon">
+    <link href="http://www.winpowercreation.com/statics/images/apple-touch-icon-114.png" sizes="114x114" rel="apple-touch-icon">
+    <title>{dede:global.cfg_webname/}</title>
+    <meta name="keywords" content="{dede:global.cfg_keywords/}" />
+    <meta name="description" content="{dede:global.cfg_description/}">
+    <link href="http://www.winpowercreation.com/statics/css/style.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="http://www.winpowercreation.com/statics/js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="http://www.winpowercreation.com/statics/js/theme_trust.js"></script>
+
+    <style type="text/css">
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .iw_poi_title {
+            color: #CC5522;
+            font-size: 14px;
+            font-weight: bold;
+            overflow: hidden;
+            padding-right: 13px;
+            white-space: nowrap
+        }
+        .iw_poi_content {
+            font: 12px arial, sans-serif;
+            overflow: visible;
+            padding-top: 4px;
+            white-space: -moz-pre-wrap;
+            word-wrap: break-word
+        }
+    </style>
+    <script type="text/javascript" src="http://www.winpowercreation.com/statics/js/main.js"></script>
+    <script>
+        jQuery(document).ready(function() {
+            jQuery('#openSidebar').click(function() {
+                jQuery('.wrapper').toggleClass('openNav');
+
+            });
+            jQuery('#menu a').click(function() {
+                jQuery('.wrapper').removeClass('openNav');
+            });
+
+        });
+    </script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?key=&v=1.1&services=true"></script>
+    <style type="text/css">
+        html,
+        body,
+        wrapper {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="pageMain">
+            <div id="header">
+                <div class="k1120 clearfix"><a href="/" id="logo">logo</a></div>
+
+         <div class="sidebar">
+            <div class="clearfix k1120">
+                <div class="navBox" id="openSidebar">
+                    <a href="javascript:void(0)" class="navOpen"></a>
+                </div>
+                <div id="menu">
+                    <ul class="clearfix">
+                        <li><a href="#home" class="nav_home current"><span>首页<br /><b>Home</b></span></a>
+                        </li>
+                        <li><a href="#services" class="nav_services"><span>服务范围<br /><b>Services</b></span></a>
+                        </li>
+                        <li><a href="#case" class="nav_case"><span>客户案例<br /><b>Case</b></span></a>
+                        </li>
+                        <li><a href="#about" class="nav_about"><span>关于我们<br /><b>About us</b></span></a>
+</li>
+  <li><a href="#spot" onclick="window.open('http://www.winpowercreation.com/store');" class="nav_spot" <span>网上商城<br /><b>E-Shop</b></span></a>
+                        </li>
+                        <li><a href="#news" class="nav_news"><span>新闻动态<br /><b>News</b></span></a>
+                        </li>
+                        <li><a href="#contact" class="nav_contact"><span>联系我们<br /><b>Contact us</b></span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+            </div>
+
+
+            <div id="home" class="scrol-page">
+                <div class="banner">
+                    <div class="b_1">
+                        <div class="k1120 clearfix">
+                            <div class="b_pic">
+                                <div class="mac"><img src="http://www.winpowercreation.com/statics/images/mac.png" />
+                                </div>
+                                <div class="iphone"><img src="http://www.winpowercreation.com/statics/images/iphone.png" />
+                                </div>
+                                <div class="ipad"><img src="http://www.winpowercreation.com/statics/images/ipad.png" />
+                                </div>
+                            </div>
+                            <div class="b_text">
+                                <h1>企业创意解决方案</h1>
+                                <h4>Corporate Creation Solutions</h4>
+                                <p>国内领先的一站式创意定制服务机构 / 
+上千种创意现货一键搞定 / 
+企业加印LOGO服务 / 
+个性量身设计</p>
+ <p><span>Domestic leading one-stop idea Creation customized service<br /><b>Thousands of creative Creation, just one button works!</b></span></p>
+ <p><span>Service for enterprises to overprint LOGO<br /><b>Make to measure for you specially!</b></span></p>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner">
+                    <div class="b_2">
+                        <div class="k1120 clearfix">
+                            <!--<h2>提供服务</h2>-->
+                            <h1>WINPOWER CREATION</h1>
+                            <!--<h5>一直致力于提供专业的礼赠品解决方案，服务平台涵盖了在线购物、专属定制，我们用设计为您赢得商机。</h5>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="services" class="scrol-page">
+                <h2 class="title"><span>我们的服务<br /><b>Our service</b></span></h2>
+                <h5 class="infoText"><span>针对高端客户量身打造独创性创意，在传播过程中让人印象深刻，有助于提升品牌形象，促进销售。<br /><b>We make original and creative Creation for high-end clients. 
+Outstanding service, excellent brand image!</b>
+</h5>
+                <div class="servicesBox">
+                    <ul class="k1120 clearfix">
+                        <li>
+                            <div class="servicesBoxList">
+                                <div class="servicesBoxIcon"><i class="servicesIcon_1"></i>
+                                </div>
+                                <h3>创意现货在线购买</h3>
+                                <p>-Creative goods purchase online</p>
+                             
+                            </div>
+                        </li>
+                        <li>
+                            <div class="servicesBoxList">
+                                <div class="servicesBoxIcon"><i class="servicesIcon_2"></i>
+                                </div>
+                                <h3>加印定制服务</h3>
+                                <p>-Overprint customized service</p>
+                               
+                            </div>
+                        </li>
+                        <li>
+                            <div class="servicesBoxList">
+                                <div class="servicesBoxIcon"><i class="servicesIcon_3"></i>
+                                </div>
+                                <h3>量身创意设计</h3>
+                                <p>-Tailored creative design</p>
+                            
+                            </div>
+                        </li>
+                        <li>
+                            <div class="servicesBoxList">
+                                <div class="servicesBoxIcon"><i class="servicesIcon_4"></i>
+                                </div>
+                                <h3>其它增值服务</h3>
+                                <p>-Other value-added service</p>
+                                
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="ad_1">
+                    <div class="ad_1Text">Originality·Innovation·Quality</div>
+                </div>
+            </div>
+            <div id="case" class="scrol-page">
+                <h2 class="title">Case</h2>
+                <h5 class="infoText">Original design, bold innovation and flexible applied technology are who we are. Winpower creation only creates design with soul!</h5>
+                <div class="case k1120">
+                    <ul class="clearfix">
+                      {dede:arclist typeid=1 type='image.' row=8 titlelen=30 orderby='pubdate' }
+                        <li>
+                            <div class="view-tenth"><img src="[field:picname/]"><a href="[field:arcurl/]" class="mask" target="_blank"><h2>[field:title/]</h2><p>发布于：[field:pubdate function=MyDate('Y-m-d',@me)/] / 浏览：[field:click/]</p></a>
+                            </div>
+                        </li>
+                         {/dede:arclist} 
+                    </ul>
+                    <div class="tc moreBox"><a href="/works/" target="_blank" class="moreBtn">More cases</a>
+                    </div>
+                </div>
+                <div class="ad_2">
+                    <h3><span>Winpower Creation ▪ Gift customized expert by your side!</span></h3>
+                    <p>Staffed by a powerful force in design and technology; Possessed of successful experience; Equipped with a standard operation system. You will enjoy one to one and exclusive service!</p>
+                </div>
+            </div>
+            <div id="about" class="scrol-page">
+                <h2 class="title"><span>我们的自述<br /><b>About us</b></span></h2>
+                <div class="k1120">
+                    <div class="aboutBox">
+                        <h4>WinPower Creation</h4>
+                        <p>Winpower Creation, staffed by an excellent and experienced team, is a professional Creation customized company. Winpower Creation provides clients with Creation research and development service, which enables clients to be of competence in burgeoning IT field.</p>
+                        <p>Winpower Creation has cooperated with Sinar Mas Group(China), Lanhua Group, Agriculture and Commerce Bank, Xianglin Group, Yifu Group, SanDisk, RayBan, Changdai, Jifubao, JITU5 and other hundreds enterprises since its establishment.</p>
+                        <p>Taking obedience to our core value of “Winpower Creation only makes idea product with soul” and “adherence to originality”, we make it our mission to help clients attract their clients. With enthusiasm, wisdom and endeavor, we are striving to open the marketing situation of Creations, which deeply influences Winpower Creation’s business pattern and marketing frame.</p>
+                        <p>We firmly believe that originality will be the only route of business in the near future!</p>
+                    </div>
+                </div>
+            </div>
+<div id="spot" class="scrol-page">
+	<h2 class="title"><span>E-SHOP</span></h2>
+	<div class="k1120">
+	    <div class="aboutBox">
+		    <p>We provides corporate clients with Exquisitely prepared high cost-effective, popular and individual Creations which will be a great choice for the clients who are pressed for time while demand small quality, but also fastidious about Creation’s style and quantity. 
+Welcome to register and log in our platform: <a href="http://www.winpowercreation.com/store">http://www.winpowercreation.com/store</a>
+</p>
+		    <div style="text-align:center" ></div>
+	    </div>
+	</div>
+
+          <div class="ad_custom" onclick="window.open('http://www.winpowercreation.com/store');" style="cursor:pointer;"></div>
+    </div>
+
+            <div id="news" class="scrol-page">
+                <div class="k1120">
+                    <h2 class="title"><span>NEWS</span></h2>
+                    <h5 class="infoText">您可以通过以下新闻与公司动态进一步了解我们。我们所签约的客户，无论他们的项目是大或者是小，我们都将提供100%的服务</h5>
+                    <div class="newsList">
+                        <ul class="clearfix">
+						{dede:arclist typeid=2 row=6 titlelen=30 orderby='pubdate' }
+                            <li>
+                                <div class="newsListBox">
+                                    <h4><a href="[field:arcurl/]" target="_blank">[field:title/]</a></h4>
+                                    <p class="newsViewText">[field:description function="cn_substr(@me,100)"/]...</p>
+                                    <p class="newsViewFoot"><a href="[field:arcurl/]" target="_blank" class="newsListView">查看详情</a>
+                                    </p>
+                                </div>
+                            </li>
+                         {/dede:arclist} 
+                        </ul>
+                        <div class="tc moreBox"><a href="/news/" target="_blank" class="moreBtn">More News</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="ab_3">
+                    <h3>Commit to idea Creation, Achieve commercial goals for clients!</h3>
+                    <p class="moreBox"><a href="http://wpa.qq.com/msgrd?v=3&uin=306057214&site=qq&menu=yes" class="viewBtn">Click to consult</a>
+                    </p>
+                </div>
+            </div>
+            <div class="scrol-page">
+                <h2 class="title">Contact us</h2>
+                <div class="infoText">If you want to surpass expected Creation customized company, if you are seeking a reliable team to establish a long time cooperation relationship, contact us! We are waiting for you!</div>
+                <div class="contactBox">
+                    <div class="contactFoot" id="contact">
+                        <div class="clearfix k1120">
+                            <dl><dt>Contact us</dt>
+                                <dd>
+                                    <p><span>Address：<br /><b>
+No.6 Temasek Boulevard, #09-02 Suntec City Tower 4,</b></span></p>
+                            <p>Singapore 038986</p>
+                                    <p>Tel: +65 6235 9912 （SG）</p>
+                                    <p>         +86 5596 1189（中国）</p>
+                                    <p>Mail: wpc@winpower.sg</p>
+                                </dd>
+                            </dl>
+                            <!--<dl><dt>
+QQ/Skype online consulting</dt>
+                                <dd>
+                                    <p>有什么需求或有疑问请点击以下QQ头像咨询我们</p>
+                                    <p><a href="http://wpa.qq.com/msgrd?v=3&uin=306057214&site=qq&menu=yes" class="qqBtn">Click to chat</a>
+                                    </p>
+                                    <p><a href="http://wpa.qq.com/msgrd?v=3&uin=306057214&site=qq&menu=yes" class="qqBtn">Click to chat</a>
+                                    </p>
+                                    <p><a href="http://wpa.qq.com/msgrd?v=3&uin=306057214&site=qq&menu=yes" class="qqBtn">Click to chat</a>
+                                    </p>
+                                </dd>
+                            </dl>
+                            <dl><dt>告诉我们您的需求</dt>
+                                <dd>
+                                    <p>Voice of customer</p>
+                                    <p><a tel="15221638028" class="telBtn">13888888888-王先生</a>
+                                    </p>
+                                    <p><a class="telBtn">13888888888-李先生</a>
+                                    </p>
+                                    <p><a class="telBtn">13888888888 -张先生</a>
+                                    </p>
+                                </dd>
+                            </dl>-->
+                        </div>
+                    </div>
+                    <div class="mapBox">
+                        <div style="width:100%;" id="dituContent"></div>
+                    </div>
+                </div>
+                <div class="message">
+                    <div class="k1120 clearfix">
+                        <div class="messageRow_1">
+                            <div class="messageBox">
+                                <h3>Voice of customer</h3>
+                                <h4>在线填写需求，我们将尽快为您答疑解惑。</h4>
+                                <p>工作时间 9:00 ~ 19:00 </p>
+                                <p>工作日（周一至周五） </p>
+                            </div>
+                        </div>
+                       
+						<form action="/plus/diy.php"  enctype="multipart/form-data" method="post" >
+<input type="hidden" name="action" value="post" />
+<input type="hidden" name="diyid" value="1" />
+<input type="hidden" name="do" value="2" />
+
+                            <div class="messageRow_2">
+                                <div class="messageBox">
+                                    <div class="fromList">
+                                        <input type="text" placeholder="name" value='' name="full_name" id="full_name" />
+                                    </div>
+                                    <div class="fromList">
+                                        <input type="text" placeholder="mobile" value='' name="mobile" id="mobile" />
+                                    </div>
+                                    <div class="fromList">
+                                        <input type="text" placeholder="email" value='' name="email" id="email" />
+                                    </div>
+                                    <div class="fromList">
+                                        <input type="text" placeholder="company" value='' name="company" id="company" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="messageRow_3">
+                                <div class="messageBox">
+                                    <div class="fromList">
+                                        <textarea placeholder="Fill in the details" value='' name="msg" id="msg"></textarea>
+                                    </div>
+									<input name="mytime" value="" type="hidden"  id="mytime"  />
+      <script type="text/javascript">
+                    window.onload = function(){
+                    var nowDate = new Date();
+                    var str = nowDate.getFullYear()+"-"+(nowDate.getMonth() + 1)+"-"+nowDate.getDate()+" "+nowDate.getHours()+":"+nowDate.getMinutes()+":"+nowDate.getSeconds();
+                    document.getElementById("mytime").value=str;
+                    }
+                    </script>
+									<input type="hidden" name="dede_fields" value="full_name,text;mobile,text;email,text;company,text;msg,multitext;mytime,text" />
+                                    <input type="hidden" name="dede_fieldshash" value="c971c82ee72551f4e9e131a5a98d85bc" />
+                                    <input type="image" name="sumbit" src="http://www.winpowercreation.com/statics/images/btn.png"  /><span class="fromListInfo">我们将在1个工作日内回复，资料会保密处理。</span>
+                                   
+                                </div>
+                            </div>
+                        </form>
+						 
+                    </div>
+                </div>
+            </div>
+        </div>
+     {dede:include filename="footer.htm"/}
+    </div>
+    <script type="text/javascript">
+
+        //创建和初始化地图函数：
+        function initMap() {
+            createMap(); //创建地图
+            setMapEvent(); //设置地图事件
+            addMapControl(); //向地图添加控件
+            addMarker(); //向地图中添加marker
+        }
+
+        //创建地图函数：
+        function createMap() {
+            var map = new BMap.Map("dituContent"); //在百度地图容器中创建一个地图
+            var point = new BMap.Point(121.498223,31.26721); //定义一个中心点坐标
+            map.centerAndZoom(point, 18); //设定地图的中心点和坐标并将地图显示在地图容器中
+            window.map = map; //将map变量存储在全局
+        }
+
+        //地图事件设置函数：
+        function setMapEvent() {
+            map.enableDragging(); //启用地图拖拽事件，默认启用(可不写)
+            map.disableScrollWheelZoom(); //禁用地图滚轮放大缩小，默认禁用(可不写)
+            map.disableDoubleClickZoom(); //禁用鼠标双击放大
+            map.disableKeyboard(); //禁用键盘上下左右键移动地图，默认禁用(可不写)
+        }
+
+        //地图控件添加函数：
+        function addMapControl() {}
+
+        //标注点数组
+        var markerArr = [{
+            title: "鹰力创意",
+            content: "上海市虹口区物华路288号爱家国际大厦4号楼401室",
+            point: "121.498223|31.26721",
+            isOpen: 0,
+            icon: {
+                w: 23,
+                h: 25,
+                l: 46,
+                t: 21,
+                x: 9,
+                lb: 12
+            }
+        }];
+        //创建marker
+        function addMarker() {
+                for (var i = 0; i < markerArr.length; i++) {
+                    var json = markerArr[i];
+                    var p0 = json.point.split("|")[0];
+                    var p1 = json.point.split("|")[1];
+                    var point = new BMap.Point(p0, p1);
+                    var iconImg = createIcon(json.icon);
+                    var marker = new BMap.Marker(point, {
+                        icon: iconImg
+                    });
+                    var iw = createInfoWindow(i);
+                    var label = new BMap.Label(json.title, {
+                        "offset": new BMap.Size(json.icon.lb - json.icon.x + 10, -20)
+                    });
+                    marker.setLabel(label);
+                    map.addOverlay(marker);
+                    label.setStyle({
+                        borderColor: "#808080",
+                        color: "#333",
+                        cursor: "pointer"
+                    });
+
+                    (function() {
+                        var index = i;
+                        var _iw = createInfoWindow(i);
+                        var _marker = marker;
+                        _marker.addEventListener("click", function() {
+                            this.openInfoWindow(_iw);
+                        });
+                        _iw.addEventListener("open", function() {
+                            _marker.getLabel().hide();
+                        })
+                        _iw.addEventListener("close", function() {
+                            _marker.getLabel().show();
+                        })
+                        label.addEventListener("click", function() {
+                            _marker.openInfoWindow(_iw);
+                        })
+                        if (!!json.isOpen) {
+                            label.hide();
+                            _marker.openInfoWindow(_iw);
+                        }
+                    })()
+                }
+            }
+            //创建InfoWindow
+        function createInfoWindow(i) {
+                var json = markerArr[i];
+                var iw = new BMap.InfoWindow("<b class='iw_poi_title' title='" + json.title + "'>" + json.title + "</b><div class='iw_poi_content'>" + json.content + "</div>");
+                return iw;
+            }
+            //创建一个Icon
+        function createIcon(json) {
+            var icon = new BMap.Icon("http://app.baidu.com/map/images/us_mk_icon.png", new BMap.Size(json.w, json.h), {
+                imageOffset: new BMap.Size(-json.l, -json.t),
+                infoWindowOffset: new BMap.Size(json.lb + 5, 1),
+                offset: new BMap.Size(json.x, json.h)
+            })
+            return icon;
+        }
+
+        initMap(); //创建和初始化地图
+    </script>
+</body>
+
+</html>
