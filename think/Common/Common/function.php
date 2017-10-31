@@ -225,7 +225,7 @@ function randString($len = 6, $type = '', $addChars = '')
 	} else {
 		// 中文随机字
 		for ($i = 0; $i < $len; $i++) {
-			$str .= self::msubstr($chars, floor(mt_rand(0, mb_strlen($chars, 'utf-8') - 1)), 1, 'utf-8', false);
+			$str .= msubstr($chars, floor(mt_rand(0, mb_strlen($chars, 'utf-8') - 1)), 1, 'utf-8', false);
 		}
 	}
 	return $str;
