@@ -29,9 +29,9 @@ class BaseController extends Controller
 				$this->assign('remind', true);
 				$this->assign('term_day', $data['time']);
 			} elseif ($data['time'] - time() <= 0) {
-				$this->assign('remind', true);
-				$this->assign('term_day', $data['time']);
-				$this->error('您的系统已过期');
+				//$this->assign('remind', true);
+				//$this->assign('term_day', $data['time']);
+				//$this->error('您的系统已过期');
 			}
 		}
 		if (CONTROLLER_NAME != 'Public' && !$this->checkAuth()) $this->error('没有权限，请联系管理员！！');
