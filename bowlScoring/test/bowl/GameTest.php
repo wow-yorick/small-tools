@@ -1,5 +1,6 @@
 <?php
-class GameTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+class GameTest extends TestCase
 {
 	private $game;
 
